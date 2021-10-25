@@ -1,0 +1,19 @@
+{
+  "name": "stevensmarketplace_cs_546_group16_finalproject",
+  "version": "1.0.0",
+  "description": "hello github, and all members",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject/issues"
+  },
+  "homepage": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject#readme"
+}
