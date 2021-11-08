@@ -1,0 +1,6 @@
+{
+  "mongoConfig": {
+    "serverUrl": "mongodb://localhost:27017/",
+    "database": "StevensMarketPlace_CS_546_Group16_FinalProject"
+  }
+}
