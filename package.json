@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject/issues"
   },
-  "homepage": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject#readme"
+  "homepage": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject#readme",
+  "dependencies": {
+    "mongodb": "^4.1.4"
+  }
 }
