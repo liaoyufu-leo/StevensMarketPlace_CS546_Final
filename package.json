@@ -11,7 +11,8 @@
     "url": "git+https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject.git"
   },
   "author": [
-    { "name": "Yufu Liao", "github account": "liaoyufu-leo", "email": "liaoyufu.leo@gmail.com"}
+    { "name": "Yufu Liao", "github account": "liaoyufu-leo", "email": "liaoyufu.leo@gmail.com"},
+    { "name": "aditya", "github account": "liaoyufu-leo", "email": "liaoyufu.leo@gmail.com"}
   ],
   "license": "ISC",
   "bugs": {
