@@ -10,7 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject.git"
   },
-  "author": "",
+  "author": [
+    {
+      "name": "Yufu Liao",
+      "github account": "liaoyufu-leo"
+    }
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject/issues"
