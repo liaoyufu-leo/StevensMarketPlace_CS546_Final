@@ -11,11 +11,18 @@
     "url": "git+https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject.git"
   },
   "author": [
-    { "name": "Yufu Liao", "github name": "liaoyufu-leo", "email": "liaoyufu.leo@gmail.com"}
+    {
+      "name": "Yufu Liao",
+      "github name": "liaoyufu-leo",
+      "email": "liaoyufu.leo@gmail.com"
+    }
   ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject/issues"
   },
-  "homepage": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject#readme"
+  "homepage": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject#readme",
+  "dependencies": {
+    "mongodb": "^4.1.4"
+  }
 }
