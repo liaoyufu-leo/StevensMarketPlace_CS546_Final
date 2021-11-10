@@ -10,9 +10,22 @@
     "type": "git",
     "url": "git+https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject.git"
   },
-  "author": [
-    { "name": "Yufu Liao", "github name": "liaoyufu-leo", "email": "liaoyufu.leo@gmail.com"},
-    { "name": "Yash Gandhi", "github name": "gandhiyaash", "email": "yashgandhi.2408@gmail.com"}
+  "contributors": [
+    {
+      "name": "Yufu Liao",
+      "github name": "liaoyufu-leo",
+      "email": "liaoyufu.leo@gmail.com"
+    },
+    {
+      "name": "Yash Gandhi",
+      "github name": "gandhiyaash",
+      "email": "yashgandhi.2408@gmail.com"
+    },
+    {
+      "name": "Aditya Jayadevan Menon",
+      "github name": "adityajayadevan",
+      "email": "adityajayadevan@gmail.com"
+    }
   ],
   "license": "ISC",
   "bugs": {
@@ -20,6 +33,7 @@
   },
   "homepage": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "mongodb": "^4.1.4"
   }
 }
