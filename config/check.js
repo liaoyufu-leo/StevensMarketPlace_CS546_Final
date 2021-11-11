@@ -1,6 +1,6 @@
 const states = require("../config/states.json");
 const md5 = require("blueimp-md5");
-const { mongo } = require("mongodb");
+const mongo = require("mongodb");
 const { ObjectId } = require("bson");
 
 module.exports = {
@@ -28,7 +28,7 @@ function check(input, dataType) {
         case "password":
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
-            if (input.length > 10) return false;
+            if (input.length < 10) return false;
             if (! /[A-Z]{1,}/.test(input)) return false;
             if (! /[a-z]{1,}/.test(input)) return false;
             if (! /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]{1,}/.test(input)) return false;
@@ -45,7 +45,7 @@ function check(input, dataType) {
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
-            if (input == 'male' || input == 'female' || input == 'other') return false;
+            if (input != 'male' && input != 'female' && input != 'other') return false;
             return input;
         case "address":
             if (Object.prototype.toString.call(input) != "[object Object]") return false;
