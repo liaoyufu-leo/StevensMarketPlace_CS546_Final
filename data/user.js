@@ -7,6 +7,7 @@ module.exports = {
     create,
     login,
     updatePassword,
+    updateInformation,
     forgetPassword,
     findOne,
     addCart,
@@ -117,6 +118,69 @@ async function updatePassword(account, oldPassword, newPassword) {
     const updatedInfo = await col.updateOne(
         { "account": account },
         { $set: { "password": newPassword } }
+    );
+    if (updatedInfo.modifiedCount === 0) {
+        await collection.closeCollection();
+        throw "Can't update password in mongodb, something went wrong, please try again!";
+    }
+
+    const updatedUser = await col.findOne({ "account": account });
+    if (updatedUser === null) {
+        await collection.closeCollection();
+        throw "Can't find updated account in mongodb, something went wrong, Please try again!";
+    }
+    await collection.closeCollection();
+
+    updatedUser._id = updatedUser._id.toString();
+    for (let i = 0; i < updatedUser.cart.length; i++) {
+        updatedUser.cart[i] = updatedUser.cart[i].toString();
+    }
+    return { "hasErrors": false, "user": updatedUser };
+}
+
+async function updateInformation(account, nickName, gender, address) {
+    let errors = [];
+    if (arguments.length != 4) errors.push("User updateInformation arguments is not correct.");
+    if (!(account = check(account, "account"))) errors.push("Account is not valid.");
+    if (!(nickName = check(nickName, "nickName"))) errors.push("NickName is not valid.");
+    if (!(gender = check(gender, "gender"))) errors.push("Gender is not valid.");
+    if (!(address = check(address, "address"))) errors.push("Address is not valid.");
+
+    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
+
+    const col = await collection.getCollection('user');
+
+    const checkAccount = await col.findOne({ "account": account });
+    if (checkAccount != null) {
+        await collection.closeCollection();
+        errors.push("This account email had been used, please change another email!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    if (checkAccount.nickName == nickName &&
+        checkAccount.gender == gender &&
+        checkAccount.address.street == address.street &&
+        checkAccount.address.apt == address.apt &&
+        checkAccount.address.city == address.city &&
+        checkAccount.address.state == address.state &&
+        checkAccount.address.zipCode == address.zipCode) {
+        await collection.closeCollection();
+        errors.push("This account new information is the same as old information, please try again!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    let newUser = {
+        "account": account,
+        "password": checkAccount.password,
+        "nickName": nickName,
+        "gender": gender,
+        "address": address,
+        "cart": checkAccount.cart
+    }
+
+    const updatedInfo = await col.updateOne(
+        { "account": account },
+        { $set: newUser }
     );
     if (updatedInfo.modifiedCount === 0) {
         await collection.closeCollection();
