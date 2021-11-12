@@ -138,6 +138,51 @@ async function updatePassword(account, oldPassword, newPassword) {
     return { "hasErrors": false, "user": updatedUser };
 }
 
+async function forgetPassword(account, newPassword) {
+    let errors = [];
+    if (arguments.length != 2) errors.push("User login arguments is not correct!");
+    if (!(account = check(account, "account"))) errors.push("Account is not valid!");
+    if (!(newPassword = check(newPassword, "password"))) errors.push("NewPassword is not valid!");
+
+    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
+
+    const col = await collection.getCollection('user');
+    const checkAccount = await col.findOne({ "account": account });
+    if (checkAccount == null) {
+        await collection.closeCollection();
+        errors.push("This account is not exist!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    if (checkAccount.password == newPassword) {
+        await collection.closeCollection();
+        errors.push("New password is same as old password, it should not be changed!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    const updatedInfo = await col.updateOne(
+        { "account": account },
+        { $set: { "password": newPassword } }
+    );
+    if (updatedInfo.modifiedCount === 0) {
+        await collection.closeCollection();
+        throw "Can't update password in mongodb, something went wrong, please try again!";
+    }
+
+    const updatedUser = await col.findOne({ "account": account });
+    if (updatedUser === null) {
+        await collection.closeCollection();
+        throw "Can't find updated account in mongodb, something went wrong! Please try again!";
+    }
+    await collection.closeCollection();
+
+    updatedUser._id = updatedUser._id.toString();
+    for (let i = 0; i < updatedUser.cart.length; i++) {
+        updatedUser.cart[i] = updatedUser.cart[i].toString();
+    }
+    return { "hasErrors": false, "user": updatedUser };
+}
+
 async function updateInformation(account, nickName, gender, address) {
     let errors = [];
     if (arguments.length != 4) errors.push("User updateInformation arguments is not correct.");
@@ -151,9 +196,9 @@ async function updateInformation(account, nickName, gender, address) {
     const col = await collection.getCollection('user');
 
     const checkAccount = await col.findOne({ "account": account });
-    if (checkAccount != null) {
+    if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account email had been used, please change another email!");
+        errors.push("This account email is not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -191,51 +236,6 @@ async function updateInformation(account, nickName, gender, address) {
     if (updatedUser === null) {
         await collection.closeCollection();
         throw "Can't find updated account in mongodb, something went wrong, Please try again!";
-    }
-    await collection.closeCollection();
-
-    updatedUser._id = updatedUser._id.toString();
-    for (let i = 0; i < updatedUser.cart.length; i++) {
-        updatedUser.cart[i] = updatedUser.cart[i].toString();
-    }
-    return { "hasErrors": false, "user": updatedUser };
-}
-
-async function forgetPassword(account, newPassword) {
-    let errors = [];
-    if (arguments.length != 2) errors.push("User login arguments is not correct!");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid!");
-    if (!(newPassword = check(newPassword, "password"))) errors.push("NewPassword is not valid!");
-
-    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
-
-    const col = await collection.getCollection('user');
-    const checkAccount = await col.findOne({ "account": account });
-    if (checkAccount == null) {
-        await collection.closeCollection();
-        errors.push("This account is not exist!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    if (checkAccount.password == newPassword) {
-        await collection.closeCollection();
-        errors.push("New password is same as old password, it should not be changed!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    const updatedInfo = await col.updateOne(
-        { "account": account },
-        { $set: { "password": newPassword } }
-    );
-    if (updatedInfo.modifiedCount === 0) {
-        await collection.closeCollection();
-        throw "Can't update password in mongodb, something went wrong, please try again!";
-    }
-
-    const updatedUser = await col.findOne({ "account": account });
-    if (updatedUser === null) {
-        await collection.closeCollection();
-        throw "Can't find updated account in mongodb, something went wrong! Please try again!";
     }
     await collection.closeCollection();
 
