@@ -6,9 +6,10 @@ const { user } = require("../data/index");
 // userloginTest();
 // userUpdatePasswordTest();
 // userForgetPasswordTest();
+// userUpdateInformationTest();
 // userFindOneTest();
 // userAddCartTest();
-userRemoveCartTest();
+// userRemoveCartTest();
 
 async function userCreateTest() {
     console.log("This test case should have error in account!");
@@ -252,6 +253,106 @@ async function userForgetPasswordTest() {
         "yliao10@stevens.edu",
         "1234567Aa!",
         "Aa!1234567"
+    ));
+}
+
+async function userUpdateInformationTest(){
+    console.log("This test case should have error in account!");
+    console.log(await user.updateInformation(
+        "yliao10stevens.edu",
+        "Yufu Liao",
+        "male",
+        {
+            "street": "123 andrew st.",
+            "apt": "123",
+            "city": "hoboken",
+            "state": "new jersey",
+            "zipCode": "07030"
+        }
+    ));
+
+    console.log("This test case should have error in nickname!");
+    console.log(await user.updateInformation(
+        "yliao10@stevens.edu",
+        "  ",
+        "male",
+        {
+            "street": "123 andrew st.",
+            "apt": "123",
+            "city": "hoboken",
+            "state": "new jersey",
+            "zipCode": "07030"
+        }
+    ));
+
+    console.log("This test case should have error in gender!");
+    console.log(await user.updateInformation(
+        "yliao10@stevens.edu",
+        "Yufu Liao",
+        "males",
+        {
+            "street": "123 andrew st.",
+            "apt": "123",
+            "city": "hoboken",
+            "state": "new jersey",
+            "zipCode": "07030"
+        }
+    ));
+
+    console.log("This test case should have error in address!");
+    console.log(await user.updateInformation(
+        "yliao10@stevens.edu",
+        "Yufu Liao",
+        "male",
+        {
+            "street": "123 andrew st.",
+            "apt": "123",
+            "city": "hobokens",
+            "state": "new jersey",
+            "zipCode": "07030"
+        }
+    ));
+
+    console.log("This test case should have error for same information!");
+    console.log(await user.updateInformation(
+        "yliao10@stevens.edu",
+        "Yufu Liao",
+        "male",
+        {
+            "street": "123 andrew st.",
+            "apt": "123",
+            "city": "hoboken",
+            "state": "new jersey",
+            "zipCode": "07030"
+        }
+    ));
+
+    console.log("This test case should update success!");
+    console.log(await user.updateInformation(
+        "yliao10@stevens.edu",
+        "somegood",
+        "male",
+        {
+            "street": "123 andrew st.",
+            "apt": "123",
+            "city": "hoboken",
+            "state": "new jersey",
+            "zipCode": "07030"
+        }
+    ));
+
+    console.log("This test case should recover information!");
+    console.log(await user.updateInformation(
+        "yliao10@stevens.edu",
+        "Yufu Liao",
+        "male",
+        {
+            "street": "123 andrew st.",
+            "apt": "123",
+            "city": "hoboken",
+            "state": "new jersey",
+            "zipCode": "07030"
+        }
     ));
 }
 
