@@ -1,6 +1,4 @@
-const { check } = require('../config/check');
-const mongo = require("mongodb");
-const { ObjectId } = require("bson");
+const { check } = require('../public/check');
 const collection = require("../config/mongoCollections");
 
 module.exports = {
