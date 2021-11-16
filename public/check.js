@@ -1,4 +1,4 @@
-const states = require("../config/states.json");
+const states = require("../public/states.json");
 const md5 = require("blueimp-md5");
 const mongo = require("mongodb");
 const { ObjectId } = require("bson");
@@ -23,6 +23,7 @@ function check(input, dataType) {
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
+            input.toLowerCase();
             if (! /^[a-zA-Z0-9]{5,}\@stevens\.edu$/.test(input)) return false;
             return input;
         case "password":

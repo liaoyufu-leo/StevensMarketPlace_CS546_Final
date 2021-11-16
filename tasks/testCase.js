@@ -3,7 +3,7 @@
 const { user } = require("../data/index");
 
 // userCreateTest();
-// userloginTest();
+userloginTest();
 // userUpdatePasswordTest();
 // userForgetPasswordTest();
 // userUpdateInformationTest();
@@ -121,7 +121,7 @@ async function userCreateTest() {
 async function userloginTest() {
     console.log("This test case should have error in account!");
     console.log(await user.login(
-        "  yliao10stevens.edu   ",
+        "  yliAo10stevens.edu   ",
         "Aa!1234567"
     ));
 
