@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject#readme",
   "dependencies": {
-    "blueimp-md5": "^2.19.0",
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "mongodb": "^4.1.4"
   }

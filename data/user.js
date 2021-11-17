@@ -1,5 +1,7 @@
 const { check } = require('../public/check');
 const collection = require("../config/mongoCollections");
+const bcrypt = require("bcryptjs");
+const saltRounds = 10;
 
 module.exports = {
     create,
@@ -25,7 +27,7 @@ async function create(account, password, nickName, gender, address) {
 
     let user = {
         "account": account,
-        "password": password,
+        "password": await bcrypt.hash(password, saltRounds),
         "nickName": nickName,
         "gender": gender,
         "address": address,
@@ -74,7 +76,7 @@ async function login(account, password) {
         return { "hasErrors": true, "errors": errors };
     }
 
-    if (checkAccount.password != password) {
+    if (! await bcrypt.compare(password, checkAccount.password)) {
         await collection.closeCollection();
         errors.push("Password is not correct!");
         return { "hasErrors": true, "errors": errors };
@@ -94,7 +96,7 @@ async function updatePassword(account, oldPassword, newPassword) {
     if (arguments.length != 3) errors.push("User updatePassword arguments is not correct!");
     if (!(user_id = check(account, "account"))) errors.push("account is not valid!");
     if (!(oldPassword = check(oldPassword, "password"))) errors.push("OldPassword is not valid!");
-    if (!(newPassword = check(newPassword, "password"))) errors.push("newPassword is not valid!");
+    if (!(newPassword = check(newPassword, "password"))) errors.push("NewPassword is not valid!");
     if (oldPassword == newPassword) errors.push("NewPassword is same as oldPassword!");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
@@ -107,7 +109,7 @@ async function updatePassword(account, oldPassword, newPassword) {
         return { "hasErrors": true, "errors": errors };
     }
 
-    if (checkAccount.password != oldPassword) {
+    if (! await bcrypt.compare(oldPassword, checkAccount.password)) {
         await collection.closeCollection();
         errors.push("Oldpassword is not correct!");
         return { "hasErrors": true, "errors": errors };
@@ -115,7 +117,7 @@ async function updatePassword(account, oldPassword, newPassword) {
 
     const updatedInfo = await col.updateOne(
         { "account": account },
-        { $set: { "password": newPassword } }
+        { $set: { "password": await bcrypt.hash(newPassword, saltRounds) } }
     );
     if (updatedInfo.modifiedCount === 0) {
         await collection.closeCollection();
@@ -152,7 +154,7 @@ async function forgetPassword(account, newPassword) {
         return { "hasErrors": true, "errors": errors };
     }
 
-    if (checkAccount.password == newPassword) {
+    if ( await bcrypt.compare(newPassword, checkAccount.password)) {
         await collection.closeCollection();
         errors.push("New password is same as old password, it should not be changed!");
         return { "hasErrors": true, "errors": errors };
@@ -160,7 +162,7 @@ async function forgetPassword(account, newPassword) {
 
     const updatedInfo = await col.updateOne(
         { "account": account },
-        { $set: { "password": newPassword } }
+        { $set: { "password": await bcrypt.hash(newPassword, saltRounds) } }
     );
     if (updatedInfo.modifiedCount === 0) {
         await collection.closeCollection();
