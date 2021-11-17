@@ -2,14 +2,19 @@
 
 const { user } = require("../data/index");
 
-// userCreateTest();
-userloginTest();
-// userUpdatePasswordTest();
-// userForgetPasswordTest();
-// userUpdateInformationTest();
-// userFindOneTest();
-// userAddCartTest();
-// userRemoveCartTest();
+main();
+
+async function main(){
+    await userCreateTest();
+    await userloginTest();
+    await userUpdatePasswordTest();
+    await userForgetPasswordTest();
+    await userUpdateInformationTest();
+    await userFindOneTest();
+    await userAddCartTest();
+    await userRemoveCartTest();
+}
+
 
 async function userCreateTest() {
     console.log("This test case should have error in account!");
