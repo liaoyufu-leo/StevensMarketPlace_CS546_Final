@@ -23,7 +23,7 @@ function check(input, dataType) {
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
-            input.toLowerCase();
+            input = input.toLowerCase();
             if (! /^[a-zA-Z0-9]{5,}\@stevens\.edu$/.test(input)) return false;
             
             return input;
