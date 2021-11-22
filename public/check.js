@@ -1,11 +1,11 @@
-const states = require("../public/states.json");
-const mongo = require("mongodb");
-const { ObjectId } = require("bson");
+try {
+    var states = require("./states");
+    
+    module.exports = {
+        check
+    };
 
-module.exports = {
-    check
-};
-
+} catch (error) { }
 
 function check(input, dataType) {
     switch (dataType) {
@@ -14,9 +14,8 @@ function check(input, dataType) {
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
-            if (!mongo.ObjectId.isValid(input)) return false;
-            input = ObjectId(input);
-            
+            if (! /^[0-9a-fA-F]{24}$/.test(input)) return false;
+
             return input;
         case "account":
             if (input == undefined) return false;
@@ -25,7 +24,7 @@ function check(input, dataType) {
             if (input.length == 0) return false;
             input = input.toLowerCase();
             if (! /^[a-zA-Z0-9]{5,}\@stevens\.edu$/.test(input)) return false;
-            
+
             return input;
         case "password":
             if (input == undefined) return false;
@@ -34,14 +33,14 @@ function check(input, dataType) {
             if (! /[A-Z]{1,}/.test(input)) return false;
             if (! /[a-z]{1,}/.test(input)) return false;
             if (! /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]{1,}/.test(input)) return false;
-            
+
             return input;
         case "nickName":
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
-            
+
             return input;
         case "gender":
             if (input == undefined) return false;
@@ -49,7 +48,7 @@ function check(input, dataType) {
             input = input.trim();
             if (input.length == 0) return false;
             if (input != 'male' && input != 'female' && input != 'other') return false;
-            
+
             return input;
         case "address":
             if (Object.prototype.toString.call(input) != "[object Object]") return false;
@@ -135,7 +134,7 @@ function check(input, dataType) {
             if (input.length == 0) return false;
             if (! /^[0-9]{5}$/.test(input)) return false;
             input = parseInt(input);
-            
+
             return input;
         default:
             return false;

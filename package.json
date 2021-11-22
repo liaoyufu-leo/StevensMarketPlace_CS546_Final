@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
+    "dev": "nodemon app.js",
     "seed": "node tasks/seed.js"
   },
   "repository": {
@@ -45,8 +46,11 @@
   },
   "homepage": "https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject#readme",
   "dependencies": {
+    "mongodb": "^4.1.4",
+    "nodemon": "^2.0.15",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
-    "mongodb": "^4.1.4"
+    "express-handlebars": "^6.0.1",
+    "express-session": "^1.17.2"
   }
 }
