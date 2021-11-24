@@ -1,6 +1,5 @@
 try {
-    var states = require("./states");
-    
+    var states = require("../json/states.json");
     module.exports = {
         check
     };
@@ -136,6 +135,67 @@ function check(input, dataType) {
             input = parseInt(input);
 
             return input;
+        case "content":
+            if (input == undefined) return false;
+            if (typeof (input) != "string") return false;
+            input = input.trim();
+            if (input.length == 0) return false;
+            if (input.length > 1000) return false;
+
+            return input;
+
+        case "type":
+            if (input == undefined) return false;
+            if (typeof (input) != "string") return false;
+            input = input.trim();
+            if (input.length == 0) return false;
+            input = input.toLowerCase();
+
+            if (input != "credit card" && input != "cash") return false;
+
+            return input;
+        case "title":
+            if (input == undefined) return false;
+            if (typeof (input) != "string") return false;
+            input = input.trim();
+            if (input.length == 0) return false;
+            input = input.toLowerCase();
+            if (input.length > 100) return false;
+
+            return input;
+        case "price":
+            if (input == undefined) return false;
+            if (!(input = Number(input))) return false;
+            if (input <= 0) return false;
+
+            return input;
+        case "photos":
+            if (input == undefined) return false;
+            if (!Array.isArray(input)) return false;
+            if (input.length == 0) return false;
+            if (input.length > 9) return false;
+
+            for (let i = 0; i < input.length; i++) {
+                if (!(element = check(element, "photo"))) return false;
+            }
+            return input;
+        case "photo":
+            if (input == undefined) return false;
+            if (typeof (input) != "string") return false;
+            input = input.trim();
+            if (input.length == 0) return false;
+            input = input.toLowerCase();
+            if (! /^image\/[a-f0-9]{32}$/.test(input)) return false;
+
+            return false;
+        case "description":
+            if (input == undefined) return false;
+            if (typeof (input) != "string") return false;
+            input = input.trim();
+            if (input.length == 0) return false;
+            if (input.length > 1000) return false;
+
+            return false;
         default:
             return false;
     }

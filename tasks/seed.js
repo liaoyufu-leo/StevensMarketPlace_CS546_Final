@@ -1,4 +1,14 @@
 const { user } = require("../data/index");
+const { comment } = require("../data/index");
+
+main();
+
+async function main() {
+    await userSeed();
+
+    await commentSeed();
+}
+
 
 async function userSeed() {
     console.log(await user.create(
@@ -73,4 +83,3 @@ async function userSeed() {
 
 }
 
-userSeed();

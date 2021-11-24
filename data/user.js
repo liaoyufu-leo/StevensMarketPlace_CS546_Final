@@ -1,4 +1,4 @@
-const { check } = require('../public/check');
+const { check } = require('../public/js/check');
 const collection = require("../config/mongoCollections");
 const bcrypt = require("bcryptjs");
 const saltRounds = 10;
@@ -34,22 +34,22 @@ async function create(account, password, nickName, gender, address) {
         "cart": []
     }
 
-    const col = await collection.getCollection('user');
+    const userCol = await collection.getCollection('user');
 
-    const checkAccount = await col.findOne({ "account": account });
+    const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount != null) {
         await collection.closeCollection();
         errors.push("This account email had been used, please change another email!");
         return { "hasErrors": true, "errors": errors };
     }
 
-    const insertInfo = await col.insertOne(user);
+    const insertInfo = await userCol.insertOne(user);
     if (insertInfo.insertedCount === 0) {
         await collection.closeCollection();
         throw "Can't create account in mongodb, something went wrong, please try again!";
     }
 
-    const insertedUser = await col.findOne({ _id: insertInfo.insertedId });
+    const insertedUser = await userCol.findOne({ _id: insertInfo.insertedId });
     if (insertedUser === null) {
         await collection.closeCollection();
         throw "Can't find created account in mongodb, something went wrong! Please try again!";
@@ -68,8 +68,8 @@ async function login(account, password) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const col = await collection.getCollection('user');
-    const checkAccount = await col.findOne({ "account": account });
+    const userCol = await collection.getCollection('user');
+    const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
         errors.push("This account is not exist!");
@@ -101,8 +101,8 @@ async function updatePassword(account, oldPassword, newPassword) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const col = await collection.getCollection('user');
-    const checkAccount = await col.findOne({ "account": account });
+    const userCol = await collection.getCollection('user');
+    const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
         errors.push("This account is not exist!");
@@ -115,7 +115,7 @@ async function updatePassword(account, oldPassword, newPassword) {
         return { "hasErrors": true, "errors": errors };
     }
 
-    const updatedInfo = await col.updateOne(
+    const updatedInfo = await userCol.updateOne(
         { "account": account },
         { $set: { "password": await bcrypt.hash(newPassword, saltRounds) } }
     );
@@ -124,7 +124,7 @@ async function updatePassword(account, oldPassword, newPassword) {
         throw "Can't update password in mongodb, something went wrong, please try again!";
     }
 
-    const updatedUser = await col.findOne({ "account": account });
+    const updatedUser = await userCol.findOne({ "account": account });
     if (updatedUser === null) {
         await collection.closeCollection();
         throw "Can't find updated account in mongodb, something went wrong, Please try again!";
@@ -147,7 +147,7 @@ async function forgetPassword(account, newPassword) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const col = await collection.getCollection('user');
-    const checkAccount = await col.findOne({ "account": account });
+    const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
         errors.push("This account is not exist!");
@@ -160,7 +160,7 @@ async function forgetPassword(account, newPassword) {
         return { "hasErrors": true, "errors": errors };
     }
 
-    const updatedInfo = await col.updateOne(
+    const updatedInfo = await userCol.updateOne(
         { "account": account },
         { $set: { "password": await bcrypt.hash(newPassword, saltRounds) } }
     );
@@ -169,7 +169,7 @@ async function forgetPassword(account, newPassword) {
         throw "Can't update password in mongodb, something went wrong, please try again!";
     }
 
-    const updatedUser = await col.findOne({ "account": account });
+    const updatedUser = await userCol.findOne({ "account": account });
     if (updatedUser === null) {
         await collection.closeCollection();
         throw "Can't find updated account in mongodb, something went wrong! Please try again!";
@@ -195,7 +195,7 @@ async function updateInformation(account, nickName, gender, address) {
 
     const col = await collection.getCollection('user');
 
-    const checkAccount = await col.findOne({ "account": account });
+    const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
         errors.push("This account email is not exist!");
@@ -223,7 +223,7 @@ async function updateInformation(account, nickName, gender, address) {
         "cart": checkAccount.cart
     }
 
-    const updatedInfo = await col.updateOne(
+    const updatedInfo = await userCol.updateOne(
         { "account": account },
         { $set: newUser }
     );
@@ -232,7 +232,7 @@ async function updateInformation(account, nickName, gender, address) {
         throw "Can't update password in mongodb, something went wrong, please try again!";
     }
 
-    const updatedUser = await col.findOne({ "account": account });
+    const updatedUser = await userCol.findOne({ "account": account });
     if (updatedUser === null) {
         await collection.closeCollection();
         throw "Can't find updated account in mongodb, something went wrong, Please try again!";
@@ -253,8 +253,8 @@ async function findOne(account) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const col = await collection.getCollection('user');
-    const checkAccount = await col.findOne({ "account": account });
+    const userCol = await collection.getCollection('user');
+    const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
         errors.push("This account is not exist!");
@@ -279,7 +279,7 @@ async function addCart(account, item_id) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const col = await collection.getCollection('user');
-    const checkAccount = await col.findOne({ "account": account });
+    const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
         errors.push("This account is not exist!");
@@ -288,20 +288,20 @@ async function addCart(account, item_id) {
 
     // when item collection is finished, addcart function should check the item is exist in item collcetion
 
-    const item = await col.findOne({ "account": account, "cart": { $in: [item_id] } });
+    const item = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
     if (item != null) {
         await collection.closeCollection();
         errors.push("User had add this item in cart!");
         return { "hasErrors": true, "errors": errors };
     }
 
-    const updatedInfo = await col.updateOne({ "account": account }, { $push: { "cart": item_id } });
+    const updatedInfo = await userCol.updateOne({ "account": account }, { $push: { "cart": item_id } });
     if (updatedInfo.modifiedCount === 0) {
         await collection.closeCollection();
         throw "Could not add item to user's cart in mongodb, something went wrong, Please try again!";
     }
 
-    const updatedUser = await col.findOne({ "account": account });
+    const updatedUser = await userCol.findOne({ "account": account });
     if (updatedUser === null) {
         await collection.closeCollection();
         throw "Can't find updated account in mongodb, something went wrong! Please try again!";
@@ -325,27 +325,27 @@ async function removeCart(account, item_id) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const col = await collection.getCollection('user');
-    const checkAccount = await col.findOne({ "account": account });
+    const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
         errors.push("This account is not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
-    const item = await col.findOne({ "account": account, "cart": { $in: [item_id] } });
+    const item = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
     if (item == null) {
         await collection.closeCollection();
         errors.push("User didn't have this item in cart!");
         return { "hasErrors": true, "errors": errors };
     }
 
-    const updatedInfo = await col.updateOne({ account: account }, { $pull: { "cart": item_id } });
+    const updatedInfo = await userCol.updateOne({ account: account }, { $pull: { "cart": item_id } });
     if (updatedInfo.modifiedCount === 0) {
         await collection.closeCollection();
         throw "Could not add item to user's cart in mongodb, something went wrong, Please try again!";
     }
 
-    const updatedUser = await col.findOne({ account: account });
+    const updatedUser = await userCol.findOne({ account: account });
     if (updatedUser === null) {
         await collection.closeCollection();
         throw "Can't find updated account in mongodb, something went wrong, Please try again!";
