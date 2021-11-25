@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { check } = require("../public/check");
+const { check } = require("../public/js/check");
 const { user } = require("../data");
 
 router.get('/login', async (req, res) => {

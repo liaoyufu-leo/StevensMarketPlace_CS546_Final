@@ -10,3 +10,5 @@ const constructorMethod = (app) => {
 };
 
 module.exports = constructorMethod;
+
+// hey, we need add the routes
