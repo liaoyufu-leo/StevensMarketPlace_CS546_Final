@@ -1,0 +1,34 @@
+<article>
+  <header>
+    <h2>Login</h2>
+  </header>
+
+  {{#if error}}
+  <div id="login-error" class="error">
+    <h3>Error: {{ error }}</h3>
+   
+  </div>
+  {{/if}}
+<br>
+
+  <form id="login-form" action="/login" method="post">
+    <table class="login">
+      <tr>
+        <td><label for="username">Username:</label></td>
+        <td><input type="text" name="username" id="username"></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td><label for="password">Password:</label></td>
+        <td><input type="password" name="password" id="password"></td>
+        <td><input type="submit" value="Submit"></td>
+      </tr>
+      
+    </table>
+  </form>
+
+      {{!-- <footer>
+        <a href="/signup">Don't have a account? Signup</a> // ( we need to add according to the routes)
+      </footer> --}}
+</article>
