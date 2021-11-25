@@ -1,23 +1,37 @@
 // please add data in your collection first and then add test case
 
 const { user } = require("../data/index");
+const { item } = require("../data/index");
+const { comment } = require("../data/index");
 
 main();
 
-async function main(){
-    await userCreateTest();
-    await userloginTest();
-    await userUpdatePasswordTest();
-    await userForgetPasswordTest();
-    await userUpdateInformationTest();
-    await userFindOneTest();
-    await userAddCartTest();
-    await userRemoveCartTest();
+async function main() {
+    // user function test case
+    // await userCreateTest();
+    // await userloginTest();
+    // await userUpdatePasswordTest();
+    // await userForgetPasswordTest();
+    // await userUpdateInformationTest();
+    // await userFindOneTest();
+
+    // item function test case
+    // await itemCreateTest();
+    // await itemUpdateInfoTest();
+    // await itemDeleteTest();
+    // await itemFindAllTest();
+    // await itemFindOneTest();
+    // await itemSearchTest();
+    // await itemAddCartTest();
+    // await itemRemoveCartTest();
+
+    // comment function test case
+    await commentCreateTest();
+
 }
 
-
 async function userCreateTest() {
-    console.log("This test case should have error in account!");
+    console.log("This test case should have error in invaild arguments!");
     console.log(await user.create(
         "yliao10stevens.edu",
         "Aa!1234567",
@@ -28,66 +42,6 @@ async function userCreateTest() {
             "apt": "123",
             "city": "hoboken",
             "state": "new jersey",
-            "zipCode": "07030"
-        }
-    ));
-
-    console.log("This test case should have error in password!");
-    console.log(await user.create(
-        "yliao10@stevens.edu",
-        "Aa!",
-        "Yufu Liao",
-        "male",
-        {
-            "street": "123 andrew st.",
-            "apt": "123",
-            "city": "hoboken",
-            "state": "new jersey",
-            "zipCode": "07030"
-        }
-    ));
-
-    console.log("This test case should have error in nickname!");
-    console.log(await user.create(
-        "yliao10@stevens.edu",
-        "Aa!1234567",
-        "   ",
-        "male",
-        {
-            "street": "123 andrew st.",
-            "apt": "123",
-            "city": "hoboken",
-            "state": "new jersey",
-            "zipCode": "07030"
-        }
-    ));
-
-    console.log("This test case should have error in gender!");
-    console.log(await user.create(
-        "yliao10@stevens.edu",
-        "Aa!1234567",
-        "safs",
-        "asdfa",
-        {
-            "street": "123 andrew st.",
-            "apt": "123",
-            "city": "hoboken",
-            "state": "new jersey",
-            "zipCode": "07030"
-        }
-    ));
-
-    console.log("This test case should have error in address!");
-    console.log(await user.create(
-        "yliao10@stevens.edu",
-        "Aa!1234567",
-        "safs",
-        "male",
-        {
-            "street": "123 andrew st.",
-            "apt": "123",
-            "city": "hoboken",
-            "state": "jersey",
             "zipCode": "07030"
         }
     ));
@@ -121,19 +75,28 @@ async function userCreateTest() {
             "zipCode": "   07030  "
         }
     ));
+
+    console.log("This test case should success at creating and delete space!");
+    console.log(await user.create(
+        "   yliao10111@stevens.edu   ",
+        "Aa!1234567",
+        "safs  ",
+        "  male  ",
+        {
+            "street": "  123   andrew   st.",
+            "apt": "  123  ",
+            "city": "  hoboken  ",
+            "state": "  new   jersey  ",
+            "zipCode": "   07030  "
+        }
+    ));
 }
 
 async function userloginTest() {
-    console.log("This test case should have error in account!");
+    console.log("This test case should have error in invalid arguments!");
     console.log(await user.login(
         "  yliAo10stevens.edu   ",
         "Aa!1234567"
-    ));
-
-    console.log("This test case should have error in password!");
-    console.log(await user.login(
-        "   yliao10@stevens.edu   ",
-        "Aa!123456"
     ));
 
     console.log("This test case should have error in not existed account!");
@@ -157,32 +120,11 @@ async function userloginTest() {
 
 async function userUpdatePasswordTest() {
 
-    console.log("This test case should have error in account!");
+    console.log("This test case should have error in invalid arguments!");
     console.log(await user.updatePassword(
         "yliao10stevens.edu",
         "Aa!1234567",
         "1234567Aa!"
-    ));
-
-    console.log("This test case should have error in oldPassword!");
-    console.log(await user.updatePassword(
-        "yliao10@stevens.edu",
-        "Aa!123456",
-        "1234567Aa!"
-    ));
-
-    console.log("This test case should have error in newPassword!");
-    console.log(await user.updatePassword(
-        "yliao10@stevens.edu",
-        "Aa!1234567",
-        "1234567Aa"
-    ));
-
-    console.log("This test case should have error in oldPassword and newPassword same!");
-    console.log(await user.updatePassword(
-        "yliao10@stevens.edu",
-        "Aa!1234567",
-        "Aa!1234567"
     ));
 
     console.log("This test case should have error in account not exist!");
@@ -206,39 +148,14 @@ async function userUpdatePasswordTest() {
         "1234567Aa!"
     ));
 
-    console.log("This test case should use new password to login success!");
-    console.log(await user.login(
-        "yliao10@stevens.edu",
-        "1234567Aa!"
-    ));
-
-    console.log("This test case just recover password!");
-    console.log(await user.updatePassword(
-        "yliao10@stevens.edu",
-        "1234567Aa!",
-        "Aa!1234567"
-    ));
-
 }
 
 async function userForgetPasswordTest() {
 
-    console.log("This test case should have error in account!");
+    console.log("This test case should have error in invalid arguments!");
     console.log(await user.forgetPassword(
         "yliao10stevens.edu",
         "1234567Aa!"
-    ));
-
-    console.log("This test case should have error in newPassword!");
-    console.log(await user.forgetPassword(
-        "yliao10@stevens.edu",
-        "1234567Aa"
-    ));
-
-    console.log("This test case should have error in newPassword same as oldPassword!");
-    console.log(await user.forgetPassword(
-        "yliao10@stevens.edu",
-        "Aa!1234567"
     ));
 
     console.log("This test case should update success!");
@@ -252,16 +169,9 @@ async function userForgetPasswordTest() {
         "yliao10@stevens.edu",
         "1234567Aa!"
     ));
-
-    console.log("This test case just recover password!");
-    console.log(await user.updatePassword(
-        "yliao10@stevens.edu",
-        "1234567Aa!",
-        "Aa!1234567"
-    ));
 }
 
-async function userUpdateInformationTest(){
+async function userUpdateInformationTest() {
     console.log("This test case should have error in account!");
     console.log(await user.updateInformation(
         "yliao10stevens.edu",
@@ -379,55 +289,238 @@ async function userFindOneTest() {
     ));
 }
 
-async function userAddCartTest() {
-
-    console.log("This test case should have error in account!");
-    console.log(await user.addCart(
+async function itemCreateTest() {
+    console.log("This test case should have error for not vaild arguments");
+    console.log(await item.create(
         "yliao10stevens.edu",
-        "618d74a35a3c37d918cce32e"
+        "   ",
+        -1,
+        ["aaaabbbbccccdddd1111222233334444.jpg",
+            "aaaabbbbccccdddd1111222233334444.png"],
+        "try in test case"
     ));
 
-    console.log("This test case should have error in item_id!");
-    console.log(await user.addCart(
+    console.log("This test case should have error for not exist account");
+    console.log(await item.create(
+        "yliao10111@stevens.edu",
+        "try",
+        123,
+        ["aaaabbbbccccdddd1111222233334444.jpg",
+            "aaaabbbbccccdddd1111222233334444.png"],
+        "try in test case"
+    ));
+
+}
+
+async function itemUpdateInfoTest() {
+    const aimItem = (await item.findAll("yliao10@stevens.edu")).items[0];
+    console.log("This is the aim item we will test");
+    console.log(aimItem);
+
+    console.log("This test case should have error for not vaild arguments");
+    console.log(await item.updateInfo(
+        "asdasdfa",
+        "   ",
+        -1,
+        ["aaaabbbbccccdddd1111222233334444.jpg",
+            "aaaabbbbccccdddd1111222233334444.png"],
+        "try in test case"
+    ));
+
+    console.log("This test case should have error for not exist item");
+    console.log(await item.updateInfo(
+        "aaaabbbbccccdddd11112222",
+        "try",
+        123,
+        ["aaaabbbbccccdddd1111222233334444.jpg",
+            "aaaabbbbccccdddd1111222233334444.png"],
+        "try in test case"
+    ));
+
+    console.log("This test case should have error for new information is same as old");
+    console.log(await item.updateInfo(
+        aimItem._id,
+        aimItem.title,
+        aimItem.price,
+        aimItem.photos,
+        aimItem.description
+    ));
+
+    console.log("This test case should update success");
+    console.log(await item.updateInfo(
+        aimItem._id,
+        "try",
+        12312,
+        ["aaaabbbbccccdddd1111222233334444.jpg",
+            "aaaabbbbccccdddd1111222233334444.png"],
+        "try"
+    ));
+
+}
+
+async function itemDeleteTest() {
+    const aimItem = (await item.findAll("yliao10@stevens.edu")).items[0];
+    console.log("This is the aim item we will test");
+    console.log(aimItem);
+
+    console.log("This test case should have error for not vaild arguments");
+    console.log(await item.deleteItem(
+        "asdasdfa"
+    ));
+
+    console.log("This test case should have error for not exist item");
+    console.log(await item.deleteItem(
+        "aaaabbbbccccdddd11112222"
+    ));
+
+    console.log("This test case should success");
+    console.log(await item.deleteItem(
+        aimItem._id
+    ));
+
+}
+
+async function itemFindAllTest() {
+    console.log("This test case should have error for not vaild arguments");
+    console.log(await item.findAll(
+        "asdasdfa"
+    ));
+
+    console.log("This test case should success");
+    console.log(await item.findAll(
+        "yliao10@stevens.edu"
+    ));
+
+}
+
+async function itemFindOneTest() {
+    const aimItem = (await item.findAll("yliao10@stevens.edu")).items[0];
+    console.log("This is the aim item we will test");
+    console.log(aimItem);
+
+    console.log("This test case should have error for not vaild arguments");
+    console.log(await item.findOne(
+        "asdasdfa"
+    ));
+
+    console.log("This test case should have error for not exist item");
+    console.log(await item.findOne(
+        "aaaabbbbccccdddd11112222"
+    ));
+
+    console.log("This test case should success");
+    console.log(await item.findOne(
+        aimItem._id
+    ));
+
+}
+
+async function itemSearchTest() {
+
+    console.log("This test case should have error for not vaild arguments");
+    console.log(await item.search(
+        "    "
+    ));
+
+    console.log("This test case should success");
+    console.log(await item.search(
+        "IPHONE"
+    ));
+
+}
+
+async function itemAddCartTest() {
+
+    const aimItem = (await item.findAll("ygandhi2@stevens.edu")).items[0];
+    console.log("This is the aim item we will test");
+    console.log(aimItem);
+
+    console.log("This test case should have error in invalid arguments!");
+    console.log(await item.addCart(
+        "yliao10stevens.edu",
+        "618d74a35a3c37d918cce32"
+    ));
+
+    console.log("This test case should have error in account is not exist!");
+    console.log(await item.addCart(
+        "yliao1011@stevens.edu",
+        aimItem._id
+    ));
+
+    console.log("This test case should have error in item is not exist!");
+    console.log(await item.addCart(
         "yliao10@stevens.edu",
-        "618d74a35a3c37d918cce2e"
+        "619fc8bbc20ee3426439d4b0"
     ));
 
     console.log("This test case should add success!");
-    console.log(await user.addCart(
+    console.log(await item.addCart(
         "yliao10@stevens.edu",
-        "618d74a35a3c37d918cce34e"
-    ));
-
-    console.log("This test case should have error in exist item_id!");
-    console.log(await user.addCart(
-        "yliao10@stevens.edu",
-        "618d74a35a3c37d918cce34e"
+        aimItem._id
     ));
 }
 
-async function userRemoveCartTest(){
-    console.log("This test case should have error in account!");
-    console.log(await user.removeCart(
+async function itemRemoveCartTest() {
+
+    const aimItem_id = (await user.findOne("yliao10@stevens.edu")).user.cart[0];
+    console.log("This is the aim item we will test");
+    console.log(aimItem_id);
+
+    console.log("This test case should have error in invalid arguments!");
+    console.log(await item.removeCart(
         "yliao10stevens.edu",
-        "618d74a35a3c37d918cce32e"
+        "618d74a35a3c37d918cce32"
     ));
 
-    console.log("This test case should have error in item_id!");
-    console.log(await user.removeCart(
-        "yliao10@stevens.edu",
-        "618d74a35a3c37d918cce3e"
+    console.log("This test case should have error in account is not exist!");
+    console.log(await item.removeCart(
+        "yliao1011@stevens.edu",
+        aimItem_id
     ));
 
-    console.log("This test case should not found item in user cart!");
-    console.log(await user.removeCart(
+    console.log("This test case should have error in item is not exist!");
+    console.log(await item.removeCart(
         "yliao10@stevens.edu",
-        "618d74a35a3c37d918cce37e"
+        "619fc8bbc20ee3426439d4b0"
     ));
 
-    console.log("This test case should remove item from user cart succuss!");
-    console.log(await user.removeCart(
+    console.log("This test case should add success!");
+    console.log(await item.removeCart(
         "yliao10@stevens.edu",
-        "618d74a35a3c37d918cce32e"
+        aimItem_id
+    ));
+}
+
+async function commentCreateTest(){
+    const aimItem = (await item.findAll("yliao10@stevens.edu")).items[0];
+    console.log("This is the aim item we will test");
+    console.log(aimItem);
+
+    console.log("This test case should have error in invalid arguments!");
+    console.log(await comment.create(
+        "aaaabbbbcccc11112222333",
+        "yliao",
+        "modify comments"
+    ));
+
+    console.log("This test case should have error in account is not exist!");
+    console.log(await comment.create(
+        "aaaabbbbcccc111122223333",
+        "yliao@stevens.edu",
+        "modify comments"
+    ));
+
+    console.log("This test case should have error in item is not exist!");
+    console.log(await comment.create(
+        "aaaabbbbcccc111122223333",
+        "yliao10@stevens.edu",
+        "modify comments"
+    ));
+
+    console.log("This test case should success!");
+    console.log(await comment.create(
+        aimItem._id,
+        "yliao10@stevens.edu",
+        "modify comments"
     ));
 }

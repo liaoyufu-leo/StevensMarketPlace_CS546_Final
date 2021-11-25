@@ -10,7 +10,9 @@ module.exports = {
     deleteItem,
     findAll,
     findOne,
-    search
+    search,
+    addCart,
+    removeCart
 }
 
 async function create(account, title, price, photos, description) {
@@ -27,6 +29,7 @@ async function create(account, title, price, photos, description) {
     const checkAccount = await user.findOne(account);
     if (checkAccount.hasErrors == true) {
         errors.push("Account is not exist!");
+        return { "hasErrors": true, "errors": errors };
     }
 
     const itemCol = await collection.getCollection('item');
@@ -87,7 +90,7 @@ async function updateInfo(item_id, title, price, photos, description) {
         ((input, input2) => {
             let flag = true;
             input.forEach(element => {
-                flag = flag && input2.inclues(element);
+                flag = flag && input2.includes(element);
             });
             return flag;
         })(checkItem.photos, photos)) {
@@ -97,15 +100,14 @@ async function updateInfo(item_id, title, price, photos, description) {
     }
 
     let item = {
-        "_id": item_id,
-        "seller": checkItem.account,
+        "seller": checkItem.seller,
         "status": checkItem.status,
         "date": new Date(),
         "title": title,
         "price": price,
         "photos": photos,
         "description": description,
-        "comments": checkItem.comment
+        "comments": checkItem.comments
     };
 
     const updatedInfo = await itemCol.updateOne(
@@ -125,7 +127,7 @@ async function updateInfo(item_id, title, price, photos, description) {
 
     await collection.closeCollection();
 
-    updatedItem = updatedItem._id.toString();
+    updatedItem._id = updatedItem._id.toString();
     updatedItem.comments.forEach(element => {
         element._id = element._id.toString();
     });
@@ -169,7 +171,7 @@ async function deleteItem(item_id) {
 
     await collection.closeCollection();
 
-    updatedItem = updatedItem._id.toString();
+    updatedItem._id = updatedItem._id.toString();
     updatedItem.comments.forEach(element => {
         element._id = element._id.toString();
     });
@@ -190,7 +192,7 @@ async function findAll(account) {
 
     const itemCol = await collection.getCollection('item');
 
-    const items = await itemCol.find({ "account": account }).toArray();
+    const items = await itemCol.find({ "seller": account }).toArray();
 
     await collection.closeCollection();
 
@@ -200,13 +202,13 @@ async function findAll(account) {
             element2._id = element2._id.toString();
         });
     });
-    return { "hasErrors": false, "item": items };
+    return { "hasErrors": false, "items": items };
 
 }
 
 async function findOne(item_id) {
     let errors = [];
-    if (arguments.length != 1) errors.push("Item updateInfo arguments is not correct.");
+    if (arguments.length != 1) errors.push("Item findOne arguments is not correct.");
     if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
@@ -222,7 +224,7 @@ async function findOne(item_id) {
 
     await collection.closeCollection();
 
-    checkItem = checkItem._id.toString();
+    checkItem._id = checkItem._id.toString();
     checkItem.comments.forEach(element => {
         element._id = element._id.toString();
     });
@@ -231,14 +233,14 @@ async function findOne(item_id) {
 
 async function search(keyword) {
     let errors = [];
-    if (arguments.length != 0) errors.push("Item updateInfo arguments is not correct.");
+    if (arguments.length != 1) errors.push("Item search arguments is not correct.");
     if (!(keyword = check(keyword, "keyword"))) errors.push("keyword is not valid!");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const itemCol = await collection.getCollection('item');
 
-    const items = await itemCol.find({ $text: { $search: keyword } }).toArray();
+    const items = await itemCol.find({ "status": "selling" }, { $text: { $search: keyword } }).toArray();
 
     await collection.closeCollection();
 
@@ -249,4 +251,118 @@ async function search(keyword) {
         });
     });
     return { "hasErrors": false, "item": items };
+}
+
+async function addCart(account, item_id) {
+    let errors = [];
+    if (arguments.length != 2) errors.push("User cart arguments is not correct!");
+    if (!(account = check(account, "account"))) errors.push("account is not valid!");
+    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
+
+    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
+
+    const itemCol = await collection.getCollection('item');
+
+    const checkItem = await itemCol.findOne({ "_id": item_id });
+    if (checkItem == null) {
+        await collection.closeCollection();
+        errors.push("This item is not exist!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    const userCol = await collection.getCollection('user');
+
+    const checkAccount = await userCol.findOne({ "account": account });
+    if (checkAccount == null) {
+        await collection.closeCollection();
+        errors.push("This account is not exist!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    const checkAccountAndItem = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
+    if (checkAccountAndItem != null) {
+        await collection.closeCollection();
+        errors.push("This item has exist in the accout's cart!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    const updatedInfo = await userCol.updateOne({ "account": account }, { $push: { "cart": item_id } });
+    if (updatedInfo.modifiedCount === 0) {
+        await collection.closeCollection();
+        throw "Could not add item to user's cart in mongodb, something went wrong, Please try again!";
+    }
+
+    const updatedUser = await userCol.findOne({ "account": account });
+    if (updatedUser === null) {
+        await collection.closeCollection();
+        throw "Can't find updated account in mongodb, something went wrong! Please try again!";
+    }
+
+    await collection.closeCollection();
+
+    updatedUser._id = updatedUser._id.toString();
+    for (let i = 0; i < updatedUser.cart.length; i++) {
+        updatedUser.cart[i] = updatedUser.cart[i].toString();
+    }
+    return { "hasErrors": false, "user": updatedUser };
+}
+
+async function removeCart(account, item_id) {
+    let errors = [];
+    if (arguments.length != 2) errors.push("User remove cart arguments is not correct!");
+    if (!(account = check(account, "account"))) errors.push("account is not valid!");
+    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
+
+    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
+
+    const checkAccount = await user.findOne(account);
+    if (checkAccount.hasErrors == true) {
+        errors.push("Account is not exist!");
+        return { "hasErrors": true, "errors": errors }; 
+    }
+
+    const itemCol = await collection.getCollection('item');
+
+    const checkItem = await itemCol.findOne({ "_id": item_id });
+    if (checkItem == null) {
+        await collection.closeCollection();
+        errors.push("This item is not exist!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    const userCol = await collection.getCollection('user');
+
+    const checkAccountAndItem = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
+    if (checkAccountAndItem == null) {
+        await collection.closeCollection();
+        errors.push("This item didn't exist in the accout's cart!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    const item = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
+    if (item == null) {
+        await collection.closeCollection();
+        errors.push("User didn't have this item in cart!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    const updatedInfo = await userCol.updateOne({ account: account }, { $pull: { "cart": item_id } });
+    if (updatedInfo.modifiedCount === 0) {
+        await collection.closeCollection();
+        throw "Could not delete item from user's cart in mongodb, something went wrong, Please try again!";
+    }
+
+    const updatedUser = await userCol.findOne({ account: account });
+    if (updatedUser === null) {
+        await collection.closeCollection();
+        throw "Can't find updated account in mongodb, something went wrong, Please try again!";
+    }
+
+    await collection.closeCollection();
+
+    updatedUser._id = updatedUser._id.toString();
+    for (let i = 0; i < updatedUser.cart.length; i++) {
+        updatedUser.cart[i] = updatedUser.cart[i].toString();
+    }
+    return { "hasErrors": false, "user": updatedUser };
 }

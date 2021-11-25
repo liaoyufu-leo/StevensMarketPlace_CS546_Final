@@ -1,6 +1,7 @@
 const connection = require("../config/mongoConnection");
 const collection = require("../config/mongoCollections");
 
+const md5 = require("blueimp-md5");
 const fs = require("fs");
 
 const { user } = require("../data/index");
@@ -16,6 +17,7 @@ async function main() {
 
     await userSeed();
     await itemSeed();
+    await commentSeed();
 }
 
 async function userSeed() {
@@ -129,6 +131,37 @@ async function itemSeed() {
     ];
 
     for (let i = 0; i < name.length; i++) {
-        console.log(await item.create(account,name[i],i*100+1,[photo[i]],name[i]));
+        console.log(await item.create(account, name[i], i * 100 + 1, [photo[i]], name[i]));
     }
+
+    let account2 = "ygandhi2@stevens.edu";
+    let name2 = [
+        "desk lamp",
+        "official desk",
+        "mouse",
+        "laptop",
+        "desk arm",
+        "mark cup",
+        "time clock"
+    ]
+    let photo2 = [
+        '1b1b1f164b70fb8751febf8002697290.jpg',
+        'ab61b48e4bfbde249e2bb5bcbbe6df6a.jpg',
+        '1a2810090eab18ce9a3d5dc15b5ba9ea.jpg',
+        'cbfe547a138724f5965ff9a7f05d6acc.jpg',
+        '06be9b6f3797b1dc889e42d2a0fd475d.jpg',
+        '90fad45881dc9bdd850c7d1c5c910262.jpg',
+        'f2a7aee6dd075495119f00d08bf8b231.jpg'
+    ];
+    for (let i = 0; i < name2.length; i++) {
+        console.log(await item.create(account2, name2[i], i * 100 + 1, [photo2[i]], name2[i]));
+    }
+
+    const aimItem = (await item.findAll("ygandhi2@stevens.edu")).items[0];
+    console.log(await item.addCart("yliao10@stevens.edu",aimItem._id));
+}
+
+async function commentSeed() {
+    const aimItem = (await item.findAll("yliao10@stevens.edu")).items[0];
+    console.log(await comment.create(aimItem._id,"yliao10@stevens.edu","This is the first comment."));
 }

@@ -3,17 +3,13 @@ const collection = require("../config/mongoCollections");
 const bcrypt = require("bcryptjs");
 const saltRounds = 10;
 
-const item = require("./index");
-
 module.exports = {
     create,
     login,
     updatePassword,
     updateInformation,
     forgetPassword,
-    findOne,
-    addCart,
-    removeCart
+    findOne
 }
 
 async function create(account, password, nickName, gender, address) {
@@ -148,7 +144,8 @@ async function forgetPassword(account, newPassword) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const col = await collection.getCollection('user');
+    const userCol = await collection.getCollection('user');
+    
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
@@ -156,7 +153,7 @@ async function forgetPassword(account, newPassword) {
         return { "hasErrors": true, "errors": errors };
     }
 
-    if ( await bcrypt.compare(newPassword, checkAccount.password)) {
+    if (await bcrypt.compare(newPassword, checkAccount.password)) {
         await collection.closeCollection();
         errors.push("New password is same as old password, it should not be changed!");
         return { "hasErrors": true, "errors": errors };
@@ -195,7 +192,7 @@ async function updateInformation(account, nickName, gender, address) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const col = await collection.getCollection('user');
+    const userCol = await collection.getCollection('user');
 
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
@@ -270,104 +267,4 @@ async function findOne(account) {
         checkAccount.cart[i] = checkAccount.cart[i].toString();
     }
     return { "hasErrors": false, "user": checkAccount };
-}
-
-async function addCart(account, item_id) {
-    let errors = [];
-    if (arguments.length != 2) errors.push("User cart arguments is not correct!");
-    if (!(account = check(account, "account"))) errors.push("account is not valid!");
-    if (!(item_id = check(item_id, "id"))) errors.push("item_id is not valid!");
-
-    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
-
-    const col = await collection.getCollection('user');
-    const checkAccount = await userCol.findOne({ "account": account });
-    if (checkAccount == null) {
-        await collection.closeCollection();
-        errors.push("This account is not exist!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    const checkItem = item.findOne(item_id);
-    if(checkItem.hasErrors==true){
-        errors.push("This item is not exist!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    const checkAccount = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
-    if (checkAccount != null) {
-        await collection.closeCollection();
-        errors.push("User had add this item in cart!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    const updatedInfo = await userCol.updateOne({ "account": account }, { $push: { "cart": item_id } });
-    if (updatedInfo.modifiedCount === 0) {
-        await collection.closeCollection();
-        throw "Could not add item to user's cart in mongodb, something went wrong, Please try again!";
-    }
-
-    const updatedUser = await userCol.findOne({ "account": account });
-    if (updatedUser === null) {
-        await collection.closeCollection();
-        throw "Can't find updated account in mongodb, something went wrong! Please try again!";
-    }
-
-    await collection.closeCollection();
-
-    updatedUser._id = updatedUser._id.toString();
-    for (let i = 0; i < updatedUser.cart.length; i++) {
-        updatedUser.cart[i] = updatedUser.cart[i].toString();
-    }
-    return { "hasErrors": false, "user": updatedUser };
-}
-
-async function removeCart(account, item_id) {
-    let errors = [];
-    if (arguments.length != 2) errors.push("User cart arguments is not correct!");
-    if (!(account = check(account, "account"))) errors.push("account is not valid!");
-    if (!(item_id = check(item_id, "id"))) errors.push("item_id is not valid!");
-
-    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
-
-    const checkItem = item.findOne(item_id);
-    if(checkItem.hasErrors==true){
-        errors.push("This item is not exist!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    const userCol = await collection.getCollection('user');
-    const checkAccount = await userCol.findOne({ "account": account });
-    if (checkAccount == null) {
-        await collection.closeCollection();
-        errors.push("This account is not exist!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    const item = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
-    if (item == null) {
-        await collection.closeCollection();
-        errors.push("User didn't have this item in cart!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    const updatedInfo = await userCol.updateOne({ account: account }, { $pull: { "cart": item_id } });
-    if (updatedInfo.modifiedCount === 0) {
-        await collection.closeCollection();
-        throw "Could not add item to user's cart in mongodb, something went wrong, Please try again!";
-    }
-
-    const updatedUser = await userCol.findOne({ account: account });
-    if (updatedUser === null) {
-        await collection.closeCollection();
-        throw "Can't find updated account in mongodb, something went wrong, Please try again!";
-    }
-
-    await collection.closeCollection();
-
-    updatedUser._id = updatedUser._id.toString();
-    for (let i = 0; i < updatedUser.cart.length; i++) {
-        updatedUser.cart[i] = updatedUser.cart[i].toString();
-    }
-    return { "hasErrors": false, "user": updatedUser };
 }

@@ -3,6 +3,7 @@ const collection = require("../config/mongoCollections");
 
 const mongo = require("mongodb");
 const user = require("./user");
+const item = require("./item");
 
 
 module.exports = {
@@ -18,34 +19,39 @@ async function create(item_id, account, content) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const checkItem = item.findOne(item_id);
-    if (checkItem.hasErrors == true) {
+    const userCol = await collection.getCollection('user');
+
+    const checkAccount = await userCol.findOne({ "account": account });
+    if (checkAccount == null) {
+        await collection.closeCollection();
+        errors.push("This account is not exist!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    const itemCol = await collection.getCollection('item');
+
+    const checkItem = await itemCol.findOne({ "_id": item_id });
+    if (checkItem == null) {
+        await collection.closeCollection();
         errors.push("This item is not exist!");
         return { "hasErrors": true, "errors": errors };
     }
-
-    const checkAccount = await user.findOne(account);
-    if (checkAccount.hasErrors == true) {
-        errors.push("Account is not exist!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
+    console.log(checkItem)
     let comment = {
         "_id": mongo.ObjectId(),
         "commenter": account,
         "date": new Date(),
         "content": content,
-    }
+    };
 
-    const itemCol = await collection.getCollection('item');
 
-    const insertInfo = await itemCol.updateOne({ "_id": item_id }, { $push: { "comments": comment } });
-    if (insertInfo.insertedCount === 0) {
+    const updatedInfo = await itemCol.updateOne({ "_id": item_id }, { $push: { "comments": comment } });
+    if (updatedInfo.modifiedCount === 0) {
         await collection.closeCollection();
         throw "Can't create comment for this item in mongodb, something went wrong, please try again!";
     }
 
-    const insertedItem = await itemCol.findOne({ _id: insertInfo.insertedId });
+    const insertedItem = await itemCol.findOne({ _id: item_id });
     if (insertedItem === null) {
         await collection.closeCollection();
         throw "Can't find created comment in mongodb, something went wrong! Please try again!";
@@ -53,7 +59,7 @@ async function create(item_id, account, content) {
 
     await collection.closeCollection();
 
-    insertedItem = insertedItem._id.toString();
+    insertedItem._id = insertedItem._id.toString();
     insertedItem.comments.forEach(element => {
         element._id = element._id.toString();
     });
