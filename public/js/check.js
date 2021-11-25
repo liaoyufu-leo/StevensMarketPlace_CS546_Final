@@ -176,8 +176,9 @@ function check(input, dataType) {
             if (input.length > 9) return false;
 
             for (let i = 0; i < input.length; i++) {
-                if (!(element = check(element, "photo"))) return false;
+                if (!(input[i] = check(input[i], "photo"))) return false;
             }
+
             return input;
         case "photo":
             if (input == undefined) return false;
@@ -185,9 +186,9 @@ function check(input, dataType) {
             input = input.trim();
             if (input.length == 0) return false;
             input = input.toLowerCase();
-            if (! /^image\/[a-f0-9]{32}$/.test(input)) return false;
+            if (! /^[a-f0-9]{32}\.(jpg|png)$/.test(input)) return false;
 
-            return false;
+            return input;
         case "description":
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
@@ -195,7 +196,13 @@ function check(input, dataType) {
             if (input.length == 0) return false;
             if (input.length > 1000) return false;
 
-            return false;
+            return input;
+        case "keyword":
+            if (input == undefined) return false;
+            if (typeof (input) != "string") return false;
+            input = input.trim();
+        
+            return input;
         default:
             return false;
     }

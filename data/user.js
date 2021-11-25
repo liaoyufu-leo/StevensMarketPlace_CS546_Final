@@ -3,6 +3,8 @@ const collection = require("../config/mongoCollections");
 const bcrypt = require("bcryptjs");
 const saltRounds = 10;
 
+const item = require("./index");
+
 module.exports = {
     create,
     login,
@@ -286,10 +288,14 @@ async function addCart(account, item_id) {
         return { "hasErrors": true, "errors": errors };
     }
 
-    // when item collection is finished, addcart function should check the item is exist in item collcetion
+    const checkItem = item.findOne(item_id);
+    if(checkItem.hasErrors==true){
+        errors.push("This item is not exist!");
+        return { "hasErrors": true, "errors": errors };
+    }
 
-    const item = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
-    if (item != null) {
+    const checkAccount = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
+    if (checkAccount != null) {
         await collection.closeCollection();
         errors.push("User had add this item in cart!");
         return { "hasErrors": true, "errors": errors };
@@ -324,7 +330,13 @@ async function removeCart(account, item_id) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const col = await collection.getCollection('user');
+    const checkItem = item.findOne(item_id);
+    if(checkItem.hasErrors==true){
+        errors.push("This item is not exist!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
+    const userCol = await collection.getCollection('user');
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();

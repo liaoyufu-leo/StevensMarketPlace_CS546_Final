@@ -4,11 +4,11 @@ const collection = require("../config/mongoCollections");
 const mongo = require("mongodb");
 const user = require("./user");
 
-module.exports = {
-    create,
-    getAll,
-    changeStatus
-}
+// module.exports = {
+//     create,
+//     getAll,
+//     changeStatus
+// }
 
 async function create(item_id,buyer,type){
     let errors = [];
