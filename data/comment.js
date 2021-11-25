@@ -2,9 +2,6 @@ const { check } = require('../public/js/check');
 const collection = require("../config/mongoCollections");
 
 const mongo = require("mongodb");
-const user = require("./user");
-const item = require("./item");
-
 
 module.exports = {
     create

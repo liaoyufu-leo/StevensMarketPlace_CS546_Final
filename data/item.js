@@ -2,7 +2,7 @@ const { check } = require('../public/js/check');
 const collection = require("../config/mongoCollections");
 
 const mongo = require("mongodb");
-const user = require("./user");
+
 
 module.exports = {
     create,
@@ -26,9 +26,12 @@ async function create(account, title, price, photos, description) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const checkAccount = await user.findOne(account);
-    if (checkAccount.hasErrors == true) {
-        errors.push("Account is not exist!");
+    const userCol = await collection.getCollection('user');
+    
+    const checkAccount = await userCol.findOne({ "account": account });
+    if (checkAccount == null) {
+        await collection.closeCollection();
+        errors.push("This account is not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -185,9 +188,13 @@ async function findAll(account) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const checkAccount = await user.findOne(account);
-    if (checkAccount.hasErrors == true) {
-        errors.push("Account is not exist!");
+    const userCol = await collection.getCollection('user');
+    
+    const checkAccount = await userCol.findOne({ "account": account });
+    if (checkAccount == null) {
+        await collection.closeCollection();
+        errors.push("This account is not exist!");
+        return { "hasErrors": true, "errors": errors };
     }
 
     const itemCol = await collection.getCollection('item');
@@ -315,10 +322,13 @@ async function removeCart(account, item_id) {
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
-    const checkAccount = await user.findOne(account);
-    if (checkAccount.hasErrors == true) {
-        errors.push("Account is not exist!");
-        return { "hasErrors": true, "errors": errors }; 
+    const userCol = await collection.getCollection('user');
+    
+    const checkAccount = await userCol.findOne({ "account": account });
+    if (checkAccount == null) {
+        await collection.closeCollection();
+        errors.push("This account is not exist!");
+        return { "hasErrors": true, "errors": errors };
     }
 
     const itemCol = await collection.getCollection('item');
@@ -329,8 +339,6 @@ async function removeCart(account, item_id) {
         errors.push("This item is not exist!");
         return { "hasErrors": true, "errors": errors };
     }
-
-    const userCol = await collection.getCollection('user');
 
     const checkAccountAndItem = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
     if (checkAccountAndItem == null) {

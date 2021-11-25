@@ -8,22 +8,22 @@ main();
 
 async function main() {
     // user function test case
-    // await userCreateTest();
-    // await userloginTest();
-    // await userUpdatePasswordTest();
-    // await userForgetPasswordTest();
-    // await userUpdateInformationTest();
-    // await userFindOneTest();
+    await userCreateTest();
+    await userloginTest();
+    await userUpdatePasswordTest();
+    await userForgetPasswordTest();
+    await userUpdateInformationTest();
+    await userFindOneTest();
 
     // item function test case
-    // await itemCreateTest();
-    // await itemUpdateInfoTest();
-    // await itemDeleteTest();
-    // await itemFindAllTest();
-    // await itemFindOneTest();
-    // await itemSearchTest();
-    // await itemAddCartTest();
-    // await itemRemoveCartTest();
+    await itemCreateTest();
+    await itemUpdateInfoTest();
+    await itemDeleteTest();
+    await itemFindAllTest();
+    await itemFindOneTest();
+    await itemSearchTest();
+    await itemAddCartTest();
+    await itemRemoveCartTest();
 
     // comment function test case
     await commentCreateTest();
