@@ -7,6 +7,8 @@ const fs = require("fs");
 const { user } = require("../data/index");
 const { item } = require("../data/index");
 const { comment } = require("../data/index");
+const { transaction } = require("../data/index");
+const { message } = require("../data/index");
 
 main();
 
@@ -18,6 +20,8 @@ async function main() {
     await userSeed();
     await itemSeed();
     await commentSeed();
+    await transactionSeed();
+    await messageSeed();
 }
 
 async function userSeed() {
@@ -158,10 +162,21 @@ async function itemSeed() {
     }
 
     const aimItem = (await item.findAll("ygandhi2@stevens.edu")).items[0];
-    console.log(await item.addCart("yliao10@stevens.edu",aimItem._id));
+    console.log(await item.addCart("yliao10@stevens.edu", aimItem._id));
 }
 
 async function commentSeed() {
     const aimItem = (await item.findAll("yliao10@stevens.edu")).items[0];
-    console.log(await comment.create(aimItem._id,"yliao10@stevens.edu","This is the first comment."));
+    console.log(await comment.create(aimItem._id, "yliao10@stevens.edu", "This is the first comment."));
+}
+
+async function transactionSeed() {
+    const aimItems = (await item.findAll("ygandhi2@stevens.edu")).items;
+
+    console.log(await transaction.create(aimItems[0]._id, "yliao10@stevens.edu", { "type": "cash" }));
+    console.log(await transaction.create(aimItems[1]._id, "yliao10@stevens.edu", { "type": "credit card", "card number": "1234 1234 1234 1234", "valid date": "09/26", "security code": "123" }));
+}
+
+async function messageSeed() {
+    console.log(await message.send("yliao10@stevens.edu","ygandhi2@stevens.edu","This is the first message from seed!"))
 }

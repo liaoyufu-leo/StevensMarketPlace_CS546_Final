@@ -60,5 +60,5 @@ async function create(item_id, account, content) {
     insertedItem.comments.forEach(element => {
         element._id = element._id.toString();
     });
-    return { "hasErrors": false, "comment": insertedItem };
+    return { "hasErrors": false, "item": insertedItem };
 }

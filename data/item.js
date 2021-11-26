@@ -27,7 +27,7 @@ async function create(account, title, price, photos, description) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const userCol = await collection.getCollection('user');
-    
+
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
@@ -153,6 +153,12 @@ async function deleteItem(item_id) {
         return { "hasErrors": true, "errors": errors };
     }
 
+    if (checkItem.status == "withdrawn") {
+        await collection.closeCollection();
+        errors.push("This item has been withdrawn!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
     const updatedInfo = await itemCol.updateOne(
         { "_id": item_id },
         {
@@ -189,7 +195,7 @@ async function findAll(account) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const userCol = await collection.getCollection('user');
-    
+
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
@@ -238,16 +244,26 @@ async function findOne(item_id) {
     return { "hasErrors": false, "item": checkItem };
 }
 
-async function search(keyword) {
+async function search(keyword, account) {
     let errors = [];
-    if (arguments.length != 1) errors.push("Item search arguments is not correct.");
+    if (arguments.length != 2) errors.push("Item search arguments is not correct.");
     if (!(keyword = check(keyword, "keyword"))) errors.push("keyword is not valid!");
+    if (!(account = check(account, "account"))) errors.push("Account is not valid.");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
+    const userCol = await collection.getCollection('user');
+
+    const checkAccount = await userCol.findOne({ "account": account });
+    if (checkAccount == null) {
+        await collection.closeCollection();
+        errors.push("This account is not exist!");
+        return { "hasErrors": true, "errors": errors };
+    }
+
     const itemCol = await collection.getCollection('item');
 
-    const items = await itemCol.find({ "status": "selling" }, { $text: { $search: keyword } }).toArray();
+    const items = await itemCol.find({ "status": "selling", "seller": { $ne: account } }, { $text: { $search: keyword } }).toArray();
 
     await collection.closeCollection();
 
@@ -257,7 +273,7 @@ async function search(keyword) {
             element2._id = element2._id.toString();
         });
     });
-    return { "hasErrors": false, "item": items };
+    return { "hasErrors": false, "items": items };
 }
 
 async function addCart(account, item_id) {
@@ -323,7 +339,7 @@ async function removeCart(account, item_id) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const userCol = await collection.getCollection('user');
-    
+
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
