@@ -4,10 +4,10 @@
   "description": "hello github, and all members",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "seed": "node tasks/seed.js"
+    "seed": "node tasks/seed.js",
+    "test": "node tasks/testCase.js"
   },
   "repository": {
     "type": "git",

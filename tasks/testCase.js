@@ -3,11 +3,12 @@
 const { user } = require("../data/index");
 const { item } = require("../data/index");
 const { comment } = require("../data/index");
-
+const { transaction } = require("../data/index");
+const { message } = require("../data/index");
 main();
 
 async function main() {
-    // user function test case
+    // // user function test case
     // await userCreateTest();
     // await userloginTest();
     // await userUpdatePasswordTest();
@@ -15,7 +16,7 @@ async function main() {
     // await userUpdateInformationTest();
     // await userFindOneTest();
 
-    // item function test case
+    // // item function test case
     // await itemCreateTest();
     // await itemUpdateInfoTest();
     // await itemDeleteTest();
@@ -25,9 +26,85 @@ async function main() {
     // await itemAddCartTest();
     // await itemRemoveCartTest();
 
-    // comment function test case
-    await commentCreateTest();
+    // // comment function test case
+    // await commentCreateTest();
 
+    // // transaction function test case
+    // await transactionCreateTest();
+    // await transactionGetAllTest();
+    // await transactionGetOne();
+
+    // // message function test case
+    // await messageSendTest();
+    // await messageGetAllTest();
+    await messageGetOneTest();
+}
+
+async function messageSendTest() {
+    console.log("This test case should have error in invaild arguments!");
+    console.log(await message.send(
+        "yliao10stevens.edu",
+        "Aa!1234567",
+        "  "
+    ));
+
+    console.log("This test case should have error for not exsit account!");
+    console.log(await message.send(
+        "yliao1012@stevens.edu",
+        "yliao1031@stevens.edu",
+        "123"
+    ));
+
+    console.log("This test case shoule show not allowed to send message to themself!");
+    console.log(await message.send(
+        "yliao10@stevens.edu",
+        "yliao10@stevens.edu",
+        "123"
+    ));
+
+    console.log("This test case should success!");
+    console.log(await message.send(
+        "yliao10@stevens.edu",
+        "ygandhi2@stevens.edu",
+        "ygandhi2@stevens.edu"
+    ));
+}
+
+async function messageGetAllTest() {
+    console.log("This test case should have error in invaild arguments!");
+    console.log(await message.getAll(
+        "yliao10stevens.edu"
+    ));
+
+    console.log("This test case should have error for not exsit account!");
+    console.log(await message.getAll(
+        "yliao101@stevens.edu"
+    ));
+
+    console.log("This test case should success!");
+    console.log(await message.getAll(
+        "yliao10@stevens.edu"
+    ));
+}
+
+async function messageGetOneTest() {
+    console.log("This test case should have error in invaild arguments!");
+    console.log(await message.getOne(
+        "yliao10stevens.edu",
+        "Aa!1234567"
+    ));
+
+    console.log("This test case should have error for not exsit account!");
+    console.log(await message.getOne(
+        "yliao1012@stevens.edu",
+        "yliao1031@stevens.edu"
+    ));
+
+    console.log("This test case should success!");
+    console.log(await message.getOne(
+        "yliao10@stevens.edu",
+        "ygandhi2@stevens.edu"
+    ));
 }
 
 async function userCreateTest() {
@@ -491,7 +568,7 @@ async function itemRemoveCartTest() {
     ));
 }
 
-async function commentCreateTest(){
+async function commentCreateTest() {
     const aimItem = (await item.findAll("yliao10@stevens.edu")).items[0];
     console.log("This is the aim item we will test");
     console.log(aimItem);
@@ -522,5 +599,78 @@ async function commentCreateTest(){
         aimItem._id,
         "yliao10@stevens.edu",
         "modify comments"
+    ));
+}
+
+async function transactionCreateTest() {
+    const aimItem = (await item.search("desk", "yliao10@stevens.edu")).items[0];
+    console.log("This is the aim item we will test");
+    console.log(aimItem);
+
+    console.log("This test case should have error in invalid arguments!");
+    console.log(await transaction.create(
+        "aaaabbbbcccc1111222233",
+        "yliao",
+        {}
+    ));
+
+    console.log("This test case should have error in account is not exist!");
+    console.log(await transaction.create(
+        aimItem._id,
+        "yliao@stevens.edu",
+        { "type": "cash" }
+    ));
+
+    console.log("This test case should have error in item is not exist!");
+    console.log(await transaction.create(
+        "aaaabbbbcccc111122223333",
+        "yliao10@stevens.edu",
+        { "type": "cash" }
+    ));
+
+    console.log("This test case should success!");
+    console.log(await transaction.create(
+        aimItem._id,
+        "yliao10@stevens.edu",
+        { "type": "cash" }
+    ));
+}
+
+async function transactionGetAllTest() {
+
+    console.log("This test case should have error in invalid arguments!");
+    console.log(await transaction.getAll(
+        "yliao"
+    ));
+
+    console.log("This test case should have error in account not exist!");
+    console.log(await transaction.getAll(
+        "yliao121@stevens.edu"
+    ));
+
+    console.log("This test case should success!");
+    console.log(await transaction.getAll(
+        "yliao10@stevens.edu"
+    ));
+}
+
+async function transactionGetOne() {
+    const aimTransaction = (await transaction.getAll("yliao10@stevens.edu")).bought[0];
+    console.log("This is the aim transaction we will test");
+    console.log(aimTransaction);
+
+    console.log("This test case should have error in invalid arguments!");
+    console.log(await transaction.getOne(
+        "aaaabbbbcccc111122223",
+    ));
+
+    console.log("This test case should have error in transaction is not exist!");
+    console.log(await transaction.getOne(
+        "aaaabbbbcccc111122223333",
+    ));
+
+    console.log("This test case should success!");
+    console.log(await transaction.getOne(
+        aimTransaction._id
     ));
 }

@@ -2,9 +2,6 @@ const { check } = require('../public/js/check');
 const collection = require("../config/mongoCollections");
 
 const mongo = require("mongodb");
-const user = require("./user");
-const item = require("./item");
-
 
 module.exports = {
     create
@@ -63,5 +60,5 @@ async function create(item_id, account, content) {
     insertedItem.comments.forEach(element => {
         element._id = element._id.toString();
     });
-    return { "hasErrors": false, "comment": insertedItem };
+    return { "hasErrors": false, "item": insertedItem };
 }

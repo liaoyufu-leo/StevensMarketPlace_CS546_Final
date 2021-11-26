@@ -67,6 +67,7 @@ async function login(account, password) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const userCol = await collection.getCollection('user');
+    
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
@@ -145,7 +146,7 @@ async function forgetPassword(account, newPassword) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const userCol = await collection.getCollection('user');
-    
+
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();

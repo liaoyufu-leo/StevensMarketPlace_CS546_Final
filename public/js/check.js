@@ -50,6 +50,7 @@ function check(input, dataType) {
 
             return input;
         case "address":
+            if (input == undefined) return false;
             if (Object.prototype.toString.call(input) != "[object Object]") return false;
             if (Object.keys(input).length != 5) return false;
 
@@ -69,7 +70,7 @@ function check(input, dataType) {
             if (input.length == 0) return false;
 
             input = ((input) => {
-                let arr = input.match(/[a-zA-Z0-9]+/g)
+                let arr = input.match(/[a-zA-Z0-9]+/g);
                 for (let i = 0; i < arr.length; i++) {
                     arr[i] = arr[i].toLowerCase();
                     arr[i] = arr[i][0].toUpperCase() + arr[i].slice(1);
@@ -85,7 +86,7 @@ function check(input, dataType) {
             if (input.length == 0) return false;
 
             input = ((input) => {
-                let arr = input.match(/[a-zA-Z0-9]+/g)
+                let arr = input.match(/[a-zA-Z0-9]+/g);
                 for (let i = 0; i < arr.length; i++) {
                     arr[i] = arr[i].toLowerCase();
                     arr[i] = arr[i][0].toUpperCase() + arr[i].slice(1);
@@ -101,7 +102,7 @@ function check(input, dataType) {
             if (input.length == 0) return false;
 
             input = ((input) => {
-                let arr = input.match(/[a-zA-Z]+/g)
+                let arr = input.match(/[a-zA-Z]+/g);
                 for (let i = 0; i < arr.length; i++) {
                     arr[i] = arr[i].toLowerCase();
                     arr[i] = arr[i][0].toUpperCase() + arr[i].slice(1);
@@ -117,7 +118,7 @@ function check(input, dataType) {
             if (input.length == 0) return false;
 
             input = ((input) => {
-                let arr = input.match(/[a-zA-Z]+/g)
+                let arr = input.match(/[a-zA-Z]+/g);
                 for (let i = 0; i < arr.length; i++) {
                     arr[i] = arr[i].toLowerCase();
                     arr[i] = arr[i][0].toUpperCase() + arr[i].slice(1);
@@ -141,17 +142,6 @@ function check(input, dataType) {
             input = input.trim();
             if (input.length == 0) return false;
             if (input.length > 1000) return false;
-
-            return input;
-
-        case "type":
-            if (input == undefined) return false;
-            if (typeof (input) != "string") return false;
-            input = input.trim();
-            if (input.length == 0) return false;
-            input = input.toLowerCase();
-
-            if (input != "credit card" && input != "cash") return false;
 
             return input;
         case "title":
@@ -201,7 +191,60 @@ function check(input, dataType) {
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
             input = input.trim();
-        
+            if (input.length==0) return false;
+
+            return input;
+        case "payment":
+            if (input == undefined) return false;
+            if (Object.prototype.toString.call(input) != "[object Object]") return false;
+            if (input.type == undefined) return false;
+            input.type = input.type.trim();
+            input.type = input.type.toLowerCase();
+            if (input.type == "cash") {
+                if (Object.keys(input).length != 1) return false;
+                else return input;
+            } else {
+                if (Object.keys(input).length != 4) return false;
+                if (!(input["card number"] = check(input["card number"], "card number"))) return false;
+                if (!(input["valid date"] = check(input["valid date"], "valid date"))) return false;
+                if (!(input["security code"] = check(input["security code"], "security code"))) return false;
+            }
+
+            return input;
+        case "card number":
+            if (input == undefined) return false;
+            if (typeof (input) != "string") return false;
+            input = input.trim();
+            if (input.length == 0) return false;
+
+            if (! /^[ 0-9]+$/.test(input)) return false;
+
+            input = ((input) => {
+                let arr = input.match(/[0-9]/g);
+                return arr.join("");
+            })(input);
+            if (input.length != 16) return false;
+
+            return input;
+        case "valid date":
+            if (input == undefined) return false;
+            if (typeof (input) != "string") return false;
+            input = input.trim();
+            input = input.match(/[0-9]{2}\/[0-9]{2}/g);
+
+            if (input.length != 1) return false;
+            input = input[0];
+            let month = Number(input.slice(0, 2)), year = Number(input.slice(3, 5));
+            if (month < 1 && month > 12) return false;
+            if (year <= new Date().getFullYear() % 100) return false;
+
+            return input;
+        case "security code":
+            if (input == undefined) return false;
+            if (typeof (input) != "string") return false;
+            input = input.trim();
+            if (! /^[0-9]{3}$/.test(input)) return false;
+
             return input;
         default:
             return false;
