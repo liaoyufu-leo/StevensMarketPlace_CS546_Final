@@ -9,10 +9,10 @@ module.exports = {
 
 async function create(item_id, account, content) {
     let errors = [];
-    if (arguments.length != 3) errors.push("Comment create arguments is not correct.");
-    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid.");
-    if (!(content = check(content, "content"))) errors.push("Content is not valid.");
+    if (arguments.length != 3) errors.push("arguments");
+    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("item_id");
+    if (!(account = check(account, "account"))) errors.push("account");
+    if (!(content = check(content, "content"))) errors.push("content");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -21,7 +21,7 @@ async function create(item_id, account, content) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -30,17 +30,16 @@ async function create(item_id, account, content) {
     const checkItem = await itemCol.findOne({ "_id": item_id });
     if (checkItem == null) {
         await collection.closeCollection();
-        errors.push("This item is not exist!");
+        errors.push("item not exist");
         return { "hasErrors": true, "errors": errors };
     }
-    console.log(checkItem)
+
     let comment = {
         "_id": mongo.ObjectId(),
         "commenter": account,
         "date": new Date(),
         "content": content,
     };
-
 
     const updatedInfo = await itemCol.updateOne({ "_id": item_id }, { $push: { "comments": comment } });
     if (updatedInfo.modifiedCount === 0) {

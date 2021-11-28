@@ -11,11 +11,11 @@ module.exports = {
 
 async function send(sender, receiver, content) {
     let errors = [];
-    if (arguments.length != 3) errors.push("Message send arguments is not correct.");
-    if (!(sender = check(sender, "account"))) errors.push("Account is not valid!");
-    if (!(receiver = check(receiver, "account"))) errors.push("Account is not valid!");
-    if (!(content = check(content, "content"))) errors.push("Content is not valid!");
-    if (sender == receiver) errors.push("Can't send message to yourself!");
+    if (arguments.length != 3) errors.push("arguments");
+    if (!(sender = check(sender, "account"))) errors.push("sender");
+    if (!(receiver = check(receiver, "account"))) errors.push("receiver");
+    if (!(content = check(content, "content"))) errors.push("content");
+    if (sender == receiver) errors.push("same");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -24,14 +24,14 @@ async function send(sender, receiver, content) {
     const checkAccount = await userCol.findOne({ "account": sender });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("sender not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
     const checkAccount2 = await userCol.findOne({ "account": receiver });
     if (checkAccount2 == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("receiver not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -115,9 +115,9 @@ async function getAll(account) {
 
 async function getOne(sender, receiver) {
     let errors = [];
-    if (arguments.length != 2) errors.push("Message getOne arguments is not correct.");
-    if (!(sender = check(sender, "account"))) errors.push("Account is not valid!");
-    if (!(receiver = check(receiver, "account"))) errors.push("Account is not valid!");
+    if (arguments.length != 2) errors.push("arguments");
+    if (!(sender = check(sender, "account"))) errors.push("sender");
+    if (!(receiver = check(receiver, "account"))) errors.push("receiver");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -126,14 +126,14 @@ async function getOne(sender, receiver) {
     const checkAccount = await userCol.findOne({ "account": sender });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("sender");
         return { "hasErrors": true, "errors": errors };
     }
 
     const checkAccount2 = await userCol.findOne({ "account": receiver });
     if (checkAccount2 == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("receiver");
         return { "hasErrors": true, "errors": errors };
     }
 

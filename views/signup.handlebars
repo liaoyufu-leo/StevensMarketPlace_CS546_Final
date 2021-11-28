@@ -1,33 +1,61 @@
-<article>
-  <header>
-    <h2>sign up</h2>
-  </header>
+<div class="row d-flex justify-content-center">
 
-  {{#if error}}
-  <div id="signup-error" class="error">
-    <h3>Error: {{ error }}</h3>
-    
+  <div class="col-md-8">
+
+    <h1>Signup</h1>
+
+    <form action="/signup" method="POST" id="signupForm">
+      <div id="accountDiv">
+        <div class="row">
+          <label class="col-sm-3 text-end" id="accountLabel">Account</label>
+          <div class="col-sm-4">
+            <input class="col-sm-12" type="text" name="account" id="accountInput" />
+          </div>
+          <div class="col-sm-5 config">
+            *Must be stevens email!<br>
+            *Must have more than five prefix letters!
+          </div>
+        </div>
+        <div id="accountErrorDiv" hidden></div>
+      </div>
+
+      <div id="passwordDiv">
+        <div class="row">
+          <label class="col-sm-3 text-end" id="passwordLabel">Password</label>
+          <div class="col-sm-4">
+            <input class="col-sm-12" type="password" name="password" id="passwordInput" />
+          </div>
+
+          <div class="col-sm-5 config">
+            *Must be more than 10 letters<br>*Must have at least one upper and lower letter!<br>
+            *Must have at least one special letter!
+          </div>
+        </div>
+        <div id="passwordErrorDiv" hidden></div>
+      </div>
+
+      <div id="passwordConfirmDiv">
+        <div class="row">
+          <label class="col-sm-3 text-end" id="passwordConfirmLabel">Confirm Password</label>
+          <div class="col-sm-4">
+            <input class="col-sm-12" type="password" name="passwordConfirm" id="passwordConfirmInput" />
+          </div>
+
+          <div class="col-sm-5 config">
+            *Must be same!
+          </div>
+        </div>
+        <div id="passwordConfirmErrorDiv" hidden></div>
+      </div>
+
+      <button type="submit">signup</button>
+      <br>
+      <span class="error" id="signupFormError"></span>
+    </form>
+
+    <a href="/user/login">Already have an account? Login here!</a><br>
   </div>
-  {{/if}}
 
-  <form id="signup-form" action="/signup" method="post">
-    <table class="signup">
-      <tr>
-        <td><label for="username">Username:</label></td>
-        <td><input type="text" name="username" id="username"></td>
-        <td></td>
-      </tr>
+</div>
 
-      <tr>
-        <td><label for="password">Password:</label></td>
-        <td><input type="password" name="password" id="password"></td>
-        <td><input type="submit" value="Submit"></td>
-      </tr>
-    </table>
-  </form>
-
-  <footer>
-        <a href="/login">Have an account? login</a>
-  </footer>
-
-</article>
+<script src="/js/signup.js"></script>

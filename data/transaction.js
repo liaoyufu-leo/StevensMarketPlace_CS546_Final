@@ -11,10 +11,10 @@ module.exports = {
 
 async function create(item_id, account, payment) {
     let errors = [];
-    if (arguments.length != 3) errors.push("Transaction create arguments is not correct.");
-    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid!");
-    if (!(payment = check(payment, "payment"))) errors.push("Payment is not valid.");
+    if (arguments.length != 3) errors.push("arguments");
+    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("item_id");
+    if (!(account = check(account, "account"))) errors.push("account");
+    if (!(payment = check(payment, "payment"))) errors.push("payment");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -23,17 +23,17 @@ async function create(item_id, account, payment) {
     const checkItem = await itemCol.findOne({ "_id": item_id });
     if (checkItem == null) {
         await collection.closeCollection();
-        errors.push("This item is not exist!");
+        errors.push("item not exist");
         return { "hasErrors": true, "errors": errors };
     }
     if (checkItem.status != "selling") {
         await collection.closeCollection();
-        errors.push("This item is not selling!");
+        errors.push("item not selling");
         return { "hasErrors": true, "errors": errors };
     }
     if ( checkItem.seller == account){
         await collection.closeCollection();
-        errors.push("People can't buy item they sell!");
+        errors.push("same");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -42,7 +42,7 @@ async function create(item_id, account, payment) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -88,8 +88,8 @@ async function create(item_id, account, payment) {
 
 async function getAll(account) {
     let errors = [];
-    if (arguments.length != 1) errors.push("Transaction getAll arguments is not correct.");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid!");
+    if (arguments.length != 1) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -98,7 +98,7 @@ async function getAll(account) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -122,8 +122,8 @@ async function getAll(account) {
 
 async function getOne(transaction_id) {
     let errors = [];
-    if (arguments.length != 1) errors.push("Item delete arguments is not correct.");
-    if (!(transaction_id = check(transaction_id, "id") ? (mongo.ObjectId.isValid(transaction_id) ? mongo.ObjectId(transaction_id) : false) : false)) errors.push("Transaction_id is not valid.");
+    if (arguments.length != 1) errors.push("arguments");
+    if (!(transaction_id = check(transaction_id, "id") ? (mongo.ObjectId.isValid(transaction_id) ? mongo.ObjectId(transaction_id) : false) : false)) errors.push("transaction_id");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -132,7 +132,7 @@ async function getOne(transaction_id) {
     const checkTrasaction = await transactionCol.findOne({ "_id": transaction_id });
     if (checkTrasaction == null) {
         await collection.closeCollection();
-        errors.push("This transaction is not exist!");
+        errors.push("transaction not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
