@@ -34,7 +34,6 @@
                     }
                 },
                 error: function (responseMessage) {
-                    console.log(responseMessage)
                     alert(responseMessage.responseText);
                 }
             });
