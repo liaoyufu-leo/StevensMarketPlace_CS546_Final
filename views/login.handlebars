@@ -1,62 +1,65 @@
-<div class="row">
+<div class="container">
+  <div class="row">
 
-  <div class="col-md-6 border-end">
-    <h2 class="border-bottom">Hello! <br> This is the Stevens MarketPlace</h2>
-    <p id="projectDescription">
-      This website acts as a Marketplace for Stevens Institute of Technology. People at Stevens Institute of
-      Technology
-      will be able to buy and sell the commodities of their wish. Users who want to sell the items will be able to
-      post
-      them on the site, and other users will be able to view the posted commodities and buy them if interested.
-      <br>
-      This application mainly helps students at Stevens Institute of Technology. A considerable percentage of
-      students
-      rely on unknown sellers to buy the commodities, and this application allows students to overcome this
-      disadvantage.
-      Additionally, numerous students are graduating every year, and new students join Steven’s; this application
-      might
-      help pass out students to sell the commodities and incoming students to buy them.
-    </p>
-  </div>
+    <div class="col-md-6 border-end">
+      <h2 class="border-bottom">Hello! <br> This is the Stevens MarketPlace</h2>
+      <p id="projectDescription">
+        This website acts as a Marketplace for Stevens Institute of Technology. People at Stevens Institute of
+        Technology
+        will be able to buy and sell the commodities of their wish. Users who want to sell the items will be able to
+        post
+        them on the site, and other users will be able to view the posted commodities and buy them if interested.
+        <br>
+        This application mainly helps students at Stevens Institute of Technology. A considerable percentage of
+        students
+        rely on unknown sellers to buy the commodities, and this application allows students to overcome this
+        disadvantage.
+        Additionally, numerous students are graduating every year, and new students join Steven’s; this application
+        might
+        help pass out students to sell the commodities and incoming students to buy them.
+      </p>
+    </div>
 
-  <div class="col-md-6">
-    <div class="container-fluid mt-3">
+    <div class="col-md-6">
+      <div class="container-fluid mt-3">
 
-      <h1 class="row d-flex justify-content-center">Login</h1>
+        <h1 class="row d-flex justify-content-center">Login</h1>
 
-      <form action="/user/login" method="POST" id="loginForm" class="needs-validation" novalidate>
-        <div id="accountDiv" class="form-outline mb-4">
-          <input type="text" name="account" id="accountInput" class="form-control" required />
-          <label class="form-label" id="accountLabel">Account</label>
-          <div id="accountErrorDiv" class="invalid-feedback"></div>
-        </div>
-
-        <div id="passwordDiv" class="form-outline mb-4">
-          <input type="password" name="password" id="passwordInput" class="form-control" />
-          <label class="form-label" id="passwordLabel">Password</label>
-          <div id="passwordErrorDiv" class="invalid-feedback"></div>
-        </div>
-
-        <!-- 2 column grid layout for inline styling -->
-        <div class="row mb-4">
-          <div class="col d-flex justify-content-center">
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
+        <form action="/user/login" method="POST" id="loginForm" class="needs-validation" novalidate>
+          <div id="accountDiv" class="form-outline mb-4">
+            <input type="text" name="account" id="accountInput" class="form-control" required />
+            <label class="form-label" id="accountLabel">Account</label>
+            <div id="accountErrorDiv" class="invalid-feedback"></div>
           </div>
 
-          <div class="col justify-content-center">
-            <!-- Simple link -->
-            <a class="mb-4" href="/user/forgetPassword">Forgot password?</a>
+          <div id="passwordDiv" class="form-outline mb-4">
+            <input type="password" name="password" id="passwordInput" class="form-control" />
+            <label class="form-label" id="passwordLabel">Password</label>
+            <div id="passwordErrorDiv" class="invalid-feedback"></div>
           </div>
-        </div>
 
-        <div id="loginFormErrorDiv" class="error"></div>
+          <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
+            </div>
 
-        <!-- Register buttons -->
-        <div class="text-center">
-          <p>Not a member? <a href="/user/signup">Register</a></p>
-        </div>
-      </form>
+            <div class="col justify-content-center">
+              <!-- Simple link -->
+              <a class="mb-4" href="/user/forgetPassword">Forgot password?</a>
+            </div>
+          </div>
+
+          <div id="loginFormErrorDiv" class="error row d-flex justify-content-center"></div>
+
+          <!-- Register buttons -->
+          <div class="text-center">
+            <p>Not a member? <a href="/user/signup">Register</a></p>
+          </div>
+        </form>
+      </div>
+
     </div>
 
   </div>

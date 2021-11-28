@@ -12,12 +12,12 @@ module.exports = {
     findOne
 }
 
-async function create(account, password, nickName, gender, address) {
+async function create(account, password, nickname, gender, address) {
     let errors = [];
     if (arguments.length != 5) errors.push("arguments");
     if (!(account = check(account, "account"))) errors.push("account");
     if (!(password = check(password, "password"))) errors.push("password");
-    if (!(nickName = check(nickName, "nickName"))) errors.push("nickname");
+    if (!(nickname = check(nickname, "nickname"))) errors.push("nickname");
     if (!(gender = check(gender, "gender"))) errors.push("gender");
     if (!(address = check(address, "address"))) errors.push("address");
 
@@ -26,7 +26,7 @@ async function create(account, password, nickName, gender, address) {
     let user = {
         "account": account,
         "password": await bcrypt.hash(password, saltRounds),
-        "nickName": nickName,
+        "nickname": nickname,
         "gender": gender,
         "address": address,
         "cart": []
@@ -183,11 +183,11 @@ async function forgetPassword(account, newPassword) {
     return { "hasErrors": false, "user": updatedUser };
 }
 
-async function updateInformation(account, nickName, gender, address) {
+async function updateInformation(account, nickname, gender, address) {
     let errors = [];
     if (arguments.length != 4) errors.push("arguments");
     if (!(account = check(account, "account"))) errors.push("account");
-    if (!(nickName = check(nickName, "nickName"))) errors.push("nickName");
+    if (!(nickname = check(nickname, "nickname"))) errors.push("nickname");
     if (!(gender = check(gender, "gender"))) errors.push("gender");
     if (!(address = check(address, "address"))) errors.push("address");
 
@@ -202,7 +202,7 @@ async function updateInformation(account, nickName, gender, address) {
         return { "hasErrors": true, "errors": errors };
     }
 
-    if (checkAccount.nickName == nickName &&
+    if (checkAccount.nickname == nickname &&
         checkAccount.gender == gender &&
         checkAccount.address.street == address.street &&
         checkAccount.address.apt == address.apt &&
@@ -217,7 +217,7 @@ async function updateInformation(account, nickName, gender, address) {
     let newUser = {
         "account": account,
         "password": checkAccount.password,
-        "nickName": nickName,
+        "nickname": nickname,
         "gender": gender,
         "address": address,
         "cart": checkAccount.cart

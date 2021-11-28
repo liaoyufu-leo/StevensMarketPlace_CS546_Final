@@ -1,4 +1,4 @@
-{
+var states = {
   "AK": {
     "cities": {
       "98791": [
@@ -81360,4 +81360,10 @@
     },
     "name": "Wyoming"
   }
+}
+
+try {
+  module.exports = { "states": states }
+} catch (error) {
+
 }

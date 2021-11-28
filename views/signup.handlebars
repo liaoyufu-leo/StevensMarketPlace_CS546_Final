@@ -1,59 +1,118 @@
-<div class="row d-flex justify-content-center">
+<div class="container">
+  <div class="row">
 
-  <div class="col-md-8">
+    <div class="col-md-12">
+      <div class="container-fluid col-md-6 mt-3">
 
-    <h1>Signup</h1>
+        <h1 class="row d-flex justify-content-center">Signup</h1>
 
-    <form action="/signup" method="POST" id="signupForm">
-      <div id="accountDiv">
-        <div class="row">
-          <label class="col-sm-3 text-end" id="accountLabel">Account</label>
-          <div class="col-sm-4">
-            <input class="col-sm-12" type="text" name="account" id="accountInput" />
+        <form action="/user/signup" method="POST" id="signupForm" class="needs-validation" novalidate>
+          <div id="accountDiv" class="form-outline mb-4">
+            <input type="text" name="account" id="accountInput" class="form-control" required />
+            <label class="form-label" id="accountLabel">account</label>
+            <div id="accountErrorDiv" class="invalid-feedback"></div>
           </div>
-          <div class="col-sm-5 config">
-            *Must be stevens email!<br>
-            *Must have more than five prefix letters!
+
+          <div id="nicknameDiv" class="form-outline mb-4">
+            <input type="text" name="nickname" id="nicknameInput" class="form-control" required />
+            <label class="form-label" id="nicknameLabel">nickname</label>
+            <div id="nicknameErrorDiv" class="invalid-feedback"></div>
           </div>
-        </div>
-        <div id="accountErrorDiv" hidden></div>
+
+          <div id="passwordDiv" class="form-outline mb-4">
+            <input type="password" name="password" id="passwordInput" class="form-control" />
+            <label class="form-label" id="passwordLabel">password</label>
+            <div id="passwordErrorDiv" class="invalid-feedback"></div>
+          </div>
+
+          <div id="passwordConfirmDiv" class="form-outline mb-4">
+            <input type="password" name="passwordConfirm" id="passwordConfirmInput" class="form-control" />
+            <label class="form-label" id="passwordConfirmLabel">password confirme</label>
+            <div id="passwordConfirmCorrectDiv" class="valid-feedback">Same!</div>
+            <div id="passwordConfirmErrorDiv" class="invalid-feedback"></div>
+          </div>
+
+          <div id="genderDiv" class="form-outline mb-4">
+            <input type="text" class="form-control" hidden value="   " />
+            <select class="form-select border-0" name="gender" id="genderInput">
+              <option value="male" selected>male</option>
+              <option value="femal">female</option>
+              <option value="other">other</option>
+            </select>
+            <label class="form-label" id="denderLabel">gender</label>
+            <div id="genderErrorDiv" class="invalid-feedback"></div>
+          </div>
+
+          <p>Address</p>
+
+          <div class="row mb-4">
+
+            <div class="col d-flex justify-content-center">
+              <div id="streetDiv" class="form-outline">
+                <input type="text" name="street" id="streetInput" class="form-control" value="123 st." required />
+                <label class="form-label" id="streetLabel">street</label>
+                <div id="streetErrorDiv" class="invalid-feedback margin-auto"></div>
+              </div>
+            </div>
+
+            <div class="col d-flex justify-content-center">
+              <div id="aptDiv" class="form-outline">
+                <input type="text" name="apt" id="aptInput" class="form-control" value="Apt 123w" required />
+                <label class="form-label" id="aptLabel">apt</label>
+                <div id="aptErrorDiv" class="invalid-feedback"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mb-4">
+
+            <div class="col d-flex justify-content-center">
+              <div id="cityDiv" class="form-outline">
+                <input type="text" name="city" id="cityInput" class="form-control" value="Hoboken" required />
+                <label class="form-label" id="cityLabel">city</label>
+                <div id="cityErrorDiv" class="invalid-feedback"></div>
+              </div>
+            </div>
+
+            <div class="col d-flex justify-content-center">
+              <div id="stateDiv" class="form-outline">
+                <input type="text" name="state" id="stateInput" class="form-control" value="New Jersey" required />
+                <label class="form-label" id="stateLabel">state</label>
+                <div id="stateErrorDiv" class="invalid-feedback"></div>
+              </div>
+            </div>
+
+            <div class="col d-flex justify-content-center">
+              <div id="zipCodeDiv" class="form-outline">
+                <input type="text" name="zipCode" id="zipCodeInput" class="form-control" value="07030" required />
+                <label class="form-label" id="zipCodeLabel">zipCode</label>
+                <div id="zipCodeErrorDiv" class="invalid-feedback"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div id="addressFormErrorDiv" class="error"></div>
+
+          <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-block mb-4">signup</button>
+            </div>
+
+            <div id="signupFormErrorDiv" class="error row d-flex justify-content-center"></div>
+
+            <!-- Register buttons -->
+            <div class="text-center">
+              <p>Already a member? <a href="/user/login">Login</a></p>
+            </div>
+        </form>
       </div>
 
-      <div id="passwordDiv">
-        <div class="row">
-          <label class="col-sm-3 text-end" id="passwordLabel">Password</label>
-          <div class="col-sm-4">
-            <input class="col-sm-12" type="password" name="password" id="passwordInput" />
-          </div>
+    </div>
 
-          <div class="col-sm-5 config">
-            *Must be more than 10 letters<br>*Must have at least one upper and lower letter!<br>
-            *Must have at least one special letter!
-          </div>
-        </div>
-        <div id="passwordErrorDiv" hidden></div>
-      </div>
-
-      <div id="passwordConfirmDiv">
-        <div class="row">
-          <label class="col-sm-3 text-end" id="passwordConfirmLabel">Confirm Password</label>
-          <div class="col-sm-4">
-            <input class="col-sm-12" type="password" name="passwordConfirm" id="passwordConfirmInput" />
-          </div>
-
-          <div class="col-sm-5 config">
-            *Must be same!
-          </div>
-        </div>
-        <div id="passwordConfirmErrorDiv" hidden></div>
-      </div>
-
-      <button type="submit">signup</button>
-      <br>
-      <span class="error" id="signupFormError"></span>
-    </form>
-
-    <a href="/user/login">Already have an account? Login here!</a><br>
   </div>
 
 </div>

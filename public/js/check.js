@@ -1,9 +1,8 @@
 try {
-    var states = require("../json/states.json");
+    var { states } = require("../json/states");
     module.exports = {
         check
     };
-
 } catch (error) { }
 
 function check(input, dataType) {
@@ -34,7 +33,7 @@ function check(input, dataType) {
             if (! /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]{1,}/.test(input)) return false;
 
             return input;
-        case "nickName":
+        case "nickname":
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
             input = input.trim();
@@ -68,6 +67,7 @@ function check(input, dataType) {
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
+            if (! /^[a-zA-Z0-9. ]{3,}$/.test(input)) return false;
 
             input = ((input) => {
                 let arr = input.match(/[a-zA-Z0-9]+/g);
@@ -84,6 +84,7 @@ function check(input, dataType) {
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
+            if (! /^[a-zA-Z0-9. ]{3,}$/.test(input)) return false;
 
             input = ((input) => {
                 let arr = input.match(/[a-zA-Z0-9]+/g);
@@ -100,6 +101,7 @@ function check(input, dataType) {
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
+            if (! /^[a-zA-Z0-9. ]{2,}$/.test(input)) return false;
 
             input = ((input) => {
                 let arr = input.match(/[a-zA-Z]+/g);
@@ -116,6 +118,7 @@ function check(input, dataType) {
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
+            if (! /^[a-zA-Z0-9. ]{2,}$/.test(input)) return false;
 
             input = ((input) => {
                 let arr = input.match(/[a-zA-Z]+/g);
@@ -133,7 +136,6 @@ function check(input, dataType) {
             input = input.trim();
             if (input.length == 0) return false;
             if (! /^[0-9]{5}$/.test(input)) return false;
-            input = parseInt(input);
 
             return input;
         case "content":
@@ -191,7 +193,7 @@ function check(input, dataType) {
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
             input = input.trim();
-            if (input.length==0) return false;
+            if (input.length == 0) return false;
 
             return input;
         case "payment":
@@ -256,7 +258,7 @@ function checkAddress(city, state, zipCode) {
     for (let abber in states) {
         if (state == states[abber].name)
             if (states[abber].cities[city]) {
-                if (states[abber].cities[city].includes(zipCode))
+                if (states[abber].cities[city].includes(parseInt(zipCode)))
                     flag = true;
             }
 
