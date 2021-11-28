@@ -9,17 +9,33 @@ function errors(inputs, formType) {
             switch (element) {
                 case "account":
                     $('#' + element + 'Input').addClass("is-invalid");
-                    $('#' + element + 'ErrorDiv').text("Please provide a valid " + element + ".");
+                    $('#' + element + 'ErrorDiv').html("Please provide a valid " + element + ".");
                     return;
                 case "password":
                     $('#' + element + 'Input').addClass("is-invalid");
-                    $('#' + element + 'ErrorDiv').text("Please provide a valid " + element + ".");
+                    $('#' + element + 'ErrorDiv').html("Please provide a valid " + element + ".");
+                    return;
+                case "nickname":
+                    $('#' + element + 'Input').addClass("is-invalid");
+                    $('#' + element + 'ErrorDiv').html("Please provide a valid " + element + ".");
+                    return;
+                case "gender":
+                    $('#' + element + 'Input').addClass("is-invalid");
+                    $('#' + element + 'ErrorDiv').html("Please provide a valid " + element + ".");
+                    return;
+                case "address":
+                    $('#' + element + 'FormErrorDiv').html("Please provide a valid " + element + ".");
                     return;
                 case "arguments":
-                    formError.html(formError.html() + "Please provide full " + element + ".<br>");
-                    formError.show();
+                    let addressFormErrorDiv = $('#addressFormErrorDiv');
+                    addressFormErrorDiv.html("The relationship of city/state/zipCode is not correct!");
+                    addressFormErrorDiv.show();
                     return;
                 case "account not exist":
+                    formError.html(formError.html() + element + ".<br>");
+                    formError.show();
+                    return;
+                case "account exist":
                     formError.html(formError.html() + element + ".<br>");
                     formError.show();
                     return;
@@ -28,10 +44,9 @@ function errors(inputs, formType) {
                     formError.show();
                     return;
                 default:
+                    return;
             }
         });
-
-        console.log(formError.html())
     })(jQuery);
 
 }

@@ -3,12 +3,14 @@ const app = express();
 const session = require('express-session');
 const configRoutes = require('./routes');
 const { engine } = require('express-handlebars');
+// const favicon = require('serve-favicon');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', engine({ "defaultLayout": "main" }));
 app.set('view engine', 'handlebars');
 app.set("views", "./views");
+// app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.use(
     session({
@@ -44,6 +46,10 @@ app.use("*", (req, res, next) => {
         return res.render('login', { "title": "login" });
     }
     next();
+});
+
+app.use("/", (req, res, next) => {
+    res.render("stevensMarketPlace", { "title": "stevensMarketPlace" });
 });
 
 app.get('/stevensMarketPlace', (req, res, next) => {
