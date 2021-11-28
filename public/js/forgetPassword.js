@@ -1,17 +1,5 @@
 (function ($) {
 
-    $('#accountInput').keyup((event) => {
-
-        let account = $('#accountInput').val();
-
-        let nickname = account.slice(0, account.lastIndexOf("@"));
-
-        $('#nicknameInput').val(nickname);
-        $('#nicknameInput').addClass("active");
-
-    });
-
-
     $('#passwordConfirmInput').keyup((event) => {
 
         let passwordInput = $('#passwordInput');
@@ -30,7 +18,7 @@
         }
     });
 
-    $('#signupForm').submit(function (event) {
+    $('#forgetPasswordForm').submit(function (event) {
 
         let passwordInput = $('#passwordInput');
         let passwordConfirmInput = $('#passwordConfirmInput');
@@ -42,7 +30,7 @@
             passwordConfirmInput.addClass("is-valid");
         } else {
             let formError = $('#passwordConfirmErrorDiv');
-            formError.html("Please input same password");
+            formError.html("Please input same password.");
             passwordConfirmInput.removeClass("is-valid");
             passwordConfirmInput.addClass("is-invalid");
         }
@@ -51,14 +39,7 @@
 
         let inputs = {
             "account": "",
-            "nickname": "",
-            "password": "",
-            "gender": "",
-            "street": "",
-            "apt": "",
-            "city": "",
-            "state": "",
-            "zipCode": ""
+            "password": ""
         };
 
         let flag = true;
@@ -74,34 +55,15 @@
             }
         }
         
-        if (!checkAddress(inputs.city, inputs.state, inputs.zipCode)) {
-            flag = false;
-            let addressFormErrorDiv = $('#addressFormErrorDiv');
-            addressFormErrorDiv.html("The relationship of city/state/zipCode is not correct!");
-            addressFormErrorDiv.show();
-        } else {
-            let addressFormErrorDiv = $('#addressFormErrorDiv');
-            addressFormErrorDiv.html();
-            addressFormErrorDiv.hide();
-        }
-
         if (flag == true) {
             $.ajax({
                 method: 'POST',
-                url: '/user/signup',
+                url: '/user/forgetPassword',
                 contentType: 'application/json',
                 data: JSON.stringify({
                     "account": inputs.account,
-                    "nickname": inputs.nickname,
-                    "password": inputs.password,
-                    "gender": inputs.gender,
-                    "address": {
-                        "street": inputs.street,
-                        "apt": inputs.apt,
-                        "city": inputs.city,
-                        "state": inputs.state,
-                        "zipCode": inputs.zipCode
-                    }
+                    "password": inputs.password
+
                 }),
                 success: function (responseMessage) {
                     if (responseMessage.hasErrors) {
