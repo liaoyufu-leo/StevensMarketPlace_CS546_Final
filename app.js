@@ -6,7 +6,6 @@ const { engine } = require('express-handlebars');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public/'));
 app.engine('handlebars', engine({ "defaultLayout": "main" }));
 app.set('view engine', 'handlebars');
 app.set("views", "./views");
@@ -21,6 +20,9 @@ app.use(
     })
 );
 
+console.log(__dirname);
+app.use(express.static(__dirname + '/public'));
+
 app.use("*", (req, res, next) => {
     let log = `[${new Date().toUTCString()}]:${req.method} ${req.originalUrl}`;
     if (req.session.user) {
@@ -32,14 +34,21 @@ app.use("*", (req, res, next) => {
     next();
 });
 
-app.get("/", (req, res, next) => {
-    if (req.session.user) {
-        return res.redirect('/stevensMarketPlace');
-    } else {
-        return res.redirect('/user/login');
+
+const userRoutes = require('./routes/user');
+app.use('/user', userRoutes);
+
+app.use("*", (req, res, next) => {
+    if (!req.session.user) {
+        req.method = "GET"
+        return res.render('login', { "title": "login" });
     }
+    next();
 });
 
+app.get('/stevensMarketPlace', (req, res, next) => {
+    res.render("stevensMarketPlace", { "title": "stevensMarketPlace" });
+});
 
 configRoutes(app);
 

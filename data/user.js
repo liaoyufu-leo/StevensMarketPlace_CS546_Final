@@ -14,12 +14,12 @@ module.exports = {
 
 async function create(account, password, nickName, gender, address) {
     let errors = [];
-    if (arguments.length != 5) errors.push("User create arguments is not correct.");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid.");
-    if (!(password = check(password, "password"))) errors.push("Password is not valid.");
-    if (!(nickName = check(nickName, "nickName"))) errors.push("NickName is not valid.");
-    if (!(gender = check(gender, "gender"))) errors.push("Gender is not valid.");
-    if (!(address = check(address, "address"))) errors.push("Address is not valid.");
+    if (arguments.length != 5) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
+    if (!(password = check(password, "password"))) errors.push("password");
+    if (!(nickName = check(nickName, "nickName"))) errors.push("nickname");
+    if (!(gender = check(gender, "gender"))) errors.push("gender");
+    if (!(address = check(address, "address"))) errors.push("address");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -37,7 +37,7 @@ async function create(account, password, nickName, gender, address) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount != null) {
         await collection.closeCollection();
-        errors.push("This account email had been used, please change another email!");
+        errors.push("account exist");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -60,9 +60,9 @@ async function create(account, password, nickName, gender, address) {
 
 async function login(account, password) {
     let errors = [];
-    if (arguments.length != 2) errors.push("User login arguments is not correct!");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid!");
-    if (!(password = check(password, "password"))) errors.push("Password is not valid!");
+    if (arguments.length != 2) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
+    if (!(password = check(password, "password"))) errors.push("password");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -71,13 +71,13 @@ async function login(account, password) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
     if (! await bcrypt.compare(password, checkAccount.password)) {
         await collection.closeCollection();
-        errors.push("Password is not correct!");
+        errors.push("password not correct");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -92,11 +92,11 @@ async function login(account, password) {
 
 async function updatePassword(account, oldPassword, newPassword) {
     let errors = [];
-    if (arguments.length != 3) errors.push("User updatePassword arguments is not correct!");
-    if (!(user_id = check(account, "account"))) errors.push("account is not valid!");
-    if (!(oldPassword = check(oldPassword, "password"))) errors.push("OldPassword is not valid!");
-    if (!(newPassword = check(newPassword, "password"))) errors.push("NewPassword is not valid!");
-    if (oldPassword == newPassword) errors.push("NewPassword is same as oldPassword!");
+    if (arguments.length != 3) errors.push("arguments ");
+    if (!(user_id = check(account, "account"))) errors.push("account");
+    if (!(oldPassword = check(oldPassword, "password"))) errors.push("oldPassword");
+    if (!(newPassword = check(newPassword, "password"))) errors.push("newPassword");
+    if (oldPassword == newPassword) errors.push("same");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -104,13 +104,13 @@ async function updatePassword(account, oldPassword, newPassword) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
     if (! await bcrypt.compare(oldPassword, checkAccount.password)) {
         await collection.closeCollection();
-        errors.push("Oldpassword is not correct!");
+        errors.push("password not correct");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -139,9 +139,9 @@ async function updatePassword(account, oldPassword, newPassword) {
 
 async function forgetPassword(account, newPassword) {
     let errors = [];
-    if (arguments.length != 2) errors.push("User login arguments is not correct!");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid!");
-    if (!(newPassword = check(newPassword, "password"))) errors.push("NewPassword is not valid!");
+    if (arguments.length != 2) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
+    if (!(newPassword = check(newPassword, "password"))) errors.push("password");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -150,13 +150,13 @@ async function forgetPassword(account, newPassword) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
     if (await bcrypt.compare(newPassword, checkAccount.password)) {
         await collection.closeCollection();
-        errors.push("New password is same as old password, it should not be changed!");
+        errors.push("same");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -185,11 +185,11 @@ async function forgetPassword(account, newPassword) {
 
 async function updateInformation(account, nickName, gender, address) {
     let errors = [];
-    if (arguments.length != 4) errors.push("User updateInformation arguments is not correct.");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid.");
-    if (!(nickName = check(nickName, "nickName"))) errors.push("NickName is not valid.");
-    if (!(gender = check(gender, "gender"))) errors.push("Gender is not valid.");
-    if (!(address = check(address, "address"))) errors.push("Address is not valid.");
+    if (arguments.length != 4) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
+    if (!(nickName = check(nickName, "nickName"))) errors.push("nickName");
+    if (!(gender = check(gender, "gender"))) errors.push("gender");
+    if (!(address = check(address, "address"))) errors.push("address");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -198,7 +198,7 @@ async function updateInformation(account, nickName, gender, address) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account email is not exist!");
+        errors.push("account not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -210,7 +210,7 @@ async function updateInformation(account, nickName, gender, address) {
         checkAccount.address.state == address.state &&
         checkAccount.address.zipCode == address.zipCode) {
         await collection.closeCollection();
-        errors.push("This account new information is the same as old information, please try again!");
+        errors.push("same");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -248,8 +248,8 @@ async function updateInformation(account, nickName, gender, address) {
 
 async function findOne(account) {
     let errors = [];
-    if (arguments.length != 1) errors.push("User findOne arguments is not correct!");
-    if (!(account = check(account, "account"))) errors.push("account is not valid!");
+    if (arguments.length != 1) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -257,7 +257,7 @@ async function findOne(account) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 

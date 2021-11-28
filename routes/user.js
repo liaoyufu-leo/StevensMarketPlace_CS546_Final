@@ -4,15 +4,44 @@ const { check } = require("../public/js/check");
 const { user } = require("../data");
 
 router.get('/login', async (req, res) => {
-    res.status(200).json({ "title": "login" });
+    if (req.session.user) {
+        req.method = "GET"
+        res.render("stevensMarketPlace", { "title": "stevensMarketPlace" })
+    }else{
+        res.status(200).render("login", { "title": "login" })
+    }
+    
 });
 
 router.post('/login', async (req, res) => {
-    res.status(200).json({ "title": "login" });
+    // res.status(500).send(new Error("something error").message);
+    // res.status(200).json({ "hasErrors": true, "errors": [ "account", "password"] });
+    // res.status(200).json({ "hasErrors": true, "errors": [ "account", "password","arguments","account not exist","password not correct"] });
+    // return;
+
+    let errors = [];
+    if (Object.keys(req.body).length != 2) errors.push("arguments");
+    if (!(account = check(req.body.account, "account"))) errors.push("account");
+    if (!(password = check(req.body.password, "password"))) errors.push("password");
+
+    if (errors.length > 0) {
+        res.status(200).json({ "hasErrors": true, "errors": errors });
+    }
+
+    try {
+        const data = await user.login(account, password);
+        if (data.hasErrors == false) {
+            req.session.user = { "account": data.user.account };
+        }
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+
 });
 
 router.get('/signup', async (req, res) => {
-    res.status(200).json({ "title": "signup" });
+    res.status(200).render("signup",{ "title": "signup" });
 });
 
 router.post('/signup', async (req, res) => {

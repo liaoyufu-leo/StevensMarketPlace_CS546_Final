@@ -17,12 +17,12 @@ module.exports = {
 
 async function create(account, title, price, photos, description) {
     let errors = [];
-    if (arguments.length != 5) errors.push("Item create arguments is not correct.");
-    if (!(account = check(account, "account"))) errors.push("account is not valid!");
-    if (!(title = check(title, "title"))) errors.push("title is not valid!");
-    if (!(price = check(price, "price"))) errors.push("price is not valid!");
-    if (!(photos = check(photos, "photos"))) errors.push("photos is not valid!");
-    if (!(description = check(description, "description"))) errors.push("description is not valid!");
+    if (arguments.length != 5) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
+    if (!(title = check(title, "title"))) errors.push("title");
+    if (!(price = check(price, "price"))) errors.push("price");
+    if (!(photos = check(photos, "photos"))) errors.push("photos");
+    if (!(description = check(description, "description"))) errors.push("description");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -31,7 +31,7 @@ async function create(account, title, price, photos, description) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -68,12 +68,12 @@ async function create(account, title, price, photos, description) {
 
 async function updateInfo(item_id, title, price, photos, description) {
     let errors = [];
-    if (arguments.length != 5) errors.push("Item updateInfo arguments is not correct.");
-    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
-    if (!(title = check(title, "title"))) errors.push("title is not valid!");
-    if (!(price = check(price, "price"))) errors.push("price is not valid!");
-    if (!(photos = check(photos, "photos"))) errors.push("photos is not valid!");
-    if (!(description = check(description, "description"))) errors.push("description is not valid!");
+    if (arguments.length != 5) errors.push("arguments");
+    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("item_id");
+    if (!(title = check(title, "title"))) errors.push("title");
+    if (!(price = check(price, "price"))) errors.push("price");
+    if (!(photos = check(photos, "photos"))) errors.push("photos");
+    if (!(description = check(description, "description"))) errors.push("description");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -82,7 +82,7 @@ async function updateInfo(item_id, title, price, photos, description) {
     const checkItem = await itemCol.findOne({ "_id": item_id });
     if (checkItem == null) {
         await collection.closeCollection();
-        errors.push("This item is not exist!");
+        errors.push("item not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -98,7 +98,7 @@ async function updateInfo(item_id, title, price, photos, description) {
             return flag;
         })(checkItem.photos, photos)) {
         await collection.closeCollection();
-        errors.push("Item information not changed!");
+        errors.push("same");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -139,8 +139,8 @@ async function updateInfo(item_id, title, price, photos, description) {
 
 async function deleteItem(item_id) {
     let errors = [];
-    if (arguments.length != 1) errors.push("Item delete arguments is not correct.");
-    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
+    if (arguments.length != 1) errors.push("arguments");
+    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("item_id");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -149,13 +149,13 @@ async function deleteItem(item_id) {
     const checkItem = await itemCol.findOne({ "_id": item_id });
     if (checkItem == null) {
         await collection.closeCollection();
-        errors.push("This item is not exist!");
+        errors.push("item not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
     if (checkItem.status == "withdrawn") {
         await collection.closeCollection();
-        errors.push("This item has been withdrawn!");
+        errors.push("withdrawn");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -189,8 +189,8 @@ async function deleteItem(item_id) {
 
 async function findAll(account) {
     let errors = [];
-    if (arguments.length != 1) errors.push("Item findAll arguments is not correct.");
-    if (!(account = check(account, "account"))) errors.push("account is not valid!");
+    if (arguments.length != 1) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -199,7 +199,7 @@ async function findAll(account) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -221,8 +221,8 @@ async function findAll(account) {
 
 async function findOne(item_id) {
     let errors = [];
-    if (arguments.length != 1) errors.push("Item findOne arguments is not correct.");
-    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
+    if (arguments.length != 1) errors.push("arguments");
+    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("item_id");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -231,7 +231,7 @@ async function findOne(item_id) {
     const checkItem = await itemCol.findOne({ "_id": item_id });
     if (checkItem == null) {
         await collection.closeCollection();
-        errors.push("This item is not exist!");
+        errors.push("item not exist!");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -246,9 +246,9 @@ async function findOne(item_id) {
 
 async function search(keyword, account) {
     let errors = [];
-    if (arguments.length != 2) errors.push("Item search arguments is not correct.");
-    if (!(keyword = check(keyword, "keyword"))) errors.push("keyword is not valid!");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid.");
+    if (arguments.length != 2) errors.push("arguments");
+    if (!(keyword = check(keyword, "keyword"))) errors.push("keyword");
+    if (!(account = check(account, "account"))) errors.push("account");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -257,7 +257,7 @@ async function search(keyword, account) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -278,9 +278,9 @@ async function search(keyword, account) {
 
 async function addCart(account, item_id) {
     let errors = [];
-    if (arguments.length != 2) errors.push("User cart arguments is not correct!");
-    if (!(account = check(account, "account"))) errors.push("account is not valid!");
-    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
+    if (arguments.length != 2) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
+    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("item_id");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -289,7 +289,7 @@ async function addCart(account, item_id) {
     const checkItem = await itemCol.findOne({ "_id": item_id });
     if (checkItem == null) {
         await collection.closeCollection();
-        errors.push("This item is not exist!");
+        errors.push("item not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -298,14 +298,14 @@ async function addCart(account, item_id) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
     const checkAccountAndItem = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
     if (checkAccountAndItem != null) {
         await collection.closeCollection();
-        errors.push("This item has exist in the accout's cart!");
+        errors.push("item exist");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -332,9 +332,9 @@ async function addCart(account, item_id) {
 
 async function removeCart(account, item_id) {
     let errors = [];
-    if (arguments.length != 2) errors.push("User remove cart arguments is not correct!");
-    if (!(account = check(account, "account"))) errors.push("account is not valid!");
-    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("Item_id is not valid.");
+    if (arguments.length != 2) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
+    if (!(item_id = check(item_id, "id") ? (mongo.ObjectId.isValid(item_id) ? mongo.ObjectId(item_id) : false) : false)) errors.push("item_id");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -343,7 +343,7 @@ async function removeCart(account, item_id) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
@@ -352,21 +352,14 @@ async function removeCart(account, item_id) {
     const checkItem = await itemCol.findOne({ "_id": item_id });
     if (checkItem == null) {
         await collection.closeCollection();
-        errors.push("This item is not exist!");
+        errors.push("item not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
     const checkAccountAndItem = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
     if (checkAccountAndItem == null) {
         await collection.closeCollection();
-        errors.push("This item didn't exist in the accout's cart!");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    const item = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
-    if (item == null) {
-        await collection.closeCollection();
-        errors.push("User didn't have this item in cart!");
+        errors.push("item not have");
         return { "hasErrors": true, "errors": errors };
     }
 
