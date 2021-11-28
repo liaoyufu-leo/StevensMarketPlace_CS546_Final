@@ -13,9 +13,10 @@
             var input = $('#' + key + 'Input');
             if (!(inputs[key] = check(input.val(), key))) {
                 flag = false;
-                $('#' + key + 'Div').addClass("error");
+                input.addClass("is-invalid");
+                $('#' + key + 'ErrorDiv').text("Please provide a valid "+key+".");
             } else {
-                $('#' + key + 'Div').removeClass("error");
+                input.removeClass("is-invalid");
             }
         }
 
@@ -29,7 +30,7 @@
                     if (responseMessage.hasErrors) {
                         errors(responseMessage.errors, "login");
                     } else {
-                        window.location.href = "/stevensMarketPlace"; 
+                        window.location.href = "/stevensMarketPlace";
                     }
                 },
                 error: function (responseMessage) {

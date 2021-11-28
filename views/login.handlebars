@@ -1,7 +1,7 @@
 <div class="row">
 
   <div class="col-md-6 border-end">
-    <h2>Hello! <br> This is the Stevens MarketPlace</h2>
+    <h2 class="border-bottom">Hello! <br> This is the Stevens MarketPlace</h2>
     <p id="projectDescription">
       This website acts as a Marketplace for Stevens Institute of Technology. People at Stevens Institute of
       Technology
@@ -22,44 +22,41 @@
   <div class="col-md-6">
     <div class="container-fluid mt-3">
 
-      <h1>Login</h1>
+      <h1 class="row d-flex justify-content-center">Login</h1>
 
-      <form action="/login" method="POST" id="loginForm">
-        <div id="accountDiv">
-          <div class="row">
-            <label class="col-sm-2" id="accountLabel">Account</label>
-            <div class="col-sm-4">
-              <input class="col-sm-12" type="text" name="account" id="accountInput" />
-            </div>
-
-            <div class="col-sm-6 config">
-              *Must be stevens email!<br>
-              *Must have more than five prefix letters!
-            </div>
-          </div>
-          <div id="accountErrorDiv" hidden></div>
+      <form action="/user/login" method="POST" id="loginForm" class="needs-validation" novalidate>
+        <div id="accountDiv" class="form-outline mb-4">
+          <input type="text" name="account" id="accountInput" class="form-control" required />
+          <label class="form-label" id="accountLabel">Account</label>
+          <div id="accountErrorDiv" class="invalid-feedback"></div>
         </div>
 
-        <div id="passwordDiv">
-          <div class="row">
-            <label class="col-sm-2" id="passwordLabel">Password</label>
-            <div class="col-sm-4">
-              <input class="col-sm-12" type="password" name="password" id="passwordInput" />
-            </div>
-
-            <div class="col-sm-6 config">
-              *Must be more than 10 letters<br>*Must have at least one upper and lower letter!<br>
-              *Must have at least one special letter!
-            </div>
-          </div>
-          <div id="passwordErrorDiv" hidden></div>
+        <div id="passwordDiv" class="form-outline mb-4">
+          <input type="password" name="password" id="passwordInput" class="form-control" />
+          <label class="form-label" id="passwordLabel">Password</label>
+          <div id="passwordErrorDiv" class="invalid-feedback"></div>
         </div>
-        <button type="submit">login</button>
-        <br>
-        <span class="error" id="loginFormError"></span>
+
+        <!-- 2 column grid layout for inline styling -->
+        <div class="row mb-4">
+          <div class="col d-flex justify-content-center">
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
+          </div>
+
+          <div class="col justify-content-center">
+            <!-- Simple link -->
+            <a class="mb-4" href="/user/forgetPassword">Forgot password?</a>
+          </div>
+        </div>
+
+        <div id="loginFormErrorDiv" class="error"></div>
+
+        <!-- Register buttons -->
+        <div class="text-center">
+          <p>Not a member? <a href="/user/signup">Register</a></p>
+        </div>
       </form>
-
-      <a href="/user/signup">Need to register? Click here to sign-up</a><br>
     </div>
 
   </div>
