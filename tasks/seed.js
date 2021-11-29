@@ -108,17 +108,17 @@ async function itemSeed() {
 
     let account = "yliao10@stevens.edu";
     let name = [
-        "iphone1",
-        "iphone3",
-        "iphone4",
-        "iphone5",
-        "iphone6",
-        "iphone7",
-        "iphone8",
-        "iphone9",
-        "iphone10",
-        "iphone11",
-        "iphone12",
+        "iphone 1",
+        "iphone 3",
+        "iphone 4",
+        "iphone 5",
+        "iphone 6",
+        "iphone 7",
+        "iphone 8",
+        "iphone 9",
+        "iphone 10",
+        "iphone 11",
+        "iphone 12",
     ];
     let photo = [
         '1d4832eb46696de47a6347c7bd0648c1.jpg',
@@ -135,7 +135,7 @@ async function itemSeed() {
     ];
 
     for (let i = 0; i < name.length; i++) {
-        console.log(await item.create(account, name[i], i * 100 + 1, [photo[i]], name[i]));
+        console.log(await item.create(account, name[i], i * 100 + 1, [photo[i]], account + " " + name[i]));
     }
 
     let account2 = "ygandhi2@stevens.edu";
@@ -158,7 +158,7 @@ async function itemSeed() {
         'f2a7aee6dd075495119f00d08bf8b231.jpg'
     ];
     for (let i = 0; i < name2.length; i++) {
-        console.log(await item.create(account2, name2[i], i * 100 + 1, [photo2[i]], name2[i]));
+        console.log(await item.create(account2, name2[i], i * 100 + 1, [photo2[i]], account + " " + name2[i]));
     }
 
     const aimItem = (await item.findAll("ygandhi2@stevens.edu")).items[0];
@@ -178,5 +178,5 @@ async function transactionSeed() {
 }
 
 async function messageSeed() {
-    console.log(await message.send("yliao10@stevens.edu","ygandhi2@stevens.edu","This is the first message from seed!"))
+    console.log(await message.send("yliao10@stevens.edu", "ygandhi2@stevens.edu", "This is the first message from seed!"))
 }

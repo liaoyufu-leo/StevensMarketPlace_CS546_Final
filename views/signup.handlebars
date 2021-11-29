@@ -1,37 +1,37 @@
 <header>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <!-- Container wrapper -->
-      <div class="container">
-        <!-- Navbar brand -->
-        <a class="navbar-brand me-2" href="/">
-          <img src="/images/logo.png" height="20" alt="" loading="lazy" style="margin-top: -1px;" />
-        </a>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Container wrapper -->
+    <div class="container">
+      <!-- Navbar brand -->
+      <a class="navbar-brand me-2" href="/">
+        <img src="/images/logo.png" height="20" alt="" loading="lazy" style="margin-top: -1px;" />
+      </a>
 
-        <!-- Collapsible wrapper -->
-        <div class="collapse navbar-collapse" id="navbarButtonsExample">
-          <!-- Left links -->
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="/" style="color: var(--stevensRed); font-weight: bold;">StevensMarketPlace</a>
-            </li>
-          </ul>
-          <!-- Left links -->
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarButtonsExample">
+        <!-- Left links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/" style="color: var(--stevensRed); font-weight: bold;">StevensMarketPlace</a>
+          </li>
+        </ul>
+        <!-- Left links -->
 
-          <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center">
 
-            <a class="btn btn-dark px-3"
-              href="https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject" role="button">
-              <i class="fab fa-github"></i>
-            </a>
-          </div>
+          <a class="btn btn-dark px-3"
+            href="https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject" role="button">
+            <i class="fab fa-github"></i>
+          </a>
         </div>
-        <!-- Collapsible wrapper -->
       </div>
-      <!-- Container wrapper -->
-    </nav>
-    <!-- Navbar -->
-  </header>
+      <!-- Collapsible wrapper -->
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
+</header>
 
 <main class="container">
   <div class="row">
@@ -82,7 +82,7 @@
 
           <div class="row mb-4">
 
-            <div class="col d-flex justify-content-center">
+            <div class="col">
               <div id="streetDiv" class="form-outline">
                 <input type="text" name="street" id="streetInput" class="form-control" value="123 st." required />
                 <label class="form-label" id="streetLabel">street</label>
@@ -90,7 +90,7 @@
               </div>
             </div>
 
-            <div class="col d-flex justify-content-center">
+            <div class="col">
               <div id="aptDiv" class="form-outline">
                 <input type="text" name="apt" id="aptInput" class="form-control" value="Apt 123w" required />
                 <label class="form-label" id="aptLabel">apt</label>
@@ -207,33 +207,5 @@
   <!-- Copyright -->
 </footer>
 
-<script>
-  footerFix();
-
-  function footerFix() {
-
-    let windowHeight = window.innerHeight;
-    let main = document.querySelector('main');
-    let footer = document.querySelector('footer');
-    let mainRect = main.getBoundingClientRect(main), footerRect = footer.getBoundingClientRect(footer);
-
-    if (windowHeight <= mainRect.height + footerRect.height) {
-      footer.classList.remove("fixed-bottom");
-      footer.classList.add("bottom");
-    } else {
-      footer.classList.remove("bottom");
-      footer.classList.add("fixed-bottom");
-    }
-  }
-
-  let resizeTimer;
-  $(window).on('resize', function (e) {
-
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(footerFix(), 250);
-
-  });
-
-</script>
-
 <script src="/js/signup.js"></script>
+

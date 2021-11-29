@@ -154,6 +154,15 @@ function check(input, dataType) {
             input = input.toLowerCase();
             if (input.length > 100) return false;
 
+            input = ((input) => {
+                let arr = input.match(/[a-zA-Z0-9]+/g);
+                for (let i = 0; i < arr.length; i++) {
+                    arr[i] = arr[i].toLowerCase();
+                    arr[i] = arr[i][0].toUpperCase() + arr[i].slice(1);
+                }
+                return arr.join(" ");
+            })(input);
+
             return input;
         case "price":
             if (input == undefined) return false;
