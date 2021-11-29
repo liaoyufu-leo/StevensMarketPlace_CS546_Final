@@ -31,7 +31,7 @@ async function userSeed() {
 
     console.log(await user.create(
         "yliao10@stevens.edu",
-        "Aa!1234567",
+        "Lunatic3548!",
         "Yufu Liao",
         "male",
         {

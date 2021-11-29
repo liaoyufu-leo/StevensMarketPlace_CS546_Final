@@ -193,7 +193,6 @@ function check(input, dataType) {
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
             input = input.trim();
-            if (input.length == 0) return false;
 
             return input;
         case "payment":
