@@ -123,7 +123,8 @@ router.get('/getOne', async (req, res) => {
     res.status(200).json({ "title": "getOne" });
 });
 
-router.post('/addCart', async (req, res) => {
+router.get('/addCart/:item_id', async (req, res) => {
+    console.log(req.params.item_id);
     res.status(200).json({ "title": "addCart" });
 });
 

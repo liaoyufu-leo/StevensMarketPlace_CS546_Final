@@ -263,7 +263,12 @@ async function search(keyword, account) {
 
     const itemCol = await collection.getCollection('item');
 
-    const items = await itemCol.find({ "status": "selling", "seller": { $ne: account } }, { $text: { $search: keyword } }).toArray();
+    let items;
+    if (keyword != "") {
+        items = await itemCol.find({ $and: [{ "status": "selling" }, { "seller": { $ne: account } }], $text: { $search: keyword } }).toArray();
+    } else {
+        items = await itemCol.find({ $and: [{ "status": "selling" }, { "seller": { $ne: account } }] }).toArray();
+    }
 
     await collection.closeCollection();
 

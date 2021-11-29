@@ -45,6 +45,10 @@ app.use("*", (req, res, next) => {
     next();
 });
 
+app.get('/', (req, res, next) => {
+    res.render("stevensMarketPlace", { "title": "stevensMarketPlace" });
+});
+
 app.get('/stevensMarketPlace', (req, res, next) => {
     res.render("stevensMarketPlace", { "title": "stevensMarketPlace" });
 });
