@@ -247,7 +247,7 @@ async function findOne(item_id) {
 async function search(keyword, account) {
     let errors = [];
     if (arguments.length != 2) errors.push("arguments");
-    if (!(keyword = check(keyword, "keyword"))) errors.push("keyword");
+    if ((keyword = check(keyword, "keyword")) === false) errors.push("keyword");
     if (!(account = check(account, "account"))) errors.push("account");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };

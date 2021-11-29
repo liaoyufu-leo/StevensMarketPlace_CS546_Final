@@ -1,4 +1,39 @@
-<div class="container">
+<header>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!-- Container wrapper -->
+      <div class="container">
+        <!-- Navbar brand -->
+        <a class="navbar-brand me-2" href="/">
+          <img src="/images/logo.png" height="20" alt="" loading="lazy" style="margin-top: -1px;" />
+        </a>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+          <!-- Left links -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/" style="color: var(--stevensRed); font-weight: bold;">StevensMarketPlace</a>
+            </li>
+          </ul>
+          <!-- Left links -->
+
+          <div class="d-flex align-items-center">
+
+            <a class="btn btn-dark px-3"
+              href="https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject" role="button">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+        </div>
+        <!-- Collapsible wrapper -->
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+  </header>
+
+<main class="container">
   <div class="row">
 
     <div class="col-md-12">
@@ -36,7 +71,7 @@
             <input type="text" class="form-control" hidden value="   " />
             <select class="form-select border-0" name="gender" id="genderInput">
               <option value="male" selected>male</option>
-              <option value="femal">female</option>
+              <option value="female">female</option>
               <option value="other">other</option>
             </select>
             <label class="form-label" id="denderLabel">gender</label>
@@ -108,6 +143,7 @@
             <div class="text-center">
               <p>Already a member? <a href="/user/login">Login</a></p>
             </div>
+          </div>
         </form>
       </div>
 
@@ -115,6 +151,89 @@
 
   </div>
 
-</div>
+</main>
+
+<footer id="footer" class="text-white text-center text-lg-start"
+  style="background-color: var(--stevensRed);font-size: small;">
+  <!-- Grid container -->
+  <div class="container">
+    <!--Grid row-->
+    <div class="row">
+      <!--Grid column-->
+      <div class="col-md-6">
+        <h6 class="text-uppercase">Footer Content</h6>
+        <p>
+          Enjoy our market!
+        </p>
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-md-4 offset-md-2">
+        <h6 class="text-uppercase">Contributors Github</h6>
+
+        <ul class="list-unstyled mb-0">
+          <li>
+            <a href="https://github.com/adityajayadevan" class="text-white">Aditya Jayadevan Menon</a>
+          </li>
+          <li>
+            <a href="https://github.com/Balakishore18" class="text-white">Balakishore Kongara</a>
+          </li>
+          <li>
+            <a href="https://github.com/gandhiyaash" class="text-white">Yash Gandhi</a>
+          </li>
+          <li>
+            <a href="https://github.com/liaoyufu-leo" class="text-white">YuFu Liao</a>
+          </li>
+          <li>
+            <a href="https://github.com/venkatsaik" class="text-white">Venkat Sai Kusumurthy</a>
+          </li>
+        </ul>
+      </div>
+      <!--Grid column-->
+    </div>
+    <!--Grid row-->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center" style="background-color: var(--stevensRed);font-size: small;">
+    © 2021 Copyright:
+    <a class="text-white" href="https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject">Stevens
+      Institute of
+      Technology CS 546 Web Programming
+      Groupt 16</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+
+<script>
+  footerFix();
+
+  function footerFix() {
+
+    let windowHeight = window.innerHeight;
+    let main = document.querySelector('main');
+    let footer = document.querySelector('footer');
+    let mainRect = main.getBoundingClientRect(main), footerRect = footer.getBoundingClientRect(footer);
+
+    if (windowHeight <= mainRect.height + footerRect.height) {
+      footer.classList.remove("fixed-bottom");
+      footer.classList.add("bottom");
+    } else {
+      footer.classList.remove("bottom");
+      footer.classList.add("fixed-bottom");
+    }
+  }
+
+  let resizeTimer;
+  $(window).on('resize', function (e) {
+
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(footerFix(), 250);
+
+  });
+
+</script>
 
 <script src="/js/signup.js"></script>

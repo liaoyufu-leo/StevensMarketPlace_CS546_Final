@@ -74,6 +74,8 @@
             }
         }
         
+
+
         if (!checkAddress(inputs.city, inputs.state, inputs.zipCode)) {
             flag = false;
             let addressFormErrorDiv = $('#addressFormErrorDiv');
