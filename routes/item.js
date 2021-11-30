@@ -9,11 +9,18 @@ router.get('/getOne/:item_id', async (req, res) => {
     if (Object.keys(req.params).length != 1) errors.push("arguments");
     if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
 
-    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
-
+    if (errors.length > 0) {
+        res.status(200).json({ "hasErrors": true, "errors": errors });
+        return;
+    }
     try {
         const data = await item.findOne(item_id);
-        res.status(200).json(data);
+        if (data.hasErrors == true) {
+            res.status(404).render()
+        } else {
+            res.status(200).render("item", { "item": data.item });
+        }
+
     } catch (error) {
         res.status(500).send(error.message);
     }

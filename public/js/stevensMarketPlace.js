@@ -32,13 +32,21 @@ function search() {
               </div>
           
               <div class="card-body">
-                <h5 class="card-title">${element.title}</h5>
+                <div class="row">
+                  <h5 class="col-6 card-title">${element.title}</h5>
+                  <a class="col-6 text-end text-dark text-decoration-underline" href="/user/getOne/${element.seller}">${element.seller.slice(0, element.seller.lastIndexOf('@'))}</a>
+                </div>
+                
                 <p class="card-text"">
                   ${element.description}
                 </p>
               </div>
-              <div class="card-footer"  style="color: red; font-weight:bold;">
-                ${element.price}
+              <div class="card-footer">
+                <div class="row">
+                  <h5 class="col-6 text-danger fw-bold">$${element.price}</h5>
+                  <p class="col-6 text-end text-dark">${new Date(element.date).toISOString().split('T')[0]}</p>
+                </div>
+                
               </div>
             </div>
           </div>
