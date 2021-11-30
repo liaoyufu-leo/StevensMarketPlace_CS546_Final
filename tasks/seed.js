@@ -135,7 +135,7 @@ async function itemSeed() {
     ];
 
     for (let i = 0; i < name.length; i++) {
-        console.log(await item.create(account, name[i], i * 100 + 1, [photo[i]], account + " " + name[i]));
+        console.log(await item.create(account, name[i], i * 100 + 99, [photo[i]], account + " " + name[i]));
     }
 
     let account2 = "ygandhi2@stevens.edu";
@@ -158,7 +158,7 @@ async function itemSeed() {
         'f2a7aee6dd075495119f00d08bf8b231.jpg'
     ];
     for (let i = 0; i < name2.length; i++) {
-        console.log(await item.create(account2, name2[i], i * 100 + 1, [photo2[i]], account + " " + name2[i]));
+        console.log(await item.create(account2, name2[i], i * 100 + 99, [photo2[i]], account + " " + name2[i]));
     }
 
     const aimItem = (await item.findAll("ygandhi2@stevens.edu")).items[0];

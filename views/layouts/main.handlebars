@@ -30,36 +30,35 @@
   <script src="/js/errors.js"></script>
   <script src="/json/states.js"></script>
 
-</body>
+  <script>
+    if (document.querySelector('footer') != null) {
+      footerFix();
 
-<script>
-  if (document.querySelector('footer') != null) {
-    footerFix();
+      let resizeTimer;
+      $(window).on('resize', function (e) {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(footerFix(), 250);
 
-    let resizeTimer;
-    $(window).on('resize', function (e) {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(footerFix(), 250);
+      });
 
-    });
+      function footerFix() {
 
-    function footerFix() {
+        let windowHeight = window.innerHeight;
+        let header = document.querySelector('header');
+        let main = document.querySelector('main');
+        let footer = document.querySelector('footer');
+        let headerRect = header.getBoundingClientRect(header), mainRect = main.getBoundingClientRect(main), footerRect = footer.getBoundingClientRect(footer);
 
-      let windowHeight = window.innerHeight;
-      let header = document.querySelector('header');
-      let main = document.querySelector('main');
-      let footer = document.querySelector('footer');
-      let headerRect = header.getBoundingClientRect(header), mainRect = main.getBoundingClientRect(main), footerRect = footer.getBoundingClientRect(footer);
-
-      if (windowHeight <= headerRect.height + mainRect.height + footerRect.height) {
-        footer.classList.remove("fixed-bottom");
-        footer.classList.add("bottom");
-      } else {
-        footer.classList.remove("bottom");
-        footer.classList.add("fixed-bottom");
+        if (windowHeight <= headerRect.height + mainRect.height + footerRect.height) {
+          footer.classList.remove("fixed-bottom");
+          footer.classList.add("bottom");
+        } else {
+          footer.classList.remove("bottom");
+          footer.classList.add("fixed-bottom");
+        }
       }
     }
-  }
-</script>
+  </script>
+</body>
 
 </html>
