@@ -6,7 +6,7 @@ const { engine } = require('express-handlebars');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.engine('handlebars', engine({ "defaultLayout": "main" }));
+app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set("views", "./views");
 
@@ -19,7 +19,6 @@ app.use(
     })
 );
 
-console.log(__dirname);
 app.use(express.static(__dirname + '/public'));
 
 app.use("*", (req, res, next) => {
@@ -33,24 +32,34 @@ app.use("*", (req, res, next) => {
     next();
 });
 
-
-const userRoutes = require('./routes/user');
-app.use('/user', userRoutes);
-
 app.use("*", (req, res, next) => {
-    if (!req.session.user) {
-        req.method = "GET"
-        return res.render('login', { "title": "login" });
+
+    if (req.session.user &&
+        (req.originalUrl == '/user/login' ||
+            req.originalUrl == '/user/signup' ||
+            req.originalUrl == '/user/forgetPassword')
+    ) {
+        res.redirect("/");
     }
+    if (!req.session.user &&
+        req.originalUrl != '/user/login' &&
+        req.originalUrl != '/user/signup' &&
+        req.originalUrl != '/user/forgetPassword'
+    ) {
+        res.redirect("/user/login");
+    }
+
     next();
+
 });
 
 app.get('/', (req, res, next) => {
-    res.render("stevensMarketPlace", { "title": "stevensMarketPlace" });
+    req.url = "/stevensMarketPlace";
+    next();
 });
 
 app.get('/stevensMarketPlace', (req, res, next) => {
-    res.render("stevensMarketPlace", { "title": "stevensMarketPlace" });
+    res.render("stevensMarketPlace", { "title": "stevensMarketPlace", "layout": "main" });
 });
 
 configRoutes(app);

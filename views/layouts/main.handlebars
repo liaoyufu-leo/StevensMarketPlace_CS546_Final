@@ -2,64 +2,111 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{title}}</title>
-  <link rel="icon" href="/images/favicon.ico" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="icon" href="/images/favicon.ico" />
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <header>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <!-- Container wrapper -->
+            <div class="container-fluid">
 
-  {{{body}}}
+                <!-- Logo -->
+                <div class="d-flex align-items-center">
+                    <a class="navbar-brand mt-2 mt-lg-0" href="/">
+                        <img src="/images/logo.png" alt="StevensMarketPlace" height="30" loading="lazy" />
+                    </a>
+                </div>
 
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-  <!-- MDB -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.css" rel="stylesheet" />
-  <!-- MDB -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.js"></script>
+                <!-- Search -->
+                <div class="d-flex align-items-center">
+                    <form action="/item/search" method="GET" id="searchForm">
+                        <div class="input-group">
+                            <div class="form-outline">
+                                <input type="search" id="searchInput" class="form-control" />
+                                <label class="form-label">Search</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
-  <link rel='stylesheet' href='/css/main.css' />
-  <script src="/js/check.js"></script>
-  <script src="/js/errors.js"></script>
-  <script src="/json/states.js"></script>
+                <!-- Right elements -->
+                <div class="d-flex align-items-center">
+                    <!-- Icon -->
+
+                    <a class="text-reset me-3" href="#">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+
+                    <!-- Notifications -->
+                    <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="#" id="navbarDropdownMenuLink"
+                        role="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge rounded-pill badge-notification bg-danger"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="#">Pending Transactions</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Messages</a>
+                        </li>
+                    </ul>
+
+                    <!-- Avatar -->
+                    <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" role="button"
+                        data-mdb-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-alt"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="#">My profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">My Items</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Settings</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/user/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Right elements -->
+            </div>
+            <!-- Container wrapper -->
+        </nav>
+        <!-- Navbar -->
+    </header>
+
+    {{{body}}}
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.css" rel="stylesheet" />
+    <!-- MDB -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.js"></script>
+
+    <link rel='stylesheet' href='/css/main.css' />
+    <script src="/js/check.js"></script>
+    <script src="/js/errors.js"></script>
+    <script src="/json/states.js"></script>
 
 </body>
-
-<script>
-  if (document.querySelector('footer') != null) {
-    footerFix();
-
-    let resizeTimer;
-    $(window).on('resize', function (e) {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(footerFix(), 250);
-
-    });
-
-    function footerFix() {
-
-      let windowHeight = window.innerHeight;
-      let header = document.querySelector('header');
-      let main = document.querySelector('main');
-      let footer = document.querySelector('footer');
-      let headerRect = header.getBoundingClientRect(header), mainRect = main.getBoundingClientRect(main), footerRect = footer.getBoundingClientRect(footer);
-
-      if (windowHeight <= headerRect.height + mainRect.height + footerRect.height) {
-        footer.classList.remove("fixed-bottom");
-        footer.classList.add("bottom");
-      } else {
-        footer.classList.remove("bottom");
-        footer.classList.add("fixed-bottom");
-      }
-    }
-  }
-</script>
 
 </html>

@@ -4,13 +4,7 @@ const { check } = require("../public/js/check");
 const { user } = require("../data");
 
 router.get('/login', async (req, res) => {
-    if (req.session.user) {
-        req.method = "GET"
-        res.render("stevensMarketPlace", { "title": "stevensMarketPlace" })
-    } else {
-        res.status(200).render("login", { "title": "login" })
-    }
-
+    res.status(200).render("login", { "title": "login", "layout": "landing" });
 });
 
 router.post('/login', async (req, res) => {
@@ -26,6 +20,7 @@ router.post('/login', async (req, res) => {
 
     if (errors.length > 0) {
         res.status(200).json({ "hasErrors": true, "errors": errors });
+        return ;
     }
 
     try {
@@ -41,7 +36,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/signup', async (req, res) => {
-    res.status(200).render("signup", { "title": "signup" });
+    res.status(200).render("signup", { "title": "signup", "layout": "landing" });
 });
 
 router.post('/signup', async (req, res) => {
@@ -58,14 +53,17 @@ router.post('/signup', async (req, res) => {
     if (!(gender = check(req.body.gender, "gender"))) errors.push("gender");
     if (!(address = check(req.body.address, "address"))) errors.push("address");
 
-    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
-    
+    if (errors.length > 0) {
+        res.status(200).json({ "hasErrors": true, "errors": errors });
+        return ;
+    }
+
     try {
         const data = await user.create(account, password, nickname, gender, address);
-        
+
         if (data.hasErrors == false) {
             req.session.user = { "account": data.user.account };
-            
+
         }
         res.status(200).json(data);
     } catch (error) {
@@ -79,7 +77,7 @@ router.get('/logout', async (req, res) => {
 });
 
 router.get('/forgetPassword', async (req, res) => {
-    res.status(200).render('forgetPassword',{ "title": "updatePassword" });
+    res.status(200).render('forgetPassword', { "title": "updatePassword", "layout": "landing" });
 });
 
 router.post('/forgetPassword', async (req, res) => {
@@ -90,6 +88,7 @@ router.post('/forgetPassword', async (req, res) => {
 
     if (errors.length > 0) {
         res.status(200).json({ "hasErrors": true, "errors": errors });
+        return ;
     }
 
     try {
@@ -104,7 +103,7 @@ router.post('/forgetPassword', async (req, res) => {
 });
 
 router.get('/updatePassword', async (req, res) => {
-    res.status(200).render('forgetPassword',{ "title": "updatePassword" });
+    res.status(200).json({ "title": "updatePassword" });
 });
 
 router.post('/updatePassword', async (req, res) => {
@@ -124,7 +123,6 @@ router.get('/getOne', async (req, res) => {
 });
 
 router.get('/addCart/:item_id', async (req, res) => {
-    console.log(req.params.item_id);
     res.status(200).json({ "title": "addCart" });
 });
 
