@@ -1,6 +1,6 @@
 {
   "mongoConfig": {
-    "serverUrl": "mongodb://localhost:27017/",
+    "serverUrl": "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000",
     "database": "StevensMarketPlace_CS_546_Group16_FinalProject"
   }
 }
