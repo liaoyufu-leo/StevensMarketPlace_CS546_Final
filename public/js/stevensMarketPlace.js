@@ -45,11 +45,12 @@ function search() {
                 <div class="row">
                   <h5 class="col-6 text-danger fw-bold">$${element.price}</h5>
                   <p class="col-6 text-end text-dark">${new Date(element.date).toISOString().split('T')[0]}</p>
-                  <a href='cart' class="btn btn-danger" id="likeID">Add to cart</a>
-                  <a href='Buy' class="btn btn-danger" id="likeID">Buy</a>
-
-
+                  <a href="/user/addCart/${element._id}" class="btn btn-danger" id="likeID">Add to cart</a>
+                  
+                  
                 </div>
+
+                
                 
               </div>
             </div>
