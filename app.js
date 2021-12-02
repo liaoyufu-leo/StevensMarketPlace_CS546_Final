@@ -39,7 +39,8 @@ app.use("*", (req, res, next) => {
             req.originalUrl == '/user/signup' ||
             req.originalUrl == '/user/forgetPassword')
     ) {
-        res.redirect("/");
+        res.redirect("/stevensMarketPlace");
+        return;
     }
     if (!req.session.user &&
         req.originalUrl != '/user/login' &&
@@ -47,6 +48,7 @@ app.use("*", (req, res, next) => {
         req.originalUrl != '/user/forgetPassword'
     ) {
         res.redirect("/user/login");
+        return;
     }
 
     next();
@@ -54,8 +56,7 @@ app.use("*", (req, res, next) => {
 });
 
 app.get('/', (req, res, next) => {
-    req.url = "/stevensMarketPlace";
-    next();
+    res.redirect("/stevensMarketPlace");
 });
 
 app.get('/stevensMarketPlace', (req, res, next) => {

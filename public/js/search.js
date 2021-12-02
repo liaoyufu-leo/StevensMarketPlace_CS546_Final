@@ -1,17 +1,15 @@
 (function ($) {
 
-  search();
-
   $('#searchForm').submit(function (event) {
     event.preventDefault();
     search();
-
   });
 
 })(jQuery);
 
 
 function search() {
+
   let keyword = $('#searchInput').val();
   $('#content').html("");
   $.ajax({
@@ -23,9 +21,9 @@ function search() {
         $('#content').html($('#content').html() + `
           <div class="col-3">
             <div style="height:2rem"></div>
-            <div class="card border border-primary shadow-0 ">
+            <div class="card border border-primary shadow-0">
               <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                <img src="/images/${element.photos[0]}" class="img-fluid" style="height:10rem;"/>
+                <img src="/images/${element.photos[0]}" class="img-fluid" style="height:10rem;" alt="${element.description}"/>
                 <a href="/item/getOne/${element._id}">
                   <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
                 </a>
@@ -33,24 +31,23 @@ function search() {
           
               <div class="card-body">
                 <div class="row">
-                  <h5 class="col-6 card-title">${element.title}</h5>
-                  <a class="col-6 text-end text-dark text-decoration-underline" href="/user/getOne/${element.seller}">${element.seller.slice(0, element.seller.lastIndexOf('@'))}</a>
+                  <h5 class="card-title">${element.title}</h5>
+                </div>
+
+                <div class="row">
+                  <a class="text-dark text-decoration-underline" style="font-size:0.8rem; line-height: 0.5;" href="/user/getOne/${element.seller}">${element.seller.slice(0, element.seller.lastIndexOf('@'))}</a>
+                </div>
+
+                <div class="row">
+                <p class="card-text">${element.description}</p>
                 </div>
                 
-                <p class="card-text"">
-                  ${element.description}
-                </p>
               </div>
               <div class="card-footer">
                 <div class="row">
                   <h5 class="col-6 text-danger fw-bold">$${element.price}</h5>
-                  <p class="col-6 text-end text-dark">${new Date(element.date).toISOString().split('T')[0]}</p>
-                  <a href="/user/addCart/${element._id}" class="btn btn-danger" id="likeID">Add to cart</a>
-                  
-                  
+                  <p class="col-6 text-end text-dark">${new Date(element.date).toISOString().slice(5, 10)}</p>
                 </div>
-
-                
                 
               </div>
             </div>

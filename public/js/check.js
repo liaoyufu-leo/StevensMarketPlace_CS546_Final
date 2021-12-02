@@ -11,6 +11,7 @@ function check(input, dataType) {
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
             input = input.trim();
+            input = input.toLowerCase();
             if (input.length == 0) return false;
             if (! /^[0-9a-fA-F]{24}$/.test(input)) return false;
 
