@@ -306,14 +306,14 @@ async function addCart(account, item_id) {
         errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
-
+    
     const checkAccountAndItem = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
     if (checkAccountAndItem != null) {
         await collection.closeCollection();
         errors.push("item exist");
         return { "hasErrors": true, "errors": errors };
     }
-
+    console.log("aa")
     const updatedInfo = await userCol.updateOne({ "account": account }, { $push: { "cart": item_id } });
     if (updatedInfo.modifiedCount === 0) {
         await collection.closeCollection();
@@ -327,9 +327,9 @@ async function addCart(account, item_id) {
     }
 
     await collection.closeCollection();
-
+    
     updatedUser._id = updatedUser._id.toString();
-    for (let i = 0; i < updatedUser.cart.length; i++) {
+    for (let i = 0; i < updatedUser.cart.length(); i++) {
         updatedUser.cart[i] = updatedUser.cart[i].toString();
     }
     return { "hasErrors": false, "user": updatedUser };

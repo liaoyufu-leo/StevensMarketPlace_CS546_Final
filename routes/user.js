@@ -4,6 +4,7 @@ const { check } = require("../public/js/check");
 const { user } = require("../data");
 const { item} = require("../data");
 
+
 router.get('/login', async (req, res) => {
     res.status(200).render("login", { "title": "login", "layout": "landing" });
 });
@@ -139,13 +140,19 @@ router.get('/addCart/:item_id', async (req, res) => {
         res.status(200).json({ "hasErrors": true, "errors": errors });
         return;
     }
+    // console.log(req.session.user.account)
     try {
-        const data = await item.addCart(req.session.user.account, item_id);
+        const user = (await item.addCart(req.session.user.account, item_id)).user;
+        //console.log(user.cart)
+        let items =[];
+        for(let i=0;i<user.cart.lenght();i++){
+            items.push((await item.findOne(user.cart[i])).item);
+        }
         if (data.hasErrors == true) {
             res.status(404).render()
         } else {
             
-            res.status(200).render("cart", { "item": data.item });
+            res.status(200).render("cart", { "user": user,"items":items, "layout":"main"});
         }
 
     } catch (error) {

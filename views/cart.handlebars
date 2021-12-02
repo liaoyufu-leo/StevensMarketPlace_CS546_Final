@@ -2,8 +2,10 @@
   <h1 class="display-4">Hello {{user.account}}</h1>
   <p class="lead">You have this in your cart: </p>
 <ol>
-<li><img src="/images/{{item.photos.[0]}}" class="img-fluid" style="height:10rem;"/> </li>
-<p>{{item.description}}</p>
-<p> Price of the item: ${{item.price}}</p>
+
+{#each items}}
+<img scr="/images/{{this.photos.[0]}}" alt="{{this.description}}">
+<p> item: ${{this.title}}</p>
+{{/each}}
 </ol>
 </div>
