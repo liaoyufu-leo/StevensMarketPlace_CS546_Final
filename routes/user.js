@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check } = require("../public/js/check");
 const { user } = require("../data");
+const { item} = require("../data");
 
 router.get('/login', async (req, res) => {
     res.status(200).render("login", { "title": "login", "layout": "landing" });
@@ -130,7 +131,26 @@ router.get('/getOne/:account', async (req, res) => {
 });
 
 router.get('/addCart/:item_id', async (req, res) => {
-    res.status(200).json({ "title": "addCart" });
+    let errors = [];
+    if (Object.keys(req.params).length != 1) errors.push("arguments");
+    if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
+
+    if (errors.length > 0) {
+        res.status(200).json({ "hasErrors": true, "errors": errors });
+        return;
+    }
+    try {
+        const data = await item.addCart(req.session.user.account, item_id);
+        if (data.hasErrors == true) {
+            res.status(404).render()
+        } else {
+            
+            res.status(200).render("cart", { "item": data.item });
+        }
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 });
 
 router.post('/removeCart/:item_id', async (req, res) => {
