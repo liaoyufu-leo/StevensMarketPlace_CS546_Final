@@ -19,6 +19,7 @@
     });
 
     $('#forgetPasswordForm').submit(function (event) {
+        event.preventDefault();
 
         let passwordInput = $('#passwordInput');
         let passwordConfirmInput = $('#passwordConfirmInput');
@@ -33,9 +34,8 @@
             formError.html("Please input same password.");
             passwordConfirmInput.removeClass("is-valid");
             passwordConfirmInput.addClass("is-invalid");
-        }
-
-        event.preventDefault();
+            return ;
+        }    
 
         let inputs = {
             "account": "",
@@ -66,14 +66,16 @@
 
                 }),
                 success: function (responseMessage) {
-                    if (responseMessage.hasErrors) {
-                        errors(responseMessage.errors, "signup");
-                    } else {
-                        window.location.href = "/stevensMarketPlace";
-                    }
+                    window.location.href = "/stevensMarketPlace";
                 },
                 error: function (responseMessage) {
-                    alert(responseMessage.responseText);
+                    if (responseMessage.status == 400) {
+                        errors(responseMessage.responseJSON.errors, "forgetPassword");
+                    } else if (responseMessage.status == 500) {
+                        alert(responseMessage.responseText);
+                    } else {
+                        alert(responseMessage.responseText);
+                    }
                 }
             });
         }

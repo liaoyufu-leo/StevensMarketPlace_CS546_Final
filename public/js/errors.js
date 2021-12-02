@@ -43,6 +43,14 @@ function errors(inputs, formType) {
                     formError.html(formError.html() + element + ".<br>");
                     formError.show();
                     return;
+                case "same":
+                    switch (formType) {
+                        case "forgetPassword":
+                            formError.html(formError.html() + "New password is the same like your exist password, please use the password to login!" + ".<br>");
+                            formError.show();
+                            return;
+                    }
+
                 default:
                     return;
             }

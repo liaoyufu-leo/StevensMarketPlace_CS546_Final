@@ -14,7 +14,7 @@
             if (!(inputs[key] = check(input.val(), key))) {
                 flag = false;
                 input.addClass("is-invalid");
-                $('#' + key + 'ErrorDiv').text("Please provide a valid "+key+".");
+                $('#' + key + 'ErrorDiv').text("Please provide a valid " + key + ".");
             } else {
                 input.removeClass("is-invalid");
             }
@@ -27,14 +27,17 @@
                 contentType: 'application/json',
                 data: JSON.stringify(inputs),
                 success: function (responseMessage) {
-                    if (responseMessage.hasErrors) {
-                        errors(responseMessage.errors, "login");
-                    } else {
-                        window.location.href = "/stevensMarketPlace";
-                    }
+                    window.location.href = "/stevensMarketPlace";
                 },
                 error: function (responseMessage) {
-                    alert(responseMessage.responseText);
+                    if (responseMessage.status == 400) {
+                        errors(responseMessage.responseJSON.errors, "login");
+                    } else if (responseMessage.status == 500) {
+                        alert(responseMessage.responseText);
+                    } else {
+                        alert(responseMessage.responseText);
+                    }
+
                 }
             });
         }

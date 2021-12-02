@@ -231,7 +231,7 @@ async function findOne(item_id) {
     const checkItem = await itemCol.findOne({ "_id": item_id });
     if (checkItem == null) {
         await collection.closeCollection();
-        errors.push("item not exist!");
+        errors.push("item not exist");
         return { "hasErrors": true, "errors": errors };
     }
 

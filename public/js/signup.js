@@ -106,14 +106,16 @@
                     }
                 }),
                 success: function (responseMessage) {
-                    if (responseMessage.hasErrors) {
-                        errors(responseMessage.errors, "signup");
-                    } else {
-                        window.location.href = "/stevensMarketPlace";
-                    }
+                    window.location.href = "/stevensMarketPlace";
                 },
                 error: function (responseMessage) {
-                    alert(responseMessage.responseText);
+                    if (responseMessage.status == 400) {
+                        errors(responseMessage.responseJSON.errors, "signup");
+                    } else if (responseMessage.status == 500) {
+                        alert(responseMessage.responseText);
+                    } else {
+                        alert(responseMessage.responseText);
+                    }
                 }
             });
         }
