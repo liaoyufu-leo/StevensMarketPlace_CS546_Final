@@ -1,11 +1,10 @@
 <div class="jumbotron">
   <h1 class="display-4">Hello {{user.account}}</h1>
   <p class="lead">You have this in your cart: </p>
-<ol>
-
-{#each items}}
-<img scr="/images/{{this.photos.[0]}}" alt="{{this.description}}">
-<p> item: ${{this.title}}</p>
-{{/each}}
-</ol>
+  <ol>
+    {{#each items}}
+    <img src="/images/{{this.photos.[0]}}" alt="{{this.description}}">
+    <p> item: {{this.title}}</p>
+    {{/each}}
+  </ol>
 </div>

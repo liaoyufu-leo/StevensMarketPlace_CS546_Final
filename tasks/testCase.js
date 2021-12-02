@@ -23,7 +23,7 @@ async function main() {
     // await itemFindAllTest();
     // await itemFindOneTest();
     // await itemSearchTest();
-    // await itemAddCartTest();
+    await itemAddCartTest();
     // await itemRemoveCartTest();
 
     // // comment function test case
@@ -37,7 +37,7 @@ async function main() {
     // // message function test case
     // await messageSendTest();
     // await messageGetAllTest();
-    await messageGetOneTest();
+    // await messageGetOneTest();
 }
 
 async function messageSendTest() {
