@@ -20,6 +20,7 @@ async function create(account, password, nickname, gender, address) {
     if (!(nickname = check(nickname, "nickname"))) errors.push("nickname");
     if (!(gender = check(gender, "gender"))) errors.push("gender");
     if (!(address = check(address, "address"))) errors.push("address");
+    
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
