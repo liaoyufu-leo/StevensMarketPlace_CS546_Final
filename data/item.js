@@ -310,7 +310,7 @@ async function addCart(account, item_id) {
     const checkAccountAndItem = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
     if (checkAccountAndItem != null) {
         await collection.closeCollection();
-        errors.push("item exist");
+        errors.push("The item selected already exits in your cart");
         return { "hasErrors": true, "errors": errors };
     }
     
