@@ -1,10 +1,25 @@
 <div class="jumbotron">
-  <h1 class="display-4">Hello {{user.account}}</h1>
-  <p class="lead">You have this in your cart: </p>
+  <h1 class="display-4">Hello {{user.account}} </h1>
+  <p class="lead">You have these items in your cart: </p>
   <ol>
     {{#each items}}
-    <img src="/images/{{this.photos.[0]}}" alt="{{this.description}}">
-    <p> item: {{this.title}}</p>
+   <ol>  
+     <img src="/images/{{this.photos.[0]}}" alt="{{this.description}}"> 
+    <p> Item: {{this.title}}</p>
+    <p> Price: ${{this.price}}</p>
+    <a  class="btn btn-danger">Remove from cart</a> 
+    </ol> 
+  </div>
     {{/each}}
   </ol>
+</div>
+
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+  <div class="btn-group mr-2" role="group" aria-label="First group">
+    <a href="/stevensMarketPlace" class="btn btn-danger">Continue Shopping</a> 
+  </div>
+  <div class="btn-group mr-2" role="group" aria-label="Second group">
+    <a href="/checkout" class="btn btn-danger">Proceed to Checkout</a> 
+
+  </div>
 </div>
