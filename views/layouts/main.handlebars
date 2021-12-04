@@ -10,110 +10,110 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
-    <header>
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <!-- Container wrapper -->
-            <div class="container-fluid">
+    <header class="py-3 mb-3 border-bottom">
+        <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+            <div class="d-flex flex-wrap align-items-center justify-content-start justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center  text-dark text-decoration-none">
+                    <img src="/images/logo.png" alt="Stevens MarketPlace Logo" width="auto" height="25">
+                </a>
 
-                <!-- Logo -->
-                <div class="d-flex align-items-center">
-                    <a class="navbar-brand mt-2 mt-lg-0" href="/">
-                        <img src="/images/logo.png" alt="StevensMarketPlace" height="30" loading="lazy" />
-                    </a>
+                <div class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
+                    <a href="/" class="nav-link px-2 fw-bold" style="color: var(--stevensRed);">Stevens MarketPlace</a>
                 </div>
+            </div>
+            <div class="row">
 
-                <!-- Search -->
-                <div class="d-flex align-items-center">
-                    <form action="/item/search" method="GET" id="searchForm">
-                        <div class="input-group">
-                            <div class="form-outline">
-                                <input type="search" id="searchInput" class="form-control" />
-                                <label class="form-label">Search</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
+                <div class="col-6">
+                    <form id="searchForm" class="w-100">
+                        <input id="searchInput" type="search" class="form-control" placeholder="Search..."
+                            aria-label="Search">
+                        <button type="submit" hidden></button>
                     </form>
                 </div>
 
-                <!-- Right elements -->
-                <div class="d-flex align-items-center">
-                    <!-- Icon -->
+                <div class="col-6 d-flex justify-content-end">
 
-                    <a class="text-reset me-3" href="#">
-                        <i class="fas fa-shopping-cart"></i>
-                    </a>
-
-                    <!-- Notifications -->
-                    <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="#" id="navbarDropdownMenuLink"
-                        role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge rounded-pill badge-notification bg-danger"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                    <ul class="nav col-12 col-md-auto">
                         <li>
-                            <a class="dropdown-item" href="#">Pending Transactions</a>
+                            <a href="#" class="nav-link px-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                    fill="#000000">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                                </svg>
+                            </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Messages</a>
+                            <a href="/user/cart" class="nav-link px-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                    fill="#000000">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                                </svg>
+                            </a>
                         </li>
+                        <li>
+                            <a href="#" class="nav-link px-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                    fill="#000000">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
+                                </svg>
+                            </a>
+                        </li>
+
                     </ul>
+                    <div class="d-flex flex-wrap align-items-center justify-content-start justify-content-lg-start">
+                        <div class="align-items-center flex-shrink-0 dropdown">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
+                                id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                                    fill="#000000">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                                </svg>
+                            </a>
+                            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2" style="">
+                                <li><a class="dropdown-item" href="/myprofile">My Profile</a></li>
+                                <li><a class="dropdown-item" href="#">My items</a></li>
+                                <li><a class="dropdown-item" href="#">Setting</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/user/logout">Sign out</a></li>
+                            </ul>
+                        </div>
+                    </div>
 
-                    <!-- Avatar -->
-                    <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" role="button"
-                        data-mdb-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-alt"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                        <li>
-                            <a class="dropdown-item" href="/myprofile">My profile</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">My Items</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Settings</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/user/logout">Logout</a>
-                        </li>
-                    </ul>
                 </div>
-                <!-- Right elements -->
             </div>
-            <!-- Container wrapper -->
-        </nav>
-        <!-- Navbar -->
+
+
+
+        </div>
     </header>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
     <link rel='stylesheet' href='/css/main.css' />
+
     <script src="/js/check.js"></script>
     <script src="/js/errors.js"></script>
     <script src="/json/states.js"></script>
     <script src="/js/search.js"></script>
 
 
-    <main class="container">
-        <div id="content" class="row">
-            {{{body}}}
-        </div>
-    </main>
-
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.css" rel="stylesheet" />
-    <!-- MDB -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.js"></script>
-
+    {{{body}}}
 
 </body>
 

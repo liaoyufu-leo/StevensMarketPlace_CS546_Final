@@ -4,114 +4,167 @@
     <div class="col-md-12">
       <div class="container-fluid col-md-6 mt-3">
 
-        <h1 class="row d-flex justify-content-center">Signup</h1>
 
-        <form action="/user/signup" method="POST" id="signupForm" class="needs-validation" novalidate>
-          <div id="accountDiv" class="form-outline mb-4">
-            <input type="text" name="account" id="accountInput" class="form-control" required />
-            <label class="form-label" id="accountLabel">account</label>
-            <div id="accountErrorDiv" class="invalid-feedback"></div>
+        <form id="signupForm" class="needs-validation" novalidate>
+
+          <h1 class="row d-flex justify-content-center mb-3">Signup</h1>
+
+          <div class="form-floating mb-2">
+            <input type="text" class="form-control" id="accountInput" placeholder="xxxxx@stevens.edu">
+            <label for="floatingInput">Account</label>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            <div class="invalid-feedback">
+              Account must be like "...@stevens.edu"!
+            </div>
           </div>
 
-          <div id="nicknameDiv" class="form-outline mb-4">
-            <input type="text" name="nickname" id="nicknameInput" class="form-control" required />
-            <label class="form-label" id="nicknameLabel">nickname</label>
-            <div id="nicknameErrorDiv" class="invalid-feedback"></div>
+          <div class="form-floating mb-2">
+            <input type="text" class="form-control" id="nicknameInput" placeholder="xxxxx@stevens.edu">
+            <label for="floatingInput">Nickname</label>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            <div class="invalid-feedback">
+              Nickname should not be empty!
+            </div>
           </div>
 
-          <div id="passwordDiv" class="form-outline mb-4">
-            <input type="password" name="password" id="passwordInput" class="form-control" />
-            <label class="form-label" id="passwordLabel">password</label>
-            <div id="passwordErrorDiv" class="invalid-feedback"></div>
+          <div class="form-floating mb-2">
+            <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            <div class="invalid-feedback">
+              Password must be more than 10 letters, and have at least one upper lower number and specific letters!
+            </div>
           </div>
 
-          <div id="passwordConfirmDiv" class="form-outline mb-4">
-            <input type="password" name="passwordConfirm" id="passwordConfirmInput" class="form-control" />
-            <label class="form-label" id="passwordConfirmLabel">confirm password</label>
-            <div id="passwordConfirmCorrectDiv" class="valid-feedback">Same!</div>
-            <div id="passwordConfirmErrorDiv" class="invalid-feedback"></div>
+          <div class="form-floating mb-2">
+            <input type="password" class="form-control" id="passwordConfirmInput" placeholder="Password">
+            <label for="floatingPassword">Confirm Password</label>
+            <div class="valid-feedback">
+              Same!
+            </div>
+            <div class="invalid-feedback">
+              Password should be same!
+            </div>
           </div>
 
-          <div id="genderDiv" class="form-outline mb-4">
-            <input type="text" class="form-control" hidden value="   " />
-            <select class="form-select border-0" name="gender" id="genderInput">
+          <div class="form-floating mb-2">
+            <input type="password" class="form-control" placeholder="Password" value="   " hidden>
+            <label for="floatingInput">Gender</label>
+            <select class="form-select border-1" name="gender" id="genderInput">
               <option value="male" selected>male</option>
               <option value="female">female</option>
               <option value="other">other</option>
             </select>
-            <label class="form-label" id="denderLabel">gender</label>
-            <div id="genderErrorDiv" class="invalid-feedback"></div>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            <div class="invalid-feedback">
+              Gender should be like male/female/other!
+            </div>
           </div>
 
           <p>Address</p>
-         
+
+
+          <div class="row mb-4">
+
+
+            <div class="col">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="streetInput" placeholder="123 st." value="123 st.">
+                <label for="floatingInput">Street</label>
+                <div class="valid-feedback">
+                  Same!
+                </div>
+                <div class="invalid-feedback">
+                  Street should not be empty!
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="aptInput" placeholder="123w" value="123w">
+                <label for="floatingInput">Apt</label>
+                <div class="valid-feedback">
+                  Same!
+                </div>
+                <div class="invalid-feedback">
+                  Apt should not be empty!
+                </div>
+              </div>
+            </div>
+
+          </div>
 
           <div class="row mb-4">
 
             <div class="col">
-              <div id="streetDiv" class="form-outline">
-                <input type="text" name="street" id="streetInput" class="form-control" value="123 st." required />          
-                
-                <label class="form-label" id="streetLabel">street</label>
-                <div id="streetErrorDiv" class="invalid-feedback margin-auto"></div>
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="cityInput" placeholder="Hoboken" value="Hoboken">
+                <label for="floatingInput">City</label>
+                <div class="valid-feedback">
+                  Same!
+                </div>
+                <div class="invalid-feedback">
+                  City should not be empty!
+                </div>
               </div>
             </div>
 
             <div class="col">
-              <div id="aptDiv" class="form-outline">
-                <input type="text" name="apt" id="aptInput" class="form-control" value="Apt 123w" required />
-                <label class="form-label" id="aptLabel">apt</label>
-                <div id="aptErrorDiv" class="invalid-feedback"></div>
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="stateInput" placeholder="New Jersey" value="New Jersey">
+                <label for="floatingInput">State</label>
+                <div class="valid-feedback">
+                  Same!
+                </div>
+                <div class="invalid-feedback">
+                  City should not be empty!
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="zipCodeInput" placeholder="07030" value="07030">
+                <label for="floatingInput">ZipCode</label>
+                <div class="valid-feedback">
+                  Same!
+                </div>
+                <div class="invalid-feedback">
+                  City should not be empty!
+                </div>
               </div>
             </div>
 
           </div>
 
-          <div class="row mb-4">
+          <div class="error md-4" style="visibility: hidden;" id="addressFormErrorDiv">The relationship of city/state/zipCode is not correct!</div>
 
-            <div class="col d-flex justify-content-center">
-              <div id="cityDiv" class="form-outline">
-                <input type="text" name="city" id="cityInput" class="form-control" value="Hoboken" required />
-                <label class="form-label" id="cityLabel">city</label>
-                <div id="cityErrorDiv" class="invalid-feedback"></div>
-              </div>
-            </div>
-
-            <div class="col d-flex justify-content-center">
-              <div id="stateDiv" class="form-outline">
-                <input type="text" name="state" id="stateInput" class="form-control" value="New Jersey" required />
-                <label class="form-label" id="stateLabel">state</label>
-                <div id="stateErrorDiv" class="invalid-feedback"></div>
-              </div>
-            </div>
-
-            <div class="col d-flex justify-content-center">
-              <div id="zipCodeDiv" class="form-outline">
-                <input type="text" name="zipCode" id="zipCodeInput" class="form-control" value="07030" required />
-                <label class="form-label" id="zipCodeLabel">zipCode</label>
-                <div id="zipCodeErrorDiv" class="invalid-feedback"></div>
-              </div>
+          <div class="row d-flex justify-content-center">
+            <div class="col-6 d-flex justify-content-center">
+              <button class="col-6 btn btn-primary" type="submit">
+                SignUp
+              </button>
             </div>
 
           </div>
 
-          <div id="addressFormErrorDiv" class="error"></div>
+          <div id="signupFormErrorDiv" class="error" style="visibility: hidden;"></div>
 
-          <!-- 2 column grid layout for inline styling -->
-          <div class="row mb-4">
-            <div class="col d-flex justify-content-center">
-              <!-- Submit button -->
-              <button type="submit" class="btn btn-primary btn-block mb-4">signup</button>
-            </div>
-
-            <div id="signupFormErrorDiv" class="error row d-flex justify-content-center"></div>
-
-            <!-- Register buttons -->
-            <div class="text-center">
-              <p>Already a member? <a href="/user/login">Login</a></p>
-            </div>
-          </div>
         </form>
+        
+        <div class="text-center mt-3">
+          <p>Already a member? <a href="/user/login">Login</a></p>
+        </div>
+
       </div>
 
     </div>

@@ -1,53 +1,62 @@
 function errors(inputs, formType) {
     (function ($) {
-
         var formError = $('#' + formType + 'FormErrorDiv');
-        formError.html("");
-        formError.hide();
+        formError.html();
+        formError.css("visibility", "visiable");
 
         inputs.forEach(element => {
             switch (element) {
                 case "account":
                     $('#' + element + 'Input').addClass("is-invalid");
-                    $('#' + element + 'ErrorDiv').html("Please provide a valid " + element + ".");
                     return;
                 case "password":
                     $('#' + element + 'Input').addClass("is-invalid");
-                    $('#' + element + 'ErrorDiv').html("Please provide a valid " + element + ".");
                     return;
                 case "nickname":
                     $('#' + element + 'Input').addClass("is-invalid");
-                    $('#' + element + 'ErrorDiv').html("Please provide a valid " + element + ".");
                     return;
                 case "gender":
                     $('#' + element + 'Input').addClass("is-invalid");
-                    $('#' + element + 'ErrorDiv').html("Please provide a valid " + element + ".");
+                    return;
+                case "street":
+                    $('#' + element + 'Input').addClass("is-invalid");
+                    return;
+                case "apt":
+                    $('#' + element + 'Input').addClass("is-invalid");
+                    return;
+                case "city":
+                    $('#' + element + 'Input').addClass("is-invalid");
+                    return;
+                case "state":
+                    $('#' + element + 'Input').addClass("is-invalid");
+                    return;
+                case "zipCode":
+                    $('#' + element + 'Input').addClass("is-invalid");
                     return;
                 case "address":
-                    $('#' + element + 'FormErrorDiv').html("Please provide a valid " + element + ".");
+                    $('#' + element + 'formError').css("visibility", "visible");
                     return;
                 case "arguments":
-                    let addressFormErrorDiv = $('#addressFormErrorDiv');
-                    addressFormErrorDiv.html("The relationship of city/state/zipCode is not correct!");
-                    addressFormErrorDiv.show();
+                    formError.html("The all arguments of the form are not provided!<br>");
+                    formError.css("visibility", "visible");
                     return;
                 case "account not exist":
-                    formError.html(formError.html() + element + ".<br>");
-                    formError.show();
+                    formError.html(formError.html() + element + "!<br>");
+                    formError.css("visibility", "visible");
                     return;
                 case "account exist":
-                    formError.html(formError.html() + element + ".<br>");
-                    formError.show();
+                    formError.html(formError.html() + element + ", please change to another stevens email!<br>");
+                    formError.css("visibility", "visible");
                     return;
                 case "password not correct":
-                    formError.html(formError.html() + element + ".<br>");
-                    formError.show();
+                    formError.html(formError.html() + element + "!<br>");
+                    formError.css("visibility", "visible");
                     return;
                 case "same":
                     switch (formType) {
                         case "forgetPassword":
-                            formError.html(formError.html() + "New password is the same like your exist password, please use the password to login!" + ".<br>");
-                            formError.show();
+                            formError.html(formError.html() + "New password is the same like your exist password, please use the password to login!" + "!<br>");
+                            formError.css("visibility", "visible");
                             return;
                     }
 
