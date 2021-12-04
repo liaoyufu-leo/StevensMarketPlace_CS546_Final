@@ -145,7 +145,7 @@ router.get('/addCart/:item_id', async (req, res) => {
     try {
         result = (await item.addCart(req.session.user.account, item_id));
         if (result.hasErrors) {
-            res.status(404).render("error",{"title":"item had exist", "layout":"main","message":"You have already added the item in your cart!"});
+            res.status(404).json(result);
             return;
         }
     } catch (error) {
