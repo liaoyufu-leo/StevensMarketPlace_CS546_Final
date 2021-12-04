@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require("../public/js/check");
+const { user } = require("../data");
 const { item } = require("../data");
 
 router.get('/getOne/:item_id', async (req, res) => {
@@ -20,7 +21,11 @@ router.get('/getOne/:item_id', async (req, res) => {
         if (data.hasErrors == true) {
             res.status(404).render('error',{ "title": "404 not found", "layout": "main", "message": "the item_id is not exist" });
         } else {
-            res.status(200).render("item", { "item": data.item, "layout": "main", "title":"item"});
+            const data2 = await user.findOne(req.session.user.account);
+            let exist = false;
+            // console.log(data2)
+            if(data2.user.cart.includes(data.item._id)) exist = true;
+            res.status(200).render("item", { "item": data.item, "exist":exist, "layout": "main", "title":"item"});
         }
 
     } catch (error) {
