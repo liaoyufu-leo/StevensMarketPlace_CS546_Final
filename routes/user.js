@@ -49,7 +49,7 @@ router.post('/signup', async (req, res) => {
     // res.status(500).send("something wrong");
     // res.status(400).json({ "hasErrors": true, "errors": [ "account", "password","arguments","account not exist","password not correct"] });
     // req.session.user = { "account": "123" };
-    // res.status(200).json({ "message": "login success" });
+    // res.status(200).json({ "message": "signup success" });
     // return;
 
     let errors = [];
@@ -137,34 +137,52 @@ router.get('/addCart/:item_id', async (req, res) => {
     if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
 
     if (errors.length > 0) {
-        res.status(200).json({ "hasErrors": true, "errors": errors });
+        res.status(400).json({ "hasErrors": true, "errors": errors });
         return;
     }
 
-    let result;
     try {
-        result = (await item.addCart(req.session.user.account, item_id));
+        const result = (await item.addCart(req.session.user.account, item_id));
         if (result.hasErrors) {
             res.status(404).json(result);
-            return;
+        } else {
+            res.status(200).json(result);
         }
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-
-    try {
-        let items = [];
-        for (let i = 0; i < result.user.cart.length; i++) {
-            items.push((await item.findOne(result.user.cart[i])).item);
-        }
-        res.status(200).render("cart", { "user": user, "items": items, "layout": "main" });
     } catch (error) {
         res.status(500).send(error.message);
     }
 });
 
-router.post('/removeCart/:item_id', async (req, res) => {
-    res.status(200).json({ "title": "addCart" });
+router.get('/removeCart/:item_id', async (req, res) => {
+    let errors = [];
+    if (Object.keys(req.params).length != 1) errors.push("arguments");
+    if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
+
+    if (errors.length > 0) {
+        res.status(400).json({ "hasErrors": true, "errors": errors });
+        return;
+    }
+
+    try {
+        const result = (await item.removeCart(req.session.user.account, item_id));
+        if (result.hasErrors) {
+            res.status(404).json(result);
+        } else {
+            res.status(200).json(result);
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+router.get('/cart', async (req, res) => {
+
+    const userData = (await user.findOne(req.session.user.account)).user;
+    let items = [];
+    for (let i = 0; i < userData.cart.length; i++) {
+        items.push((await item.findOne(userData.cart[i])).item)
+    }
+    res.status(200).render("cart",{"items":items,"title":"cart","layout":"main"});
 });
 
 module.exports = router;

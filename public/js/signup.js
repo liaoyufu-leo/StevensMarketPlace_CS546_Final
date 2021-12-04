@@ -18,13 +18,9 @@
         let passwordConfirmInput = $('#passwordConfirmInput');
 
         if (passwordInput.val() == passwordConfirmInput.val()) {
-            let formError = $('#passwordConfirmErrorDiv');
-            formError.html("");
             passwordConfirmInput.removeClass("is-invalid");
             passwordConfirmInput.addClass("is-valid");
         } else {
-            let formError = $('#passwordConfirmErrorDiv');
-            formError.html("Please input same password");
             passwordConfirmInput.removeClass("is-valid");
             passwordConfirmInput.addClass("is-invalid");
         }
@@ -63,28 +59,24 @@
 
         let flag = true;
 
-        for (let key in inputs) {
-            let input = $('#' + key + 'Input');
+        for (var key in inputs) {
+            var input = $('#' + key + 'Input');
             if (!(inputs[key] = check(input.val(), key))) {
                 flag = false;
+                input.removeClass("is-valid");
                 input.addClass("is-invalid");
-                $('#' + key + 'ErrorDiv').text("Please provide a valid " + key + ".");
             } else {
                 input.removeClass("is-invalid");
+                input.addClass("is-valid");
             }
         }
-        
 
-
+        let addressFormErrorDiv = $('#addressFormErrorDiv');
         if (!checkAddress(inputs.city, inputs.state, inputs.zipCode)) {
             flag = false;
-            let addressFormErrorDiv = $('#addressFormErrorDiv');
-            addressFormErrorDiv.html("The relationship of city/state/zipCode is not correct!");
-            addressFormErrorDiv.show();
+            addressFormErrorDiv.css("visibility", "visible");
         } else {
-            let addressFormErrorDiv = $('#addressFormErrorDiv');
-            addressFormErrorDiv.html();
-            addressFormErrorDiv.hide();
+            addressFormErrorDiv.css("visibility", "hidden");
         }
 
         if (flag == true) {
