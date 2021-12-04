@@ -6,17 +6,18 @@
         event.preventDefault();
 
         var inputs = { "account": "", "password": "" };
-
+        
         var flag = true;
 
         for (var key in inputs) {
             var input = $('#' + key + 'Input');
             if (!(inputs[key] = check(input.val(), key))) {
                 flag = false;
+                input.removeClass("is-valid");
                 input.addClass("is-invalid");
-                $('#' + key + 'ErrorDiv').text("Please provide a valid " + key + ".");
             } else {
                 input.removeClass("is-invalid");
+                input.addClass("is-valid");
             }
         }
 
