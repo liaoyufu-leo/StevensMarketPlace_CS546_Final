@@ -60,3 +60,5 @@ function removeCart(element, item_id) {
         }
     });
 }
+
+// js  item //
