@@ -60,7 +60,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/stevensMarketPlace', (req, res, next) => {
-    res.render("stevensMarketPlace", { "title": "stevensMarketPlace", "layout": "main" });
+    res.render("main/stevensMarketPlace", { "title": "stevensMarketPlace", "layout": "main" });
 });
 
 configRoutes(app);

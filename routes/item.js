@@ -25,7 +25,7 @@ router.get('/getOne/:item_id', async (req, res) => {
             let exist = false;
             // console.log(data2)
             if(data2.user.cart.includes(data.item._id)) exist = true;
-            res.status(200).render("item", { "item": data.item, "exist":exist, "layout": "main", "title":"item"});
+            res.status(200).render("main/item", { "item": data.item, "exist":exist, "layout": "main", "title":"item"});
         }
 
     } catch (error) {

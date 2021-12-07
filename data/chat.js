@@ -31,64 +31,66 @@ async function send(sender, receiver, content) {
     const checkAccount2 = await userCol.findOne({ "account": receiver });
     if (checkAccount2 == null) {
         await collection.closeCollection();
-        errors.push("receiver not exist!");
+        errors.push("receiver not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
-    const messageCol = await collection.getCollection('message');
+    const chatCol = await collection.getCollection('chat');
 
-    const checkMessage = await messageCol.findOne({ "users": { $in: [sender, receiver] } });
+    const checkchat = await chatCol.findOne({ "users": { $all: [sender, receiver] } });
+
     let message = {
         "sender": sender,
         "date": new Date(),
         "message": content
     };
-
-    if (checkMessage == undefined) {
-        const updatedInfo = await messageCol.insertOne({
+    console.log("chech status")
+    console.log(checkchat)
+    if (checkchat == undefined) {
+        const updatedInfo = await chatCol.insertOne({
             "users": [sender, receiver],
             "messages": [message]
         });
         if (updatedInfo.modifiedCount === 0) {
             await collection.closeCollection();
-            throw "Can't create message in mongodb, something went wrong, please try again!";
+            throw "Can't create chat in mongodb, something went wrong, please try again!";
         }
 
-        const insertedMessage = await messageCol.findOne({ "users": { $in: [sender, receiver] } });
-        if (insertedMessage === null) {
+        const insertedChat = await chatCol.findOne({ "users": { $all: [sender, receiver] } });
+        if (insertedChat === null) {
             await collection.closeCollection();
-            throw "Can't find created message in mongodb, something went wrong! Please try again!";
+            throw "Can't find created chat in mongodb, something went wrong! Please try again!";
         }
 
         await collection.closeCollection();
 
-        insertedMessage._id = insertedMessage._id.toString();
-        return { "hasErrors": false, "message": insertedMessage };
+        insertedChat._id = insertedChat._id.toString();
+        return { "hasErrors": false, "chat": insertedChat };
     } else {
-        const updatedInfo = await messageCol.updateOne({ "users": { $in: [sender, receiver] } }, { $push: { "messages": message } });
+        const updatedInfo = await chatCol.updateOne({ "users": { $all: [sender, receiver] } }, { $push: { "messages": message } });
         if (updatedInfo.modifiedCount === 0) {
             await collection.closeCollection();
             throw "Can't insert message in mongodb, something went wrong, please try again!";
         }
 
-        const insertedMessage = await messageCol.findOne({ "users": { $in: [sender, receiver] } });
-        if (insertedMessage === null) {
+        const insertedChat = await chatCol.findOne({ "users": { $all: [sender, receiver] } });
+        if (insertedChat === null) {
             await collection.closeCollection();
             throw "Can't find created message in mongodb, something went wrong! Please try again!";
         }
 
         await collection.closeCollection();
 
-        insertedMessage._id = insertedMessage._id.toString();
-        return { "hasErrors": false, "message": insertedMessage };
+        insertedChat._id = insertedChat._id.toString();
+        return { "hasErrors": false, "chat": insertedChat };
     }
 
 }
 
 async function getAll(account) {
     let errors = [];
-    if (arguments.length != 1) errors.push("Message getAll arguments is not correct.");
-    if (!(account = check(account, "account"))) errors.push("Account is not valid.");
+    if (arguments.length != 1) errors.push("arguments");
+    if (!(account = check(account, "account"))) errors.push("account");
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -97,20 +99,20 @@ async function getAll(account) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("This account is not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
-    const messageCol = await collection.getCollection('message');
+    const chatCol = await collection.getCollection('chat');
 
-    const messages = await messageCol.find({ "users": { $in: [account] } }).toArray();
+    const chats = await chatCol.find({ "users": { $all: [account] } }).toArray();
 
     await collection.closeCollection();
 
-    messages.forEach(element => {
+    chats.forEach(element => {
         element._id = element._id.toString();
     });
-    return { "hasErrors": false, "messages": messages };
+    return { "hasErrors": false, "chats": chats };
 }
 
 async function getOne(sender, receiver) {
@@ -126,25 +128,25 @@ async function getOne(sender, receiver) {
     const checkAccount = await userCol.findOne({ "account": sender });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("sender");
+        errors.push("sender not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
     const checkAccount2 = await userCol.findOne({ "account": receiver });
     if (checkAccount2 == null) {
         await collection.closeCollection();
-        errors.push("receiver");
+        errors.push("receiver not exist");
         return { "hasErrors": true, "errors": errors };
     }
 
-    const messageCol = await collection.getCollection('message');
+    const chatCol = await collection.getCollection('chat');
 
-    const checkMessage = await messageCol.findOne({ "users": { $in: [sender, receiver] } });
+    const checkChat = await chatCol.findOne({ "users": { $all: [sender, receiver] } });
 
     await collection.closeCollection();
 
-    if (checkMessage != undefined) {
-        checkMessage._id = checkMessage._id.toString();
+    if (checkChat != undefined) {
+        checkChat._id = checkChat._id.toString();
     }
-    return { "hasErrors": false, "message": checkMessage };
+    return { "hasErrors": false, "chat": checkChat };
 }
