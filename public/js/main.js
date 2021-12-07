@@ -306,7 +306,6 @@ function cart(event) {
     if (event != '') {
         event.preventDefault();
     }
-
     $.ajax({
         method: 'GET',
         url: '/user/cart',
@@ -322,7 +321,6 @@ function cart(event) {
                                     <nav aria-label="breadcrumb" class="second ">
                                         <ol class="breadcrumb indigo lighten-6 first ">
                                             <li class="breadcrumb-item font-weight-bold "><a class="black-text text-uppercase" href="/"><span class="mr-md-3 mr-1">BACK TO SHOP</span></a><i class="fa fa-angle-double-right " aria-hidden="true"></i></li>
-                                            <li class="breadcrumb-item font-weight-bold"><a class="black-text text-uppercase active-2" href="#"><span class="mr-md-3 mr-1">CHECKOUT</span></a></li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -330,27 +328,56 @@ function cart(event) {
                             <div class="row justify-content-around">
                                 <div class="col-md-5">
                                     <div class="card border-0">
-                                        <div class="card-header pb-0">
-                                            <h2 class="card-title space ">Checkout</h2>
-                                            <p class="card-text text-muted mt-4 space">SHIPPING DETAILS</p>
-                                            <hr class="my-0">
-                                        </div>
                                         <div class="card-body">
-                                            <div class="row justify-content-between">
-                                                <div class="col-auto mt-0">
-                                                    <p>Stevens MarketPlace</p>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <p>Please type fake creadit card details!</p>
-                                                </div>
+                                            <div class="row">
+                                                <form id="paymentForm" class="needs-validation" novalidate>
+                                                    <h1>Duck Payment</h1>
+                                                    <span>Please input fake payment!</span>                                   
+                                                    <div class="form-floating mb-2">
+                                                    <input type="text" class="form-control" id="cardNumberInput" value="1234123412341234" placeholder="xxxxx xxxx xxxx xxxx">
+                                                    <label for="cardNumberInput">Card Number</label>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
+                                                    <div class="invalid-feedback">
+                                                        Card number must be have 16 numbers!
+                                                    </div>
+                                                    </div>
+                                        
+                                                    <div class="form-floating mb-2">
+                                                    <input type="text" class="form-control" id="validDateInput" value="01/29" placeholder="01/29">
+                                                    <label for="validDateInput">Valid Date</label>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
+                                                    <div class="invalid-feedback">
+                                                        Valid Date must be mm/yy and must be after today!
+                                                    </div>
+                                                    </div>
+
+                                                    <div class="form-floating mb-2">
+                                                    <input type="text" class="form-control" id="securityCodeInput" value="666" placeholder="666">
+                                                    <label for="securityCodeInput">Security Code</label>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
+                                                    <div class="invalid-feedback">
+                                                        Security code must be three numbers!
+                                                    </div>
+                                                    </div>
+                                        
+                                                    <div class="row d-flex justify-content-center">
+                                                    <div class="col-6 d-flex justify-content-center">
+                                                        <button class="btn btn-primary" type="submit" onclick="checkout(event)">
+                                                            Checkout
+                                                        </button>
+                                                    </div>
+                                                    </div>
+                                        
+                                                    <div id="paymentFormErrorDiv" class="error" style="visibility: hidden;"></div>
+                                        
+                                                </form>
                                             </div>
-                                            <div class="row mt-4">
-                                                <div class="col">
-                                                    <p class="text-muted mb-2">PAYMENT DETAILS</p>
-                                                    <hr class="mt-0">
-                                                </div>
-                                            </div>
-                                            
                                         </div>
                                     </div>
                                 </div>
@@ -361,97 +388,18 @@ function cart(event) {
                                             <hr class="my-2">
                                         </div>
                                         <div class="card-body pt-0">
-                                            <div class="row justify-content-between">
-                                                <div class="col-auto col-md-7">
-                                                    <div class="media flex-column flex-sm-row"> <img class=" img-fluid" src="https://i.imgur.com/6oHix28.jpg" width="62" height="62">
-                                                        <div class="media-body my-auto">
-                                                                <div class="row ">
-                                                                    <div class="col-auto">
-                                                                        <p class="mb-0"><b>EC-GO Bag Standard</b></p><small class="text-muted">1 Week Subscription</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                            <div id="items">
+                                            </div>
+                                            <div class="row ">
+                                                <div class="col">                                                     
+                                                    <div class="row justify-content-between">
+                                                        <div class="col-4">
+                                                            <p><b>Total</b></p>
+                                                        </div>
+                                                        <div class="flex-sm-col col-auto">
+                                                            <p class="mb-1 fw-bold">$<span id="total"></span></p>
                                                         </div>
                                                     </div>
-                                                    <div class=" pl-0 flex-sm-col col-auto my-auto">
-                                                        <p class="boxed-1">2</p>
-                                                    </div>
-                                                    <div class=" pl-0 flex-sm-col col-auto my-auto ">
-                                                        <p><b>179 SEK</b></p>
-                                                    </div>
-                                                </div>
-                                                <hr class="my-2">
-                                                <div class="row justify-content-between">
-                                                    <div class="col-auto col-md-7">
-                                                        <div class="media flex-column flex-sm-row"> <img class=" img-fluid " src="https://i.imgur.com/9MHvALb.jpg" width="62" height="62">
-                                                            <div class="media-body my-auto">
-                                                                <div class="row ">
-                                                                    <div class="col">
-                                                                        <p class="mb-0"><b>EC-GO Bag Standard</b></p><small class="text-muted">2 Week Subscription</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="pl-0 flex-sm-col col-auto my-auto">
-                                                        <p class="boxed">3</p>
-                                                    </div>
-                                                    <div class="pl-0 flex-sm-col col-auto my-auto">
-                                                        <p><b>179 SEK</b></p>
-                                                    </div>
-                                                </div>
-                                                <hr class="my-2">
-                                                <div class="row justify-content-between">
-                                                    <div class="col-auto col-md-7">
-                                                        <div class="media flex-column flex-sm-row"> <img class=" img-fluid " src="https://i.imgur.com/6oHix28.jpg" width="62" height="62">
-                                                            <div class="media-body my-auto">
-                                                                <div class="row ">
-                                                                    <div class="col">
-                                                                        <p class="mb-0"><b>EC-GO Bag Standard</b></p><small class="text-muted">2 Week Subscription</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="pl-0 flex-sm-col col-auto my-auto">
-                                                        <p class="boxed-1">2</p>
-                                                    </div>
-                                                    <div class="pl-0 flex-sm-col col-auto my-auto">
-                                                        <p><b>179 SEK</b></p>
-                                                    </div>
-                                                </div>
-                                                <hr class="my-2">
-                                                <div class="row ">
-                                                    <div class="col">
-                                                        <div class="row justify-content-between">
-                                                            <div class="col-4">
-                                                                <p class="mb-1"><b>Subtotal</b></p>
-                                                            </div>
-                                                            <div class="flex-sm-col col-auto">
-                                                                <p class="mb-1"><b>179 SEK</b></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row justify-content-between">
-                                                            <div class="col">
-                                                                <p class="mb-1"><b>Shipping</b></p>
-                                                            </div>
-                                                            <div class="flex-sm-col col-auto">
-                                                                <p class="mb-1"><b>0 SEK</b></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row justify-content-between">
-                                                            <div class="col-4">
-                                                                <p><b>Total</b></p>
-                                                            </div>
-                                                            <div class="flex-sm-col col-auto">
-                                                                <p class="mb-1"><b>537 SEK</b></p>
-                                                            </div>
-                                                        </div>
-                                                        <hr class="my-0">
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-5 mt-4 ">
-                                                    <div class="col-md-7 col-lg-6 mx-auto"><button type="button" class="btn btn-block btn-outline-primary btn-lg">ADD GIFT CODE</button></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -462,6 +410,42 @@ function cart(event) {
                     </div>
                 </div>
             `);
+            let items = responseMessage.items;
+            let total = 0;
+            items.forEach(element => {
+                total += element.price;
+                $('#items').html($('#items').html() + `
+                    <div class="row">
+                        <div class="col-2 d-flex justify-content-center">
+                            <input value="${element.price + "/" + element._id}" class="cartItems form-check-input me-1 align-self-center" type="checkbox"  aria-label="...">
+                        </div>
+                        <div class="col-2"><img src="/images/${element.photos[0]}" alt="${element.title}" width="50px"></div>
+                        <div class="col-3 d-flex justify-content-center"><span class="align-self-center fw-bold">${element.title}</span></div>
+                        <div class="col-3 d-flex justify-content-center">
+                            <a class="align-self-center" onclick="directRemove(event,'${element._id}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                            </a>
+                        </div>
+                        <div class="col-2 d-flex justify-content-end"><span class="align-self-center fw-bold">$${element.price}</span></div>
+                        <hr class="my-2">
+                    </div>
+                `);
+            });
+            $('#total').text(total);
+
+            $('.cartItems').each(element => {
+                let checkbox = $($('.cartItems')["" + element]);
+                checkbox.prop("checked", true);
+                checkbox.change(function () {
+                    // console.log(checkbox)
+                    if (checkbox.prop("checked")) {
+                        $('#total').text(parseFloat($('#total').text()) + parseFloat(checkbox.val().slice('0', checkbox.val().lastIndexOf('/'))));
+                    } else {
+                        $('#total').text(parseFloat($('#total').text()) - parseFloat(checkbox.val().slice('0', checkbox.val().lastIndexOf('/'))));
+                    }
+                });
+            });
+
         },
         error: function (responseMessage) {
             if (responseMessage.status == 400) {
@@ -476,6 +460,78 @@ function cart(event) {
     });
 }
 
+function directRemove(event, item_id) {
+    event.preventDefault();
+    $.ajax({
+        method: 'GET',
+        url: '/user/removeCart/' + item_id,
+        contentType: 'application/json',
+        success: function (responseMessage) {
+            cart("");
+
+        },
+        error: function (responseMessage) {
+            if (responseMessage.status == 404) {
+                alert("You don't have this item in your cart! Do you wanna go to cart?")
+            } else if (responseMessage.status == 500) {
+                alert(responseMessage.responseText);
+            } else {
+                alert(responseMessage.responseText);
+            }
+
+        }
+    });
+}
+
+function checkout(event) {
+    event.preventDefault();
+
+    var inputs = { "cardNumber": "", "validDate": "", "securityCode": "" };
+
+    var flag = true;
+
+    for (var key in inputs) {
+        var input = $('#' + key + 'Input');
+        if (!(inputs[key] = check(input.val(), key))) {
+            flag = false;
+            input.removeClass("is-valid");
+            input.addClass("is-invalid");
+        } else {
+            input.removeClass("is-invalid");
+            input.addClass("is-valid");
+        }
+    }
+
+    if (flag == true) {
+        inputs["type"] = "credit card";
+        $('.cartItems').each(element => {
+            let checkbox = $($('.cartItems')["" + element]);
+            let item_id = checkbox.val().slice(checkbox.val().lastIndexOf('/') + 1, checkbox.val().length);
+
+            if (checkbox.prop("checked")) {
+                $.ajax({
+                    method: 'POST',
+                    url: '/transaction/create',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ "item_id": item_id, "payment": inputs }),
+                    success: function (responseMessage) {},
+                    error: function (responseMessage) {
+                        if (responseMessage.status == 400) {
+                            errors(responseMessage.responseJSON.errors, "payment");
+                        } else if (responseMessage.status == 500) {
+                            alert(responseMessage.responseText);
+                        } else {
+                            alert(responseMessage.responseText);
+                        }
+
+                    }
+                });
+            }
+
+        });
+        
+    }
+}
 
 function chatBox(event) {
     event.preventDefault();
@@ -556,7 +612,7 @@ function chatBox(event) {
         success: function (responseMessage) {
             responseMessage.chats.forEach(element => {
                 $('.users').html($('.users').html() + `
-                <li id="${element.users.slice(0, element.users.lastIndexOf('@'))}" class="person" data-chat="${element.users}" onclick="change('${element.users.slice(0, element.users.lastIndexOf('@'))}')">
+                <li id="${element.users.slice(0, element.users.lastIndexOf('@'))}" class="person" data-chat="${element.users}" onclick="changeChatAim('${element.users.slice(0, element.users.lastIndexOf('@'))}')">
                     <div class="user">
                         <img src="/images/avatar.png" alt="${element.users}">
                         <span id="${element.users.slice(0, element.users.lastIndexOf('@'))}Status" class="status busy"></span>
@@ -587,7 +643,7 @@ function chatBox(event) {
     });
 }
 
-function change(account) {
+function changeChatAim(account) {
     $.ajax({
         method: 'GET',
         url: "/chat/getOne/" + account + "@stevens.edu",
