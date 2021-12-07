@@ -185,6 +185,4 @@ router.get('/removeCart/:item_id', async (req, res) => {
     }
 });
 
-
-
 module.exports = router;

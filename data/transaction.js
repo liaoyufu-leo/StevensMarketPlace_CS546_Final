@@ -79,6 +79,8 @@ async function create(item_id, account, payment) {
         throw "Can't update item information in mongodb, something went wrong, please try again!";
     }
 
+    const updatedcart = await userCol.updateOne({ account: account }, { $pull: { "cart": item_id } });
+
     await collection.closeCollection();
 
     insertedTransaction._id = insertedTransaction._id.toString();

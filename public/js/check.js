@@ -215,14 +215,14 @@ function check(input, dataType) {
                 if (Object.keys(input).length != 1) return false;
                 else return input;
             } else {
+                // console.log(input)
                 if (Object.keys(input).length != 4) return false;
-                if (!(input["card number"] = check(input["card number"], "card number"))) return false;
-                if (!(input["valid date"] = check(input["valid date"], "valid date"))) return false;
-                if (!(input["security code"] = check(input["security code"], "security code"))) return false;
+                if (!(input["cardNumber"] = check(input["cardNumber"], "cardNumber"))) return false;
+                if (!(input["validDate"] = check(input["validDate"], "validDate"))) return false;
+                if (!(input["securityCode"] = check(input["securityCode"], "securityCode"))) return false;
             }
-
             return input;
-        case "card number":
+        case "cardNumber":
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
             input = input.trim();
@@ -237,10 +237,11 @@ function check(input, dataType) {
             if (input.length != 16) return false;
 
             return input;
-        case "valid date":
+        case "validDate":
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
             input = input.trim();
+            if (input.length == 0) return false;
             input = input.match(/[0-9]{2}\/[0-9]{2}/g);
 
             if (input.length != 1) return false;
@@ -250,7 +251,7 @@ function check(input, dataType) {
             if (year <= new Date().getFullYear() % 100) return false;
 
             return input;
-        case "security code":
+        case "securityCode":
             if (input == undefined) return false;
             if (typeof (input) != "string") return false;
             input = input.trim();
