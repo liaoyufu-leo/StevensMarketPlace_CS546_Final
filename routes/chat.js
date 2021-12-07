@@ -5,13 +5,6 @@ const { check } = require("../public/js/check");
 
 const { chat } = require('../data')
 
-
-router.get('/main', async (req, res) => {
-
-    res.status(200).render('main/message', { "title": "message", "layout": "main" });
-
-})
-
 router.get('/getAll', async (req, res) => {
 
     try {
@@ -45,7 +38,7 @@ router.get('/getOne/:account', async (req, res) => {
             res.status(404).json(result);
         } else {
             let chat = result.chat;
-            chat.users = chat.users[1-chat.users.indexOf(req.session.user.account)];
+            chat.users = chat.users[1 - chat.users.indexOf(req.session.user.account)];
             res.status(200).json(chat);
         }
     } catch (error) {

@@ -1,6 +1,0 @@
-(function ($) {
-
-  search();
-
-  
-})(jQuery);

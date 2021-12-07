@@ -111,6 +111,16 @@ router.post('/forgetPassword', async (req, res) => {
     }
 });
 
+router.get('/cart', async (req, res) => {
+
+    const userData = (await user.findOne(req.session.user.account)).user;
+    let items = [];
+    for (let i = 0; i < userData.cart.length; i++) {
+        items.push((await item.findOne(userData.cart[i])).item)
+    }
+    res.status(200).json({ "items": items });
+});
+
 router.get('/updatePassword', async (req, res) => {
     res.status(200).json({ "title": "updatePassword" });
 });
@@ -175,14 +185,6 @@ router.get('/removeCart/:item_id', async (req, res) => {
     }
 });
 
-router.get('/cart', async (req, res) => {
 
-    const userData = (await user.findOne(req.session.user.account)).user;
-    let items = [];
-    for (let i = 0; i < userData.cart.length; i++) {
-        items.push((await item.findOne(userData.cart[i])).item)
-    }
-    res.status(200).render("main/cart",{"items":items,"title":"cart","layout":"main"});
-});
 
 module.exports = router;
