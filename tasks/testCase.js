@@ -4,7 +4,7 @@ const { user } = require("../data/index");
 const { item } = require("../data/index");
 const { comment } = require("../data/index");
 const { transaction } = require("../data/index");
-const { message } = require("../data/index");
+const { chat } = require("../data/index");
 main();
 
 async function main() {
@@ -23,7 +23,7 @@ async function main() {
     // await itemFindAllTest();
     // await itemFindOneTest();
     // await itemSearchTest();
-    await itemAddCartTest();
+    // await itemAddCartTest();
     // await itemRemoveCartTest();
 
     // // comment function test case
@@ -34,74 +34,74 @@ async function main() {
     // await transactionGetAllTest();
     // await transactionGetOne();
 
-    // // message function test case
-    // await messageSendTest();
-    // await messageGetAllTest();
-    // await messageGetOneTest();
+    // chat function test case
+    await chatSendTest();
+    await chatGetAllTest();
+    await chatGetOneTest();
 }
 
-async function messageSendTest() {
+async function chatSendTest() {
     console.log("This test case should have error in invaild arguments!");
-    console.log(await message.send(
+    console.log(await chat.send(
         "yliao10stevens.edu",
         "Aa!1234567",
         "  "
     ));
 
     console.log("This test case should have error for not exsit account!");
-    console.log(await message.send(
+    console.log(await chat.send(
         "yliao1012@stevens.edu",
         "yliao1031@stevens.edu",
         "123"
     ));
 
     console.log("This test case shoule show not allowed to send message to themself!");
-    console.log(await message.send(
+    console.log(await chat.send(
         "yliao10@stevens.edu",
         "yliao10@stevens.edu",
         "123"
     ));
 
     console.log("This test case should success!");
-    console.log(await message.send(
+    console.log(await chat.send(
         "yliao10@stevens.edu",
         "ygandhi2@stevens.edu",
         "ygandhi2@stevens.edu"
     ));
 }
 
-async function messageGetAllTest() {
+async function chatGetAllTest() {
     console.log("This test case should have error in invaild arguments!");
-    console.log(await message.getAll(
+    console.log(await chat.getAll(
         "yliao10stevens.edu"
     ));
 
     console.log("This test case should have error for not exsit account!");
-    console.log(await message.getAll(
+    console.log(await chat.getAll(
         "yliao101@stevens.edu"
     ));
 
     console.log("This test case should success!");
-    console.log(await message.getAll(
+    console.log(await chat.getAll(
         "yliao10@stevens.edu"
     ));
 }
 
-async function messageGetOneTest() {
+async function chatGetOneTest() {
     console.log("This test case should have error in invaild arguments!");
-    console.log(await message.getOne(
+    console.log(await chat.getOne(
         "yliao10stevens.edu",
         "Aa!1234567"
     ));
 
     console.log("This test case should have error for not exsit account!");
-    console.log(await message.getOne(
+    console.log(await chat.getOne(
         "yliao1012@stevens.edu",
         "yliao1031@stevens.edu"
     ));
 
     console.log("This test case should success!");
-    console.log(await message.getOne(
+    console.log(await chat.getOne(
         "yliao10@stevens.edu",
         "ygandhi2@stevens.edu"
     ));

@@ -52,6 +52,7 @@
     "express-handlebars": "^6.0.1",
     "express-session": "^1.17.2",
     "mongodb": "^4.1.4",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.0"
   }
 }

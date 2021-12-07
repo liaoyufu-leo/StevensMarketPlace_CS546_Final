@@ -6,7 +6,7 @@ router.get('/', async(req, res) => {
     let user_id = req.session.user.user_id
 
     let userInfo = await user.findOne(req.session.user.account)
-    res.render("myprofile", {"user":userInfo.user, "layout":"main"});
+    res.render("main/myprofile", {"user":userInfo.user, "layout":"main"});
         
 })
 
