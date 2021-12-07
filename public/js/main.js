@@ -476,7 +476,6 @@ function cart(event) {
     });
 }
 
-
 function chatBox(event) {
     event.preventDefault();
     $('main').html(`
