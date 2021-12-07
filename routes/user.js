@@ -6,7 +6,7 @@ const { item } = require("../data");
 
 
 router.get('/login', async (req, res) => {
-    res.status(200).render("login", { "title": "login", "layout": "landing" });
+    res.status(200).render("landing/login", { "title": "login", "layout": "landing" });
 });
 
 router.post('/login', async (req, res) => {
@@ -42,7 +42,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/signup', async (req, res) => {
-    res.status(200).render("signup", { "title": "signup", "layout": "landing" });
+    res.status(200).render("landing/signup", { "title": "signup", "layout": "landing" });
 });
 
 router.post('/signup', async (req, res) => {
@@ -84,7 +84,7 @@ router.get('/logout', async (req, res) => {
 });
 
 router.get('/forgetPassword', async (req, res) => {
-    res.status(200).render('forgetPassword', { "title": "updatePassword", "layout": "landing" });
+    res.status(200).render('landing/forgetPassword', { "title": "updatePassword", "layout": "landing" });
 });
 
 router.post('/forgetPassword', async (req, res) => {
@@ -109,6 +109,16 @@ router.post('/forgetPassword', async (req, res) => {
     } catch (error) {
         res.status(500).send(error);
     }
+});
+
+router.get('/cart', async (req, res) => {
+
+    const userData = (await user.findOne(req.session.user.account)).user;
+    let items = [];
+    for (let i = 0; i < userData.cart.length; i++) {
+        items.push((await item.findOne(userData.cart[i])).item)
+    }
+    res.status(200).json({ "items": items });
 });
 
 router.get('/updatePassword', async (req, res) => {
@@ -175,14 +185,6 @@ router.get('/removeCart/:item_id', async (req, res) => {
     }
 });
 
-router.get('/cart', async (req, res) => {
 
-    const userData = (await user.findOne(req.session.user.account)).user;
-    let items = [];
-    for (let i = 0; i < userData.cart.length; i++) {
-        items.push((await item.findOne(userData.cart[i])).item)
-    }
-    res.status(200).render("cart",{"items":items,"title":"cart","layout":"main"});
-});
 
 module.exports = router;

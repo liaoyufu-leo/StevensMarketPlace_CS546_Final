@@ -4,6 +4,9 @@ const { check } = require("../public/js/check");
 const { user } = require("../data");
 const { item } = require("../data");
 
+const md5 = require("blueimp-md5");
+const fs = require("fs");
+
 router.get('/getOne/:item_id', async (req, res) => {
     // res.status(400).json({ "hasErrors": true, "errors": ["item_id"] });
     // return;
@@ -13,19 +16,19 @@ router.get('/getOne/:item_id', async (req, res) => {
     if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
 
     if (errors.length > 0) {
-        res.status(404).render('error',{ "title": "404 not found", "layout": "main", "message": "the item_id is not valid" });
+        res.status(404).json(data);
         return;
     }
     try {
         const data = await item.findOne(item_id);
         if (data.hasErrors == true) {
-            res.status(404).render('error',{ "title": "404 not found", "layout": "main", "message": "the item_id is not exist" });
+            res.status(404).json(data);
         } else {
             const data2 = await user.findOne(req.session.user.account);
             let exist = false;
             // console.log(data2)
-            if(data2.user.cart.includes(data.item._id)) exist = true;
-            res.status(200).render("item", { "item": data.item, "exist":exist, "layout": "main", "title":"item"});
+            if (data2.user.cart.includes(data.item._id)) exist = true;
+            res.status(200).json({ "item": data.item, "exist": exist });
         }
 
     } catch (error) {
@@ -41,6 +44,51 @@ router.get('/search', async (req, res) => {
         res.status(500).send(error.message);
     }
 });
+
+router.post('/create', async (req, res) => {
+    let errors = [];
+    if (Object.keys(req.body).length != 3) errors.push("arguments");
+    if (!(title = check(req.body.title, "title"))) errors.push("title");
+    if (!(price = check(req.body.price, "price"))) errors.push("price");
+    if (!(description = check(req.body.description, "description"))) errors.push("description");
+    if (!(req.body.description)) errors.push("photos");
+
+    let photos = Array.isArray(req.files.photos) ? req.files.photos : [req.files.photos];
+    photos.forEach(element => {
+        element.name = md5(req.session.user.account + element.name + new Date()) + element.name.match(/\.[\w]+$/g);
+    });
+
+    for (let i = 0; i < photos.length; i++) {
+        if (!check(photos[i].name, 'photo')) {
+            errors.push("files");
+            break;
+        }
+    }
+
+    if (errors.length > 0) {
+        res.status(400).json({ "hasErrors": true, "errors": errors });
+        return;
+    }
+
+    for (let i = 0; i < photos.length; i++) {
+        fs.appendFileSync("./public/images/" + photos[i].name, photos[i].data);
+        photos[i] = photos[i].name;
+    }
+
+
+    try {
+        const data = await item.create(req.session.user.account, title, price, photos, description);
+        if (data.hasErrors == true) {
+            res.status(400).json(data);
+        } else {
+            res.status(200).json(data.item);
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
+
+});
+
 
 module.exports = router;
 

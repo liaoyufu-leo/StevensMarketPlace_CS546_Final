@@ -31,7 +31,7 @@ async function create(account, title, price, photos, description) {
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
-        errors.push("account not exist!");
+        errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
 

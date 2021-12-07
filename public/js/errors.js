@@ -33,12 +33,21 @@ function errors(inputs, formType) {
                 case "zipCode":
                     $('#' + element + 'Input').addClass("is-invalid");
                     return;
+                case "photos":
+                    $('#' + element + 'Input').addClass("is-invalid");
+                    return;
+                case "content":
+                    $('#' + element + 'Input').addClass("is-invalid");
+                    return;
                 case "address":
                     $('#' + element + 'formError').css("visibility", "visible");
                     return;
                 case "arguments":
                     formError.html("The all arguments of the form are not provided!<br>");
                     formError.css("visibility", "visible");
+                    return;
+                case "files":
+                    $('#filesErrorDiv').css("visibility", "visible");
                     return;
                 case "account not exist":
                     formError.html(formError.html() + element + "!<br>");

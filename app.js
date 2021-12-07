@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
 const session = require('express-session');
-const configRoutes = require('./routes');
 const { engine } = require('express-handlebars');
+const fileUpload = require('express-fileUpload');
+const configRoutes = require('./routes');
 
 app.use(express.json());
+app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
@@ -60,12 +62,25 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/stevensMarketPlace', (req, res, next) => {
-    res.render("stevensMarketPlace", { "title": "stevensMarketPlace", "layout": "main" });
+    res.render("main", { "currentUser":req.session.user.account,"layout":false});
 });
 
 configRoutes(app);
 
-app.listen(3000, () => {
-    console.log("We've now got a server!");
+// app.listen(3000, () => {
+//     console.log("We've now got a server!");
+//     console.log('Your routes will be running on http://localhost:3000');
+// });
+
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
+const configServer = require('./servers');
+configServer(io);
+
+server.listen(3000, () => {
+    console.log("We've now got a server with socket!");
     console.log('Your routes will be running on http://localhost:3000');
 });

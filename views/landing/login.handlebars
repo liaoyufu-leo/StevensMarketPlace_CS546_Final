@@ -1,0 +1,79 @@
+<main class="container">
+  <div class="row">
+
+    <div class="col-md-6 border-end">
+      <h2 class="border-bottom">Hello! <br> This is the Stevens MarketPlace</h2>
+      <p id="projectDescription">
+        This website acts as a Marketplace for Stevens Institute of Technology. People at Stevens Institute of
+        Technology
+        will be able to buy and sell the commodities of their wish. Users who want to sell the items will be able to
+        post
+        them on the site, and other users will be able to view the posted commodities and buy them if interested.
+        <br>
+        This application mainly helps students at Stevens Institute of Technology. A considerable percentage of
+        students
+        rely on unknown sellers to buy the commodities, and this application allows students to overcome this
+        disadvantage.
+        Additionally, numerous students are graduating every year, and new students join Steven’s; this application
+        might
+        help pass out students to sell the commodities and incoming students to buy them.
+      </p>
+    </div>
+
+
+    <div class="col-md-6">
+
+      <div class="form-signin col-md-10 offset-1">
+        <form id="loginForm" class="needs-validation" novalidate>
+
+          <h1 class="row d-flex justify-content-center mb-3">Login</h1>
+
+          <div class="form-floating mb-2">
+            <input type="text" class="form-control" id="accountInput" placeholder="xxxxx@stevens.edu">
+            <label for="accountInput">Account</label>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            <div class="invalid-feedback">
+              Account must be like "...@stevens.edu"!
+            </div>
+          </div>
+
+          <div class="form-floating mb-2">
+            <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+            <label for="passwordInput">Password</label>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+            <div class="invalid-feedback">
+              Password must be more than 10 letters, and have at least one upper lower number and specific letters!
+            </div>
+          </div>
+
+          <div class="row d-flex justify-content-center">
+            <div class="col-6 d-flex justify-content-center">
+              <button class="col-6 btn btn-primary" type="submit">
+                LogIn
+              </button>
+            </div>
+
+            <div class="col-6 d-flex justify-content-center">
+              <a class="align-self-center" href="/user/forgetPassword">
+                Forgot password?</a>
+            </div>
+
+          </div>
+
+          <div id="loginFormErrorDiv" class="error" style="visibility: hidden;"></div>
+
+        </form>
+        <div class="text-center mt-3">
+          <p>Not a member? <a href="/user/signup">Register</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="/js/login.js"></script>

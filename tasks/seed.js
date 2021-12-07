@@ -5,7 +5,7 @@ const { user } = require("../data/index");
 const { item } = require("../data/index");
 const { comment } = require("../data/index");
 const { transaction } = require("../data/index");
-const { message } = require("../data/index");
+const { chat } = require("../data/index");
 
 const md5 = require("blueimp-md5");
 const fs = require("fs");
@@ -21,7 +21,7 @@ async function main() {
     await itemSeed();
     await commentSeed();
     await transactionSeed();
-    await messageSeed();
+    await chatSeed();
 }
 
 async function userSeed() {
@@ -200,8 +200,18 @@ async function transactionSeed() {
     console.log(await transaction.create(aimItems[1]._id, "yliao10@stevens.edu", { "type": "credit card", "card number": "1234 1234 1234 1234", "valid date": "09/26", "security code": "123" }));
 }
 
-async function messageSeed() {
-    console.log(await message.send("yliao10@stevens.edu", "ygandhi2@stevens.edu", "This is the first message from seed!"))
+async function chatSeed() {
+    for (let i = 0; i < 10; i++) {
+        console.log(await chat.send("yliao10@stevens.edu", "ygandhi2@stevens.edu", "This is the " + i + " message from seed!"));
+        console.log(await chat.send("ygandhi2@stevens.edu", "yliao10@stevens.edu", "ygandhi2 get message" + i + "!"));
+        console.log(await chat.send("yliao10@stevens.edu", "ajayadev@stevens.edu", "This is the " + i + " message from seed!"));
+        console.log(await chat.send("ajayadev@stevens.edu", "yliao10@stevens.edu", "ajayadev get message" + i + "!"));
+        console.log(await chat.send("yliao10@stevens.edu", "bkongara@stevens.edu", "This is the " + i + " message from seed!"));
+        console.log(await chat.send("bkongara@stevens.edu", "yliao10@stevens.edu", "bkongara get message" + i + "!"));
+        console.log(await chat.send("yliao10@stevens.edu", "vkusumur@stevens.edu", "This is the " + i + " message from seed!"));
+        console.log(await chat.send("vkusumur@stevens.edu", "yliao10@stevens.edu", "vkusumur get message" + i + "!"));
+    }
+
 }
 
 
