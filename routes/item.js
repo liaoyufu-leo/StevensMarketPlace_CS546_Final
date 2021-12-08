@@ -36,10 +36,41 @@ router.get('/getOne/:item_id', async (req, res) => {
     }
 });
 
+router.get('/getAll', async (req, res) => {
+    try {
+        const items = (await item.findAll(req.session.user.account)).items;
+        res.status(200).json(items);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 router.get('/search', async (req, res) => {
     try {
         const data = await item.search(req.query.keyword, req.session.user.account);
         res.status(200).json(data);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+router.get('/withdraw/:item_id', async (req, res) => {
+    let errors = [];
+    if (Object.keys(req.params).length != 1) errors.push("arguments");
+    if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
+
+    if (errors.length > 0) {
+        res.status(404).json(data);
+        return;
+    }
+    try {
+        const data = await item.deleteItem(item_id);
+        if (Date.hasErrors) {
+            res.status(400).json(data);
+        } else {
+            res.status(200).json({ "message": "success" });
+        }
+
     } catch (error) {
         res.status(500).send(error.message);
     }

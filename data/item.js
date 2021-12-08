@@ -3,7 +3,6 @@ const collection = require("../config/mongoCollections");
 
 const mongo = require("mongodb");
 
-
 module.exports = {
     create,
     updateInfo,
@@ -178,6 +177,9 @@ async function deleteItem(item_id) {
         throw "Can't find updated item in mongodb, something went wrong, Please try again!";
     }
 
+    const userCol = await collection.getCollection('user');
+    const updatedcart = await userCol.updateMany({ "cart": { $in: [item_id] } }, { $pull: { "cart": item_id } });
+
     await collection.closeCollection();
 
     updatedItem._id = updatedItem._id.toString();
@@ -306,14 +308,14 @@ async function addCart(account, item_id) {
         errors.push("account not exist");
         return { "hasErrors": true, "errors": errors };
     }
-    
+
     const checkAccountAndItem = await userCol.findOne({ "account": account, "cart": { $in: [item_id] } });
     if (checkAccountAndItem != null) {
         await collection.closeCollection();
         errors.push("item exist in cart");
         return { "hasErrors": true, "errors": errors };
     }
-    
+
     const updatedInfo = await userCol.updateOne({ "account": account }, { $push: { "cart": item_id } });
     if (updatedInfo.modifiedCount === 0) {
         await collection.closeCollection();
@@ -327,7 +329,7 @@ async function addCart(account, item_id) {
     }
 
     await collection.closeCollection();
-    
+
     updatedUser._id = updatedUser._id.toString();
     for (let i = 0; i < updatedUser.cart.length; i++) {
         updatedUser.cart[i] = updatedUser.cart[i].toString();

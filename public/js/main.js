@@ -100,7 +100,7 @@ function getItem(event, item_id) {
                             </div>
 
                             <div class="col-6 d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary fw-bold">
+                                <button type="submit" class="btn btn-primary fw-bold" onclick="buyNow(event,'${item._id}')">
                                     Buy Now
                                 </button>
                             </div>
@@ -152,14 +152,14 @@ function getItem(event, item_id) {
             if (exist) {
                 $('#addOrRemove').html(`
                 <button type="submit" class="btn fw-bold text-light" style="background-color:var(--stevensRed)"
-                    onclick="removeCart(this,'${item._id}')">
+                    onclick="removeCart('${item._id}')">
                     Remove Cart
                 </button>
                 `);
             } else {
                 $('#addOrRemove').html(`
                 <button type="submit" class="btn fw-bold text-light" style="background-color:var(--stevensRed)"
-                    onclick="addCart(this,'${item._id}')">
+                    onclick="addCart('${item._id}')">
                     Add Cart
                 </button>
                 `);
@@ -201,7 +201,7 @@ function getItem(event, item_id) {
     });
 }
 
-function addCart(element, item_id) {
+function addCart(item_id) {
     $.ajax({
         method: 'GET',
         url: '/user/addCart/' + item_id,
@@ -230,7 +230,7 @@ function addCart(element, item_id) {
     });
 }
 
-function removeCart(element, item_id) {
+function removeCart(item_id) {
     $.ajax({
         method: 'GET',
         url: '/user/removeCart/' + item_id,
@@ -247,6 +247,162 @@ function removeCart(element, item_id) {
                 if (confirm("You don't have this item in your cart! Do you wanna go to cart?")) {
                     cart("");
                 }
+            } else if (responseMessage.status == 500) {
+                alert(responseMessage.responseText);
+            } else {
+                alert(responseMessage.responseText);
+            }
+
+        }
+    });
+}
+
+function buyNow(event, item_id) {
+    event.preventDefault();
+    $('main').html(`
+        <div class=" container-fluid my-5 ">
+            <div class="row justify-content-center ">
+                <div class="col-xl-10">
+                    <div class="card shadow-lg ">
+                        <div class="row mx-auto justify-content-center text-center">
+                            <div class="col-12 mt-3 ">
+                                <nav aria-label="breadcrumb" class="second ">
+                                    <ol class="breadcrumb indigo lighten-6 first ">
+                                        <li class="breadcrumb-item font-weight-bold "><a class="black-text text-uppercase" href="/"><span class="mr-md-3 mr-1">BACK TO SHOP</span></a><i class="fa fa-angle-double-right " aria-hidden="true"></i></li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="row justify-content-around">
+                            <div class="col-md-5">
+                                <div class="card border-0">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <form id="paymentForm" class="needs-validation" novalidate>
+                                                <h1>Duck Payment</h1>
+                                                <span>Please input fake payment!</span>                                   
+                                                <div class="form-floating mb-2">
+                                                <input type="text" class="form-control" id="cardNumberInput" value="1234123412341234" placeholder="xxxxx xxxx xxxx xxxx">
+                                                <label for="cardNumberInput">Card Number</label>
+                                                <div class="valid-feedback">
+                                                    Looks good!
+                                                </div>
+                                                <div class="invalid-feedback">
+                                                    Card number must be have 16 numbers!
+                                                </div>
+                                                </div>
+                                    
+                                                <div class="form-floating mb-2">
+                                                <input type="text" class="form-control" id="validDateInput" value="01/29" placeholder="01/29">
+                                                <label for="validDateInput">Valid Date</label>
+                                                <div class="valid-feedback">
+                                                    Looks good!
+                                                </div>
+                                                <div class="invalid-feedback">
+                                                    Valid Date must be mm/yy and must be after today!
+                                                </div>
+                                                </div>
+
+                                                <div class="form-floating mb-2">
+                                                <input type="text" class="form-control" id="securityCodeInput" value="666" placeholder="666">
+                                                <label for="securityCodeInput">Security Code</label>
+                                                <div class="valid-feedback">
+                                                    Looks good!
+                                                </div>
+                                                <div class="invalid-feedback">
+                                                    Security code must be three numbers!
+                                                </div>
+                                                </div>
+                                    
+                                                <div class="row d-flex justify-content-center">
+                                                <div class="col-6 d-flex justify-content-center">
+                                                    <button class="btn btn-primary" type="submit" onclick="checkout(event)">
+                                                        Checkout
+                                                    </button>
+                                                </div>
+                                                </div>
+                                    
+                                                <div id="paymentFormErrorDiv" class="error" style="visibility: hidden;"></div>
+                                    
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="card border-0 ">
+                                    <div class="card-header card-2">
+                                        <p class="card-text text-muted mt-md-4 mb-2 space">YOUR ORDER <span class=" small text-muted ml-2 cursor-pointer">EDIT SHOPPING BAG</span> </p>
+                                        <hr class="my-2">
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div id="items">
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col">                                                     
+                                                <div class="row justify-content-between">
+                                                    <div class="col-4">
+                                                        <p><b>Total</b></p>
+                                                    </div>
+                                                    <div class="flex-sm-col col-auto">
+                                                        <p class="mb-1 fw-bold">$<span id="total"></span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+    // return;
+    $.ajax({
+        method: 'GET',
+        url: '/item/getOne/' + item_id,
+        contentType: 'application/json',
+        success: function (responseMessage) {
+            let items = [responseMessage.item];
+            let total = 0;
+            items.forEach(element => {
+                total += element.price;
+                $('#items').html($('#items').html() + `
+                    <div class="row">
+                        <div class="col-2 d-flex justify-content-center">
+                            <input value="${element.price + "/" + element._id}" class="cartItems form-check-input me-1 align-self-center" type="checkbox"  aria-label="...">
+                        </div>
+                        <div class="col-2"><img src="/images/${element.photos[0]}" alt="${element.title}" width="50px"></div>
+                        <div class="col-3 d-flex justify-content-center"><span class="align-self-center fw-bold">${element.title}</span></div>
+                        <div class="col-3 d-flex justify-content-center">
+                            <a class="align-self-center" onclick="directRemove(event,'${element._id}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                            </a>
+                        </div>
+                        <div class="col-2 d-flex justify-content-end"><span class="align-self-center fw-bold">$${element.price}</span></div>
+                        <hr class="my-2">
+                    </div>
+                `);
+            });
+            $('#total').text(total);
+
+            $('.cartItems').each(element => {
+                let checkbox = $($('.cartItems')["" + element]);
+                checkbox.prop("checked", true);
+                checkbox.change(function () {
+                    // console.log(checkbox)
+                    if (checkbox.prop("checked")) {
+                        $('#total').text(parseFloat($('#total').text()) + parseFloat(checkbox.val().slice('0', checkbox.val().lastIndexOf('/'))));
+                    } else {
+                        $('#total').text(parseFloat($('#total').text()) - parseFloat(checkbox.val().slice('0', checkbox.val().lastIndexOf('/'))));
+                    }
+                });
+            });
+        },
+        error: function (responseMessage) {
+            if (responseMessage.status == 400) {
+                alert(responseMessage.responseText);
             } else if (responseMessage.status == 500) {
                 alert(responseMessage.responseText);
             } else {
@@ -700,10 +856,141 @@ function myProfile(event) {
 
     $.ajax({
         method: 'GET',
-        url: '/transaction/myTransactions',
+        url: '/myprofile',
         contentType: 'application/json',
         success: function (responseMessage) {
+            let user = responseMessage;
+            $('main').html(`
+                <div class="row">
+                    <div class="col-md-12">
+                    <div class="container-fluid col-md-6 mt-3">
+                        <form id="userInfoForm" class="needs-validation" novalidate>
+                
+                        <h1 class="row d-flex justify-content-center mb-3">Profile</h1>
+                        <p>Account: ${user.account}</p>
+                
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" id="nicknameInput" placeholder="${user.nickname}" value="${user.nickname}">
+                            <label for="nicknameInput">Nickname</label>
+                            <div class="valid-feedback">
+                            Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                            Nickname should not be empty!
+                            </div>
+                        </div>
+                
+                        <div class="form-floating mb-2">
+                            <input type="text" class="form-control" placeholder="Password" value="   " hidden>
+                            <label>Gender</label>
+                            <select class="form-select border-1" name="gender" id="genderInput" placeholder="${user.gender}" value="${user.gender}">
+                                <option value="male" selected>male</option>
+                                <option value="female">female</option>
+                                <option value="other">other</option>
+                            </select>
+                            <div class="valid-feedback">
+                            Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                            Gender should be like male/female/other!
+                            </div>
+                        </div>
+                
+                        <p>Address</p>
+                
+                        <div class="row mb-4">
+                
+                            <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="streetInput" placeholder="${user.address.street}" value="${user.address.street}">
+                                <label for="streetInput">Street</label>
+                                <div class="valid-feedback">
+                                Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                Street should not be empty!
+                                </div>
+                            </div>
+                            </div>
+                
+                            <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="aptInput" placeholder="${user.address.apt}" value="${user.address.apt}">
+                                <label for="aptInput">Apt</label>
+                                <div class="valid-feedback">
+                                Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                Apt should not be empty!
+                                </div>
+                            </div>
+                            </div>
+                
+                        </div>
+                
+                        <div class="row mb-4">
+                
+                            <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="cityInput" placeholder="${user.address.city}" value="${user.address.city}">
+                                <label for="cityInput">City</label>
+                                <div class="valid-feedback">
+                                Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                City should not be empty!
+                                </div>
+                            </div>
+                            </div>
+                
+                            <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="stateInput" placeholder="${user.address.state}" value="${user.address.state}">
+                                <label for="stateInput">State</label>
+                                <div class="valid-feedback">
+                                Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                City should not be empty!
+                                </div>
+                            </div>
+                            </div>
+                
+                            <div class="col">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="zipCodeInput" placeholder="${user.address.zipCode}" value="${user.address.zipCode}">
+                                <label for="zipCodeInput">ZipCode</label>
+                                <div class="valid-feedback">
+                                Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                City should not be empty!
+                                </div>
+                            </div>
+                            </div>
+                
+                        </div>
 
+                        <div class="error md-4" style="visibility: hidden;" id="addressFormErrorDiv">The relationship of city/state/zipCode is not correct!</div>
+                
+                        <div id="userInfoFormErrorDiv" class="error" style="visibility: hidden;"></div>
+
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-6 d-flex justify-content-center">
+                            <button class="col-12 btn btn-primary" type="submit" onclick="userUpdateInfo(event)">
+                                Save Changes
+                            </button>
+                            </div>
+                
+                        </div>
+                
+                        </form>
+                    </div>
+                
+                    </div>
+                
+                </div>
+            `);
         },
         error: function (responseMessage) {
             if (responseMessage.status == 400) {
@@ -719,76 +1006,160 @@ function myProfile(event) {
 
 }
 
-function myItems(item) {
+function userUpdateInfo(event) {
+    if (event != "") {
+        event.preventDefault();
+    }
+
+    let inputs = {
+        "nickname": "",
+        "gender": "",
+        "street": "",
+        "apt": "",
+        "city": "",
+        "state": "",
+        "zipCode": ""
+    };
+
+    let flag = true, same = true;
+
+    for (var key in inputs) {
+        var input = $('#' + key + 'Input');
+        if (!(inputs[key] = check(input.val(), key))) {
+            flag = false;
+            input.removeClass("is-valid");
+            input.addClass("is-invalid");
+        } else {
+            input.removeClass("is-invalid");
+            input.addClass("is-valid");
+        }
+        if (input.val() != input.attr("placeholder")) {
+            same = false;
+        }
+    }
+
+    if (same) {
+        errors(["same"], "userInfo");
+        return;
+    }
+
+    let addressFormErrorDiv = $('#addressFormErrorDiv');
+    if (!checkAddress(inputs.city, inputs.state, inputs.zipCode)) {
+        flag = false;
+        addressFormErrorDiv.css("visibility", "visible");
+    } else {
+        addressFormErrorDiv.css("visibility", "hidden");
+    }
+
+    if (flag == true) {
+        $.ajax({
+            method: 'POST',
+            url: '/myprofile',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "nickname": inputs.nickname,
+                "gender": inputs.gender,
+                "address": {
+                    "street": inputs.street,
+                    "apt": inputs.apt,
+                    "city": inputs.city,
+                    "state": inputs.state,
+                    "zipCode": inputs.zipCode
+                }
+            }),
+            success: function (responseMessage) {
+                alert("Update your infor mation success!")
+                myProfile("");
+            },
+            error: function (responseMessage) {
+                if (responseMessage.status == 400) {
+                    errors(responseMessage.responseJSON.errors, "userInfo");
+                } else if (responseMessage.status == 500) {
+                    alert(responseMessage.responseText);
+                } else {
+                    alert(responseMessage.responseText);
+                }
+            }
+        });
+    }
+}
+
+function myItems(event) {
+    if (event != "") event.preventDefault();
+
     $('main').html(`
-        <div class="row">
-            <div class="col-md-12">
-                <div class="container-fluid col-md-6 mt-3">
-                    <form id="newItemForm" class="needs-validation" novalidate>
-
-                    <h1 class="row d-flex justify-content-center mb-3">Item Information</h1>
-
-                    <div class="form-floating mb-2">
-                        <input type="text" name="title" class="form-control" id="titleInput" placeholder="xxxx">
-                        <label for="titleInput">title</label>
-                        <div class="valid-feedback">
-                        Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                        Title must not be null and not longer than 100 letters!
-                        </div>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="text" name="price" class="form-control" id="priceInput" placeholder="1">
-                        <label for="priceInput">price</label>
-                        <div class="valid-feedback">
-                        Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                        Price must be a number and larger than 0!
-                        </div>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="text" name="description" class="form-control" id="descriptionInput" placeholder="good item">
-                        <label for="descriptionInput">description</label>
-                        <div class="valid-feedback">
-                        Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                        Description must not be null and should not longer than 1000 letters!
-                        </div>
-                    </div>
-                    
-                    <input id="photosInput" name="photos" type="file" multiple/>
-                    <div class="invalid-feedback">
-                        Please upload some photos to describe your item!
-                    </div>
-                    <div id="filesErrorDiv" class="error" style="visibility: hidden;">
-                        Files must all be photos('png','jpg')!
-                    </div>
-
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-6 d-flex justify-content-center">
-                        <button class="col-6 btn btn-primary" type="submit" onclick="newItemFormPost(event)">
-                            create
-                        </button>
-                        </div>
-                    </div>
-
-                    <div id="newItemErrorDiv" class="error" style="visibility: hidden;"></div>
-
-                    </form>
-
-                </div>
-
-            </div>
-
+        <div id="items" class="container">
+            <h1>Your Items List</h1>
+            <hr>
         </div>
-    
     `);
 
+    $.ajax({
+        method: 'GET',
+        url: '/item/getAll',
+        contentType: 'application/json',
+        success: function (responseMessage) {
+            if (responseMessage.length == 0) {
+                $('#items').html($('#items').html() + "<div>You haven't post any items.</div>");
+            } else {
+                responseMessage.forEach(element => {
+                    $('#items').html($('#items').html() + `
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-2"><img src="/images/${element.photos[0]}" alt="${element.title}" height="50px"></div>
+                            <div class="col-2 align-self-center">${element.title}</div>
+                            <div class="col-2 align-self-center">${element.description}</div>
+                            <div class="col-1 align-self-center">$${element.price}</div>
+                            <div class="col-1 align-self-center">${element.status}</div>
+                            <div class="col-4 row align-self-center">
+                                ${element.status == "selling" ? `   
+                                    <div class="col-6"><button onclick="withdrawItem('${element._id}')" class="btn btn-danger">withdraw</button></div>
+                                    <div class="col-6"><button onclick="itemUpdateInfo('${element._id}')" class="btn btn-primary">undateInfo</button></div>
+                                `
+                            : ""}
+                            </div>
+                        </div>
+                        <hr>
+                    `);
+                });
+            }
+
+        },
+        error: function (responseMessage) {
+            if (responseMessage.status == 400) {
+                alert(responseMessage.responseText);
+            } else if (responseMessage.status == 500) {
+                alert(responseMessage.responseText);
+            } else {
+                alert(responseMessage.responseText);
+            }
+
+        }
+    });
+}
+
+function withdrawItem(item_id) {
+    $.ajax({
+        method: 'GET',
+        url: '/item/withdraw/' + item_id,
+        contentType: 'application/json',
+        success: function (responseMessage) {
+            myItems("");
+        },
+        error: function (responseMessage) {
+            if (responseMessage.status == 400) {
+                alert(responseMessage.responseText);
+            } else if (responseMessage.status == 500) {
+                alert(responseMessage.responseText);
+            } else {
+                alert(responseMessage.responseText);
+            }
+
+        }
+    });
+}
+
+function itemUpdateInfo(item_id) {
+    // alert("good");
 }
 
 function myTransactions(event) {

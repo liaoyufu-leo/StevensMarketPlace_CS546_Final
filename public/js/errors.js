@@ -2,7 +2,7 @@ function errors(inputs, formType) {
     (function ($) {
         var formError = $('#' + formType + 'FormErrorDiv');
         formError.html("");
-        formError.css("visibility", "visiable");
+        formError.css("visibility", "hidden");
 
         inputs.forEach(element => {
             switch (element) {
@@ -65,6 +65,10 @@ function errors(inputs, formType) {
                     switch (formType) {
                         case "forgetPassword":
                             formError.html(formError.html() + "New password is the same like your exist password, please use the password to login!" + "!<br>");
+                            formError.css("visibility", "visible");
+                            return;
+                        case "userInfo":
+                            formError.html(formError.html() + "You didn't change your information, please change first");
                             formError.css("visibility", "visible");
                             return;
                     }
