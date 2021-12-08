@@ -69,7 +69,7 @@ async function create(item_id, account, payment) {
         { $set: { "status": "sold" } }
     );
 
-    const updatedcart = await userCol.updateOne({}, { $pull: { "cart": item_id } });
+    const updatedcart = await userCol.updateMany({ "cart": { $in: [item_id] } }, { $pull: { "cart": item_id } });
 
     const insertedTransaction = await transactionCol.findOne({ _id: insertInfo.insertedId });
     if (insertedTransaction === null) {
