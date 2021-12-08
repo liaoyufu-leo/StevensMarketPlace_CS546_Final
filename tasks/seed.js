@@ -196,7 +196,6 @@ async function commentSeed() {
 async function transactionSeed() {
     const aimItems = (await item.findAll("ygandhi2@stevens.edu")).items;
 
-    console.log(await transaction.create(aimItems[0]._id, "yliao10@stevens.edu", { "type": "cash" }));
     console.log(await transaction.create(aimItems[1]._id, "yliao10@stevens.edu", { "type": "credit card", "cardNumber": "1234 1234 1234 1234", "validDate": "09/26", "securityCode": "123" }));
 }
 

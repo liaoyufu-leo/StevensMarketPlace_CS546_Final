@@ -242,12 +242,13 @@ function check(input, dataType) {
             if (typeof (input) != "string") return false;
             input = input.trim();
             if (input.length == 0) return false;
-            input = input.match(/[0-9]{2}\/[0-9]{2}/g);
+            input = input.match(/^[0-9]{2}\/[0-9]{2}$/g);
 
+            if (input==undefined) return false;
             if (input.length != 1) return false;
             input = input[0];
             let month = Number(input.slice(0, 2)), year = Number(input.slice(3, 5));
-            if (month < 1 && month > 12) return false;
+            if (month < 1 || month > 12) return false;
             if (year <= new Date().getFullYear() % 100) return false;
 
             return input;

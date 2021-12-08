@@ -1,7 +1,7 @@
 function errors(inputs, formType) {
     (function ($) {
         var formError = $('#' + formType + 'FormErrorDiv');
-        formError.html();
+        formError.html("");
         formError.css("visibility", "visiable");
 
         inputs.forEach(element => {

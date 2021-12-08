@@ -172,7 +172,7 @@ function getItem(event, item_id) {
                             <span class="col-6 d-flex justify-content-end">
                             ${new Date().getDate() == new Date(element.date).getDate() ?
                         new Date(element.date).toLocaleTimeString('en-US') :
-                        new Date(element.date).toLocaleString('en-US', { timeZone: 'UTC' })}
+                        new Date(element.date).toLocaleString('en-US', { timeZone: 'EST' })}
                             </span>
                             <hr>
                         </div>
@@ -290,6 +290,145 @@ function comment(event, item_id) {
             error: function (responseMessage) {
                 if (responseMessage.status == 400) {
                     errors(responseMessage.responseJSON.errors, "comment");
+                } else if (responseMessage.status == 500) {
+                    alert(responseMessage.responseText);
+                } else {
+                    alert(responseMessage.responseText);
+                }
+
+            }
+        });
+    }
+
+}
+
+function newItem(event) {
+    event.preventDefault();
+    $('main').html(`
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container-fluid col-md-6 mt-3">
+                    <form id="newItemForm" class="needs-validation" novalidate>
+
+                    <h1 class="row d-flex justify-content-center mb-3">Create New Item</h1>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" name="title" class="form-control" id="titleInput" placeholder="xxxx">
+                        <label for="titleInput">title</label>
+                        <div class="valid-feedback">
+                        Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                        Title must not be null and not longer than 100 letters!
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" name="price" class="form-control" id="priceInput" placeholder="1">
+                        <label for="priceInput">price</label>
+                        <div class="valid-feedback">
+                        Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                        Price must be a number and larger than 0!
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" name="description" class="form-control" id="descriptionInput" placeholder="good item">
+                        <label for="descriptionInput">description</label>
+                        <div class="valid-feedback">
+                        Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                        Description must not be null and should not longer than 1000 letters!
+                        </div>
+                    </div>
+                    
+                    <label for="photosInput">You can upload multiple photos.</label>
+                    <input id="photosInput" name="photos" type="file" multiple/>
+                    <div class="invalid-feedback">
+                        Please upload some photos to describe your item!
+                    </div>
+                    <div id="filesErrorDiv" class="error" style="visibility: hidden;">
+                        Files must all be photos('png','jpg')!
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6 d-flex justify-content-center">
+                        <button class="col-6 btn btn-primary" type="submit" onclick="newItemFormPost(event)">
+                            create
+                        </button>
+                        </div>
+                    </div>
+
+                    <div id="newItemErrorDiv" class="error" style="visibility: hidden;"></div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    
+    `);
+}
+
+function newItemFormPost(event) {
+    event.preventDefault();
+
+    let inputs = { "title": "", "price": "", "description": "" };
+
+    let flag = true;
+
+    for (let key in inputs) {
+        let input = $('#' + key + 'Input');
+        if (!(inputs[key] = check(input.val(), key))) {
+            flag = false;
+            input.removeClass("is-valid");
+            input.addClass("is-invalid");
+        } else {
+            input.removeClass("is-invalid");
+            input.addClass("is-valid");
+        }
+    }
+
+    if ($('#photosInput')[0].files.length == 0) {
+        flag = false;
+        $('#photosInput').removeClass("is-valid");
+        $('#photosInput').addClass("is-invalid");
+    } else {
+        $('#photosInput').removeClass("is-invalid");
+        $('#photphotosInputos').addClass("is-valid");
+    }
+
+    $('#filesErrorDiv').css("visibility", "hidden");
+    let photos = $('#photosInput')[0].files;
+    for (let i = 0; i < photos.length; i++) {
+        if (!(/\.(jpg|png)$/.test(photos[i.toString()].name))) {
+            errors(["files"], "newItem");
+            flag = false;
+            break;
+        }
+    }
+
+    if (flag == true) {
+        $.ajax({
+            method: 'POST',
+            url: '/item/create',
+            data: new FormData($('#newItemForm')[0]),
+            processData: false,
+            contentType: false,
+            success: function (responseMessage) {
+                // window.location.href = "/stevensMarketPlace";
+                // console.log(responseMessage)
+                // myItem(responseMessage)
+                search();
+            },
+            error: function (responseMessage) {
+                if (responseMessage.status == 400) {
+                    errors(responseMessage.responseJSON.errors, "newItem");
                 } else if (responseMessage.status == 500) {
                     alert(responseMessage.responseText);
                 } else {
@@ -486,6 +625,11 @@ function directRemove(event, item_id) {
 function checkout(event) {
     event.preventDefault();
 
+    if ($('.cartItems').length == 0) {
+        alert("You don't have anything in your cart, please add something to checkout!");
+        return;
+    }
+
     var inputs = { "cardNumber": "", "validDate": "", "securityCode": "" };
 
     var flag = true;
@@ -502,35 +646,279 @@ function checkout(event) {
         }
     }
 
+    let num = 0;
+    $('.cartItems').each(element => {
+        let checkbox = $($('.cartItems')["" + element]);
+        if (checkbox.prop("checked")) {
+            num++;
+        }
+    });
+    if (num == 0) {
+        flag = false;
+        alert("You don't select anything, please select the items first!");
+    }
+
     if (flag == true) {
+        let item_ids = [];
         inputs["type"] = "credit card";
         $('.cartItems').each(element => {
             let checkbox = $($('.cartItems')["" + element]);
             let item_id = checkbox.val().slice(checkbox.val().lastIndexOf('/') + 1, checkbox.val().length);
 
             if (checkbox.prop("checked")) {
-                $.ajax({
-                    method: 'POST',
-                    url: '/transaction/create',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ "item_id": item_id, "payment": inputs }),
-                    success: function (responseMessage) {},
-                    error: function (responseMessage) {
-                        if (responseMessage.status == 400) {
-                            errors(responseMessage.responseJSON.errors, "payment");
-                        } else if (responseMessage.status == 500) {
-                            alert(responseMessage.responseText);
-                        } else {
-                            alert(responseMessage.responseText);
-                        }
-
-                    }
-                });
+                item_ids.push(item_id);
             }
 
         });
-        
+
+        $.ajax({
+            method: 'POST',
+            url: '/transaction/create',
+            contentType: 'application/json',
+            data: JSON.stringify({ "item_ids": item_ids, "payment": inputs }),
+            success: function (responseMessage) {
+                myTransactions("");
+            },
+            error: function (responseMessage) {
+                if (responseMessage.status == 400) {
+                    errors(responseMessage.responseJSON.errors, "payment");
+                } else if (responseMessage.status == 500) {
+                    alert(responseMessage.responseText);
+                } else {
+                    alert(responseMessage.responseText);
+                }
+
+            }
+        });
     }
+}
+
+function myProfile(event) {
+    if (event != "") {
+        event.preventDefault();
+    }
+
+    $.ajax({
+        method: 'GET',
+        url: '/transaction/myTransactions',
+        contentType: 'application/json',
+        success: function (responseMessage) {
+
+        },
+        error: function (responseMessage) {
+            if (responseMessage.status == 400) {
+                alert(responseMessage.responseText);
+            } else if (responseMessage.status == 500) {
+                alert(responseMessage.responseText);
+            } else {
+                alert(responseMessage.responseText);
+            }
+
+        }
+    });
+
+}
+
+function myItems(item) {
+    $('main').html(`
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container-fluid col-md-6 mt-3">
+                    <form id="newItemForm" class="needs-validation" novalidate>
+
+                    <h1 class="row d-flex justify-content-center mb-3">Item Information</h1>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" name="title" class="form-control" id="titleInput" placeholder="xxxx">
+                        <label for="titleInput">title</label>
+                        <div class="valid-feedback">
+                        Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                        Title must not be null and not longer than 100 letters!
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" name="price" class="form-control" id="priceInput" placeholder="1">
+                        <label for="priceInput">price</label>
+                        <div class="valid-feedback">
+                        Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                        Price must be a number and larger than 0!
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" name="description" class="form-control" id="descriptionInput" placeholder="good item">
+                        <label for="descriptionInput">description</label>
+                        <div class="valid-feedback">
+                        Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                        Description must not be null and should not longer than 1000 letters!
+                        </div>
+                    </div>
+                    
+                    <input id="photosInput" name="photos" type="file" multiple/>
+                    <div class="invalid-feedback">
+                        Please upload some photos to describe your item!
+                    </div>
+                    <div id="filesErrorDiv" class="error" style="visibility: hidden;">
+                        Files must all be photos('png','jpg')!
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6 d-flex justify-content-center">
+                        <button class="col-6 btn btn-primary" type="submit" onclick="newItemFormPost(event)">
+                            create
+                        </button>
+                        </div>
+                    </div>
+
+                    <div id="newItemErrorDiv" class="error" style="visibility: hidden;"></div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    
+    `);
+
+}
+
+function myTransactions(event) {
+    if (event != "") {
+        event.preventDefault();
+    }
+
+    $.ajax({
+        method: 'GET',
+        url: '/transaction/myTransactions',
+        contentType: 'application/json',
+        success: function (responseMessage) {
+            $('main').html(`
+                <div class="container">
+                    <div class="row">
+                        <h1>Transactions</h1>
+                    </div>
+                    <div class="row">
+                        <h4>Sold</h1>
+                    </div>
+                    <div id="sold">
+                    </div>
+                    <div class="row">
+                        <h4>Bought</h1>
+                    </div>
+                    <div id="bought">
+                    </div>
+                </div>
+            `);
+
+            if (responseMessage.sold.length == 0) {
+                $('#sold').html("<div>You didn't sold anything.</div>");
+            } else {
+                responseMessage.sold.forEach(element => {
+                    $('#sold').html($('#sold').html() + `
+                        <div class="row">
+                            <div class="col-3">
+                                <img src="/images/${element.item.photos[0]}" alt="${element.item.title}" height="100px">
+                            </div>
+                            <div class="col-3">
+                                <h5>Item</h5>
+                                <ul>
+                                    <li>${element.item.title}</li>
+                                    <li>$${element.item.price}</li>
+                                    <li>${new Date(element.item.date).toLocaleString('en-US', { timeZone: 'EST' })}</li>
+                                <ul>
+                            </div>
+                            <div class="col-3">
+                                <h5>Buyer's details</h5>
+                                <ul>
+                                    <li>${element.buyer}</li>
+                                    <li>${element.payment.type}</li>
+                                    <li>${new Date(element.date).toLocaleString('en-US', { timeZone: 'EST' })}</li>
+                                <ul>
+                            </div>
+                            ${element.payment.type == "credit card" ?
+                            `
+                            <div class="col-3">
+                                <h5>Buyer's payment details</h5>
+                                <ul>
+                                    <li>${element.payment.cardNumber}</li>
+                                    <li>You can only see the buyer's cardNumber</li>
+                                <ul>
+                            </div>
+                            `:
+                            ""}
+                            
+                            <hr class="my-2">
+                        </div>
+                    `);
+                });
+
+            }
+
+            if (responseMessage.bought.length == 0) {
+                $('#bought').html("<div>You didn't bought anything.</div>");
+            } else {
+                responseMessage.bought.forEach(element => {
+                    $('#bought').html($('#bought').html() + `
+                        <div class="row">
+                            <div class="col-3">
+                                <img src="/images/${element.item.photos[0]}" alt="${element.item.title}" height="100px">
+                            </div>
+                            <div class="col-3">
+                                <h5>Item</h5>
+                                <ul>
+                                    <li>${element.item.title}</li>
+                                    <li>$${element.item.price}</li>
+                                    <li>${new Date(element.item.date).toLocaleString('en-US', { timeZone: 'EST' })}</li>
+                                <ul>
+                            </div>
+                            <div class="col-3">
+                                <h5>Your details</h5>
+                                <ul>
+                                    <li>${element.buyer}</li>
+                                    <li>${element.payment.type}</li>
+                                    <li>${new Date(element.date).toLocaleString('en-US', { timeZone: 'EST' })}</li>
+                                <ul>
+                            </div>
+                            ${element.payment.type == "credit card" ?
+                            `
+                            <div class="col-3">
+                                <h5>Your payment details</h5>
+                                <ul>
+                                    <li>${element.payment.cardNumber}</li>
+                                    <li>${element.payment.validDate}</li>
+                                    <li>${element.payment.securityCode}</li>
+                                <ul>
+                            </div>
+                            `:
+                            ""}
+                            
+                            <hr class="my-2">
+                        </div>
+                    `);
+                });
+
+            }
+        },
+        error: function (responseMessage) {
+            if (responseMessage.status == 400) {
+                alert(responseMessage.responseText);
+            } else if (responseMessage.status == 500) {
+                alert(responseMessage.responseText);
+            } else {
+                alert(responseMessage.responseText);
+            }
+
+        }
+    });
 }
 
 function chatBox(event) {
@@ -622,7 +1010,7 @@ function chatBox(event) {
                         <span class="time">
                         ${new Date().getDate() == new Date(element.messages[element.messages.length - 1].date).getDate() ?
                         new Date(element.messages[element.messages.length - 1].date).toLocaleTimeString('en-US') :
-                        new Date(element.messages[element.messages.length - 1].date).toLocaleString('en-US', { timeZone: 'UTC' })}
+                        new Date(element.messages[element.messages.length - 1].date).toLocaleString('en-US', { timeZone: 'EST' })}
                         </span>
                     </p>
                 </li>
@@ -639,7 +1027,7 @@ function chatBox(event) {
     $('#send').submit((event) => {
         event.preventDefault();
         alert($('.active-user').attr('id'));
-        console.log($('#messageContent').val())
+        // console.log($('#messageContent').val())
     });
 }
 
@@ -676,7 +1064,7 @@ function reloadChatBox(chat) {
                     <div class="chat-hour">
                         ${new Date().getDate() == new Date(element.date).getDate() ?
                     new Date(element.date).toLocaleTimeString('en-US') :
-                    new Date(element.date).toLocaleString('en-US', { timeZone: 'UTC' })}
+                    new Date(element.date).toLocaleString('en-US', { timeZone: 'EST' })}
                         <span class="fa fa-check-circle"></span>
                     </div>
                 </li>
@@ -687,7 +1075,7 @@ function reloadChatBox(chat) {
                 <div class="chat-hour">
                     ${new Date().getDate() == new Date(element.date).getDate() ?
                     new Date(element.date).toLocaleTimeString('en-US') :
-                    new Date(element.date).toLocaleString('en-US', { timeZone: 'UTC' })}
+                    new Date(element.date).toLocaleString('en-US', { timeZone: 'EST' })}
                     <span class="fa fa-check-circle"></span>
                 </div>
                 <div class="chat-text">${element.message}</div>
@@ -702,214 +1090,6 @@ function reloadChatBox(chat) {
     });
 }
 
-function myItems(item) {
-    $('main').html(`
-        <div class="row">
-            <div class="col-md-12">
-                <div class="container-fluid col-md-6 mt-3">
-                    <form id="newItemForm" class="needs-validation" novalidate>
 
-                    <h1 class="row d-flex justify-content-center mb-3">Item Information</h1>
 
-                    <div class="form-floating mb-2">
-                        <input type="text" name="title" class="form-control" id="titleInput" placeholder="xxxx">
-                        <label for="titleInput">title</label>
-                        <div class="valid-feedback">
-                        Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                        Title must not be null and not longer than 100 letters!
-                        </div>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="text" name="price" class="form-control" id="priceInput" placeholder="1">
-                        <label for="priceInput">price</label>
-                        <div class="valid-feedback">
-                        Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                        Price must be a number and larger than 0!
-                        </div>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="text" name="description" class="form-control" id="descriptionInput" placeholder="good item">
-                        <label for="descriptionInput">description</label>
-                        <div class="valid-feedback">
-                        Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                        Description must not be null and should not longer than 1000 letters!
-                        </div>
-                    </div>
-                    
-                    <input id="photosInput" name="photos" type="file" multiple/>
-                    <div class="invalid-feedback">
-                        Please upload some photos to describe your item!
-                    </div>
-                    <div id="filesErrorDiv" class="error" style="visibility: hidden;">
-                        Files must all be photos('png','jpg')!
-                    </div>
-
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-6 d-flex justify-content-center">
-                        <button class="col-6 btn btn-primary" type="submit" onclick="newItemFormPost(event)">
-                            create
-                        </button>
-                        </div>
-                    </div>
-
-                    <div id="newItemErrorDiv" class="error" style="visibility: hidden;"></div>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-        </div>
-    
-    `);
-
-}
-
-function newItemFormPost(event) {
-    event.preventDefault();
-
-    let inputs = { "title": "", "price": "", "description": "" };
-
-    let flag = true;
-
-    for (let key in inputs) {
-        let input = $('#' + key + 'Input');
-        if (!(inputs[key] = check(input.val(), key))) {
-            flag = false;
-            input.removeClass("is-valid");
-            input.addClass("is-invalid");
-        } else {
-            input.removeClass("is-invalid");
-            input.addClass("is-valid");
-        }
-    }
-
-    if ($('#photosInput')[0].files.length == 0) {
-        flag = false;
-        $('#photosInput').removeClass("is-valid");
-        $('#photosInput').addClass("is-invalid");
-    } else {
-        $('#photosInput').removeClass("is-invalid");
-        $('#photphotosInputos').addClass("is-valid");
-    }
-
-    $('#filesErrorDiv').css("visibility", "hidden");
-    let photos = $('#photosInput')[0].files;
-    for (let i = 0; i < photos.length; i++) {
-        if (!(/\.(jpg|png)$/.test(photos[i.toString()].name))) {
-            errors(["files"], "newItem");
-            flag = false;
-            break;
-        }
-    }
-
-    if (flag == true) {
-        $.ajax({
-            method: 'POST',
-            url: '/item/create',
-            data: new FormData($('#newItemForm')[0]),
-            processData: false,
-            contentType: false,
-            success: function (responseMessage) {
-                // window.location.href = "/stevensMarketPlace";
-                // console.log(responseMessage)
-                // myItem(responseMessage)
-                search();
-            },
-            error: function (responseMessage) {
-                if (responseMessage.status == 400) {
-                    errors(responseMessage.responseJSON.errors, "newItem");
-                } else if (responseMessage.status == 500) {
-                    alert(responseMessage.responseText);
-                } else {
-                    alert(responseMessage.responseText);
-                }
-
-            }
-        });
-    }
-
-}
-
-function newItem(event) {
-    event.preventDefault();
-    $('main').html(`
-        <div class="row">
-            <div class="col-md-12">
-                <div class="container-fluid col-md-6 mt-3">
-                    <form id="newItemForm" class="needs-validation" novalidate>
-
-                    <h1 class="row d-flex justify-content-center mb-3">Create New Item</h1>
-
-                    <div class="form-floating mb-2">
-                        <input type="text" name="title" class="form-control" id="titleInput" placeholder="xxxx">
-                        <label for="titleInput">title</label>
-                        <div class="valid-feedback">
-                        Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                        Title must not be null and not longer than 100 letters!
-                        </div>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="text" name="price" class="form-control" id="priceInput" placeholder="1">
-                        <label for="priceInput">price</label>
-                        <div class="valid-feedback">
-                        Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                        Price must be a number and larger than 0!
-                        </div>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input type="text" name="description" class="form-control" id="descriptionInput" placeholder="good item">
-                        <label for="descriptionInput">description</label>
-                        <div class="valid-feedback">
-                        Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                        Description must not be null and should not longer than 1000 letters!
-                        </div>
-                    </div>
-                    
-                    <label for="photosInput">You can upload multiple photos.</label>
-                    <input id="photosInput" name="photos" type="file" multiple/>
-                    <div class="invalid-feedback">
-                        Please upload some photos to describe your item!
-                    </div>
-                    <div id="filesErrorDiv" class="error" style="visibility: hidden;">
-                        Files must all be photos('png','jpg')!
-                    </div>
-
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-6 d-flex justify-content-center">
-                        <button class="col-6 btn btn-primary" type="submit" onclick="newItemFormPost(event)">
-                            create
-                        </button>
-                        </div>
-                    </div>
-
-                    <div id="newItemErrorDiv" class="error" style="visibility: hidden;"></div>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-        </div>
-    
-    `);
-}
 
