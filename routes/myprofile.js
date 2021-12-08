@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {user} = require('../data');
+const { user } = require('../data');
 
-router.get('/', async(req, res) => {
-    let user_id = req.session.user.user_id
+router.get('/', async (req, res) => {
+    let user = (await user.findOne(req.session.user.account)).user;
+    res.json(user);
 
-    let userInfo = await user.findOne(req.session.user.account)
-    res.render("main/myprofile", {"user":userInfo.user, "currentUser":req.session.user.account,"layout":"main"});
-        
 })
 
 module.exports = router;

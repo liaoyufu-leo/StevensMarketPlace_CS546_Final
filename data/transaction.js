@@ -31,7 +31,7 @@ async function create(item_id, account, payment) {
         errors.push("item not selling");
         return { "hasErrors": true, "errors": errors };
     }
-    if ( checkItem.seller == account){
+    if (checkItem.seller == account) {
         await collection.closeCollection();
         errors.push("same");
         return { "hasErrors": true, "errors": errors };
@@ -55,7 +55,7 @@ async function create(item_id, account, payment) {
         "date": new Date(),
         "price": checkItem.price,
         "payment": payment,
-        "status": "pending"
+        "status": "completed"
     }
 
     const insertInfo = await transactionCol.insertOne(transaction);
@@ -64,22 +64,18 @@ async function create(item_id, account, payment) {
         throw "Can't create transaction in mongodb, something went wrong, please try again!";
     }
 
+    const updatedInfo = await itemCol.updateOne(
+        { "_id": item_id },
+        { $set: { "status": "sold" } }
+    );
+
+    const updatedcart = await userCol.updateOne({}, { $pull: { "cart": item_id } });
+
     const insertedTransaction = await transactionCol.findOne({ _id: insertInfo.insertedId });
     if (insertedTransaction === null) {
         await collection.closeCollection();
         throw "Can't find created transaction in mongodb, something went wrong! Please try again!";
     }
-
-    const updatedInfo = await itemCol.updateOne(
-        { "_id": item_id },
-        { $set: { "status": "sold" } }
-    );
-    if (updatedInfo.modifiedCount === 0) {
-        await collection.closeCollection();
-        throw "Can't update item information in mongodb, something went wrong, please try again!";
-    }
-
-    const updatedcart = await userCol.updateOne({ account: account }, { $pull: { "cart": item_id } });
 
     await collection.closeCollection();
 
