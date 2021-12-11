@@ -26,7 +26,7 @@ async function main() {
 
 async function userSeed() {
     const userCol = await collection.getCollection("user");
-    await userCol.createIndex({ "nickname": "text" });
+    await userCol.createIndex({ "account": "text" });
     await connection.closeDB();
 
     console.log(await user.create(

@@ -71,6 +71,10 @@ function errors(inputs, formType) {
                             formError.html(formError.html() + "You didn't change your information, please change first");
                             formError.css("visibility", "visible");
                             return;
+                        case "itemUpdateInfo":
+                            formError.html(formError.html() + "You didn't change the item information, please change first");
+                            formError.css("visibility", "visible");
+                            return;
                     }
 
                 default:

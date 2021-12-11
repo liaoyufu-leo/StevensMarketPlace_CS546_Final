@@ -8,7 +8,8 @@ module.exports = {
     login,
     updateInformation,
     forgetPassword,
-    findOne
+    findOne,
+    search
 }
 
 async function create(account, password, nickname, gender, address) {
@@ -19,7 +20,7 @@ async function create(account, password, nickname, gender, address) {
     if (!(nickname = check(nickname, "nickname"))) errors.push("nickname");
     if (!(gender = check(gender, "gender"))) errors.push("gender");
     if (!(address = check(address, "address"))) errors.push("address");
-    
+
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -67,7 +68,7 @@ async function login(account, password) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const userCol = await collection.getCollection('user');
-    
+
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
@@ -221,4 +222,17 @@ async function findOne(account) {
         checkAccount.cart[i] = checkAccount.cart[i].toString();
     }
     return { "hasErrors": false, "user": checkAccount };
+}
+
+async function search(keyword, account) {
+    let errors = [];
+    if (arguments.length != 2) errors.push("arguments");
+    if ((keyword = check(keyword, "keyword")) === false) errors.push("keyword");
+    if (!(account = check(account, "account"))) errors.push("account");
+
+    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
+
+    const userCol = await collection.getCollection('user');
+
+    const users = await userCol.find({ "account": { $ne: account }, $text: { $search: keyword } }).toArray();
 }
