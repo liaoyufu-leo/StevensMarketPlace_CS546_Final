@@ -234,5 +234,14 @@ async function search(keyword, account) {
 
     const userCol = await collection.getCollection('user');
 
-    const users = await userCol.find({ "account": { $ne: account }, $text: { $search: keyword } }).toArray();
+    const users = await userCol.find(
+        {
+            $and: [{ "account": { $ne: account } },
+            { "account": new RegExp(keyword) }]
+        },
+        { projection: { "account": 1, "_id": 0 } }).toArray();
+
+    await collection.closeCollection();
+
+    return { "hasErrors": false, "users": users };
 }

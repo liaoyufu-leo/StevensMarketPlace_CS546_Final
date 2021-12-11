@@ -11,10 +11,10 @@ async function main() {
     // // user function test case
     // await userCreateTest();
     // await userloginTest();
-    // await userUpdatePasswordTest();
     // await userForgetPasswordTest();
     // await userUpdateInformationTest();
     // await userFindOneTest();
+    await userSearchTest();
 
     // // item function test case
     // await itemCreateTest();
@@ -34,78 +34,12 @@ async function main() {
     // await transactionGetAllTest();
     // await transactionGetOne();
 
-    // chat function test case
-    await chatSendTest();
-    await chatGetAllTest();
-    await chatGetOneTest();
+    // // chat function test case
+    // await chatSendTest();
+    // await chatGetAllTest();
+    // await chatGetOneTest();
 }
 
-async function chatSendTest() {
-    console.log("This test case should have error in invaild arguments!");
-    console.log(await chat.send(
-        "yliao10stevens.edu",
-        "Aa!1234567",
-        "  "
-    ));
-
-    console.log("This test case should have error for not exsit account!");
-    console.log(await chat.send(
-        "yliao1012@stevens.edu",
-        "yliao1031@stevens.edu",
-        "123"
-    ));
-
-    console.log("This test case shoule show not allowed to send message to themself!");
-    console.log(await chat.send(
-        "yliao10@stevens.edu",
-        "yliao10@stevens.edu",
-        "123"
-    ));
-
-    console.log("This test case should success!");
-    console.log(await chat.send(
-        "yliao10@stevens.edu",
-        "ygandhi2@stevens.edu",
-        "ygandhi2@stevens.edu"
-    ));
-}
-
-async function chatGetAllTest() {
-    console.log("This test case should have error in invaild arguments!");
-    console.log(await chat.getAll(
-        "yliao10stevens.edu"
-    ));
-
-    console.log("This test case should have error for not exsit account!");
-    console.log(await chat.getAll(
-        "yliao101@stevens.edu"
-    ));
-
-    console.log("This test case should success!");
-    console.log(await chat.getAll(
-        "yliao10@stevens.edu"
-    ));
-}
-
-async function chatGetOneTest() {
-    console.log("This test case should have error in invaild arguments!");
-    console.log(await chat.getOne(
-        "yliao10stevens.edu",
-        "Aa!1234567"
-    ));
-
-    console.log("This test case should have error for not exsit account!");
-    console.log(await chat.getOne(
-        "yliao1012@stevens.edu",
-        "yliao1031@stevens.edu"
-    ));
-
-    console.log("This test case should success!");
-    console.log(await chat.getOne(
-        "yliao10@stevens.edu",
-        "ygandhi2@stevens.edu"
-    ));
-}
 
 async function userCreateTest() {
     console.log("This test case should have error in invaild arguments!");
@@ -193,38 +127,6 @@ async function userloginTest() {
         "   yliao10@stevens.edu   ",
         "Aa!1234567"
     ));
-}
-
-async function userUpdatePasswordTest() {
-
-    console.log("This test case should have error in invalid arguments!");
-    console.log(await user.updatePassword(
-        "yliao10stevens.edu",
-        "Aa!1234567",
-        "1234567Aa!"
-    ));
-
-    console.log("This test case should have error in account not exist!");
-    console.log(await user.updatePassword(
-        "yliao101@stevens.edu",
-        "Aa!1234567",
-        "1234567Aa!"
-    ));
-
-    console.log("This test case should have error in oldPassword not correct!");
-    console.log(await user.updatePassword(
-        "yliao10@stevens.edu",
-        "Aa!12345671",
-        "1234567Aa!"
-    ));
-
-    console.log("This test case should update success!");
-    console.log(await user.updatePassword(
-        "yliao10@stevens.edu",
-        "Aa!1234567",
-        "1234567Aa!"
-    ));
-
 }
 
 async function userForgetPasswordTest() {
@@ -364,6 +266,10 @@ async function userFindOneTest() {
     console.log(await user.findOne(
         "yliao10@stevens.edu"
     ));
+}
+
+async function userSearchTest() {
+    console.log(await user.search("y", "yliao10@stevens.edu"));
 }
 
 async function itemCreateTest() {
@@ -672,5 +578,72 @@ async function transactionGetOne() {
     console.log("This test case should success!");
     console.log(await transaction.getOne(
         aimTransaction._id
+    ));
+}
+
+async function chatSendTest() {
+    console.log("This test case should have error in invaild arguments!");
+    console.log(await chat.send(
+        "yliao10stevens.edu",
+        "Aa!1234567",
+        "  "
+    ));
+
+    console.log("This test case should have error for not exsit account!");
+    console.log(await chat.send(
+        "yliao1012@stevens.edu",
+        "yliao1031@stevens.edu",
+        "123"
+    ));
+
+    console.log("This test case shoule show not allowed to send message to themself!");
+    console.log(await chat.send(
+        "yliao10@stevens.edu",
+        "yliao10@stevens.edu",
+        "123"
+    ));
+
+    console.log("This test case should success!");
+    console.log(await chat.send(
+        "yliao10@stevens.edu",
+        "ygandhi2@stevens.edu",
+        "ygandhi2@stevens.edu"
+    ));
+}
+
+async function chatGetAllTest() {
+    console.log("This test case should have error in invaild arguments!");
+    console.log(await chat.getAll(
+        "yliao10stevens.edu"
+    ));
+
+    console.log("This test case should have error for not exsit account!");
+    console.log(await chat.getAll(
+        "yliao101@stevens.edu"
+    ));
+
+    console.log("This test case should success!");
+    console.log(await chat.getAll(
+        "yliao10@stevens.edu"
+    ));
+}
+
+async function chatGetOneTest() {
+    console.log("This test case should have error in invaild arguments!");
+    console.log(await chat.getOne(
+        "yliao10stevens.edu",
+        "Aa!1234567"
+    ));
+
+    console.log("This test case should have error for not exsit account!");
+    console.log(await chat.getOne(
+        "yliao1012@stevens.edu",
+        "yliao1031@stevens.edu"
+    ));
+
+    console.log("This test case should success!");
+    console.log(await chat.getOne(
+        "yliao10@stevens.edu",
+        "ygandhi2@stevens.edu"
     ));
 }
