@@ -87,7 +87,7 @@ function getItem(event, item_id) {
                     <div class="col-4">
                         <h1>${item.title}</h1>
                         <hr>
-                        <a class="text-dark text-decoration-underline" href="/user/getOne/${item.seller}">Seller:
+                        <a class="text-dark text-decoration-underline" href="/user/getOne/${item.seller}" onclick="getUser(event,'${item.seller}')">Seller:
                             ${item.seller}</a>
                         <hr>
                         <p class="text-danger font-weight-bold">Prices: ${item.price}</p>
@@ -171,7 +171,7 @@ function getItem(event, item_id) {
                             <p class="col-6 d-flex justify-content-start">${element.commenter}</p>
                             <span class="col-6 d-flex justify-content-end">
                             ${new Date().getDate() == new Date(element.date).getDate() ?
-                        new Date(element.date).toLocaleTimeString('en-US') :
+                        new Date(element.date).toLocaleTimeString('en-US') + " Today" :
                         new Date(element.date).toLocaleString('en-US', { timeZone: 'EST' })}
                             </span>
                             <hr>
@@ -191,6 +191,44 @@ function getItem(event, item_id) {
                 } else {
                     window.location.href = "/item/getOne/" + item_id;
                 }
+            } else if (responseMessage.status == 500) {
+                alert(responseMessage.responseText);
+            } else {
+                alert(responseMessage.responseText);
+            }
+
+        }
+    });
+}
+
+function getUser(event, account) {
+    event.preventDefault();
+    $.ajax({
+        method: 'GET',
+        url: '/user/getOne/' + account,
+        contentType: 'application/json',
+        success: function (responseMessage) {
+            $('main').html(`
+                <div class="container">
+                    <h1 class="row d-flex justify-content-center">${responseMessage.account}</h1>
+                    <div class="row d-flex justify-content-center">nickname:${responseMessage.nickname}</div>
+                    <div class="row d-flex justify-content-center">gender:${responseMessage.gender}</div>
+                    <p class="row d-flex justify-content-center">Address</p>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-auto">street:${responseMessage.address.street}</div>
+                        <div class="col-auto">apt:${responseMessage.address.apt}</div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-auto">city:${responseMessage.address.city}</div>
+                        <div class="col-auto">state:${responseMessage.address.state}</div>
+                        <div class="col-auto">zipCode:${responseMessage.address.zipCode}</div>
+                    </div>
+                </div>
+            `);
+        },
+        error: function (responseMessage) {
+            if (responseMessage.status == 400) {
+                alert(responseMessage.responseText);
             } else if (responseMessage.status == 500) {
                 alert(responseMessage.responseText);
             } else {
@@ -376,9 +414,6 @@ function buyNow(event, item_id) {
                         <div class="col-2"><img src="/images/${element.photos[0]}" alt="${element.title}" width="50px"></div>
                         <div class="col-3 d-flex justify-content-center"><span class="align-self-center fw-bold">${element.title}</span></div>
                         <div class="col-3 d-flex justify-content-center">
-                            <a class="align-self-center" onclick="directRemove(event,'${element._id}')">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                            </a>
                         </div>
                         <div class="col-2 d-flex justify-content-end"><span class="align-self-center fw-bold">$${element.price}</span></div>
                         <hr class="my-2">
@@ -1210,7 +1245,7 @@ function myTransactions(event) {
                             <div class="col-3">
                                 <h5>Buyer's details</h5>
                                 <ul>
-                                    <li>${element.buyer}</li>
+                                    <li><a href="/user/getOne" onclick="getUser(event,'${element.buyer}')">${element.buyer}</a></li>
                                     <li>${element.payment.type}</li>
                                     <li>${new Date(element.date).toLocaleString('en-US', { timeZone: 'EST' })}</li>
                                 <ul>
@@ -1434,7 +1469,7 @@ function reloadChatBox(chat) {
                     <div class="chat-text">${element.message}</div>
                     <div class="chat-hour">
                         ${new Date().getDate() == new Date(element.date).getDate() ?
-                    new Date(element.date).toLocaleTimeString('en-US') :
+                    new Date(element.date).toLocaleTimeString('en-US') + " Today" :
                     new Date(element.date).toLocaleString('en-US', { timeZone: 'EST' })}
                         <span class="fa fa-check-circle"></span>
                     </div>
@@ -1445,7 +1480,7 @@ function reloadChatBox(chat) {
             <li class="chat-right">
                 <div class="chat-hour">
                     ${new Date().getDate() == new Date(element.date).getDate() ?
-                    new Date(element.date).toLocaleTimeString('en-US') :
+                    new Date(element.date).toLocaleTimeString('en-US') + " Today" :
                     new Date(element.date).toLocaleString('en-US', { timeZone: 'EST' })}
                     <span class="fa fa-check-circle"></span>
                 </div>

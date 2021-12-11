@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require("../public/js/check");
-const { user } = require("../data");
+const { user} = require("../data");
 const { item } = require("../data");
 
 
@@ -121,24 +121,26 @@ router.get('/cart', async (req, res) => {
     res.status(200).json({ "items": items });
 });
 
-router.get('/updatePassword', async (req, res) => {
-    res.status(200).json({ "title": "updatePassword" });
-});
-
-router.post('/updatePassword', async (req, res) => {
-    res.status(200).json({ "title": "updatePassword" });
-});
-
-router.get('/updateInformation', async (req, res) => {
-    res.status(200).json({ "title": "updateInformation" });
-});
-
-router.post('/updateInformation', async (req, res) => {
-    res.status(200).json({ "title": "updateInformation" });
-});
-
 router.get('/getOne/:account', async (req, res) => {
-    res.status(200).json({ "title": "getOne" });
+    let errors = [];
+    if (Object.keys(req.params).length != 1) errors.push("arguments");
+    if (!(account = check(req.params.account, "account"))) errors.push("account");
+
+    if (errors.length > 0) {
+        res.status(400).json({ "hasErrors": true, "errors": errors });
+        return;
+    }
+
+    try {
+        const data = await user.findOne(account);
+        if (data.hasErrors) {
+            res.status(404).json(data);
+        } else {
+            res.status(200).json(data.user);
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
 router.get('/addCart/:item_id', async (req, res) => {
