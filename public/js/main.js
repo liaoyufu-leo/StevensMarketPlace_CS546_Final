@@ -22,10 +22,11 @@ function search() {
         contentType: 'application/json',
         success: function (responseMessage) {
             $('main').html(`
-          <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
-              <div id="content" class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
-              </div>
-          </div>
+            <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
+                <h1>Items Lists</h1><h2></h2><h3></h3><h4></h4>
+                <div id="content" class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
+                </div>
+            </div>
         `);
             responseMessage.items.forEach(element => {
                 $('#content').html($('#content').html() + `
@@ -34,7 +35,7 @@ function search() {
                   <div class="card-body">
                       <div class="clearfix mb-3"> 
                         <span class="float-start badge rounded-pill bg-primary">${element.title}</span> 
-                        <span class="float-end price-hp" style="color:red">$${element.price}</span> 
+                        <span class="float-end price-hp" style="color:var(--stevensRed)">$${element.price}</span> 
                       </div>
                       <h5 class="card-title">${element.description}</h5>
                       <div class="text-center my-4"> <a href="/item/getOne/${element._id}" onClick=getItem(event,'${element._id}') class="btn btn-warning">Check Item</a> </div>
