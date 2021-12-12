@@ -1,4 +1,3 @@
-
 function getItem(event, item_id) {
     if (event != '') {
         event.preventDefault();
@@ -70,6 +69,7 @@ function getItem(event, item_id) {
                             <div id="comments" class="comment-bottom bg-white p-2 px-4">
                                 <div class="add-comment-section mt-4 mb-4">
                                     <textarea id="contentInput" class="form-control mr-3" placeholder="Add comment"></textarea>
+                                    <label for="contentInput"></label>
                                     <div class="valid-feedback">
                                        Looks good.
                                     </div>
@@ -78,8 +78,8 @@ function getItem(event, item_id) {
                                     </div>
                                     <div id="commentFormErrorDiv" class="error" style="visibility: hidden;"></div>
                                     <div class="d-flex flex-row justify-content-end">
-                                        <img class="img-fluid img-responsive rounded-circle mr-2" src="/images/avatar.png" width="38">
-                                        <button class="btn btn-primary" type="button" onclick="comment(event,'${item._id}')">Comment</button>
+                                        <label for="commentButton"></label>
+                                        <button id="commentButton" class="btn btn-primary" type="button" onclick="comment(event,'${item._id}')">Comment</button>
                                     </div>
                                     
                                 </div>
@@ -259,7 +259,7 @@ function buyNow(event, item_id) {
                             <div class="col-12 mt-3 ">
                                 <nav aria-label="breadcrumb" class="second ">
                                     <ol class="breadcrumb indigo lighten-6 first ">
-                                        <li class="breadcrumb-item font-weight-bold "><a class="black-text text-uppercase" href="/"><span class="mr-md-3 mr-1">BACK TO SHOP</span></a><i class="fa fa-angle-double-right " aria-hidden="true"></i></li>
+                                        <li class="breadcrumb-item font-weight-bold "><a class="black-text text-uppercase" href="/" style="color:var(--stevensred);">BACK TO SHOP</a></li>
                                     </ol>
                                 </nav>
                             </div>
@@ -323,7 +323,7 @@ function buyNow(event, item_id) {
                             <div class="col-md-5">
                                 <div class="card border-0 ">
                                     <div class="card-header card-2">
-                                        <p class="card-text text-muted mt-md-4 mb-2 space">YOUR ORDER <span class=" small text-muted ml-2 cursor-pointer">EDIT SHOPPING BAG</span> </p>
+                                        <p class="card-text mt-md-4 mb-2 space" style="color:var(--stevensRed);">YOUR ORDER </p>
                                         <hr class="my-2">
                                     </div>
                                     <div class="card-body pt-0">

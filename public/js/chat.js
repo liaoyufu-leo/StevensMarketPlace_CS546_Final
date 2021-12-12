@@ -19,11 +19,13 @@ function chatBox(event) {
                                     <div class="users-container">
                                         <div class="chat-search-box">
                                             <div class="input-group">
-                                                <input class="form-control" placeholder="Search" list="accountList" id="accountSearch">
+                                                <input class="form-control" placeholder="Search" list="accountList" id="accountSearch"> 
+                                                <label for="accountSearch"></label>
                                                 <datalist id="accountList">
 	                                            </datalist>
                                                 <div class="input-group-btn">
-                                                    <button type="button" class="btn btn-info">
+                                                    <label for="accountSearchButton"></label>
+                                                    <button id="accountSearchButton" type="button" class="btn btn-info" for="accountSearch">
                                                         <i class="fa fa-search"></i>
                                                     </button>
                                                 </div>
@@ -50,6 +52,7 @@ function chatBox(event) {
                                             <form id="send">
                                                 <textarea id="messageContent" class="form-control" rows="3"
                                                     placeholder="Type your message here..."></textarea>
+                                                <label for="messageContent"></label>
                                                 <button class="btn btn-success mt-2" type="submit" onclick="sendMessage(event)">Send</button>
                                             </form>
 
@@ -279,7 +282,7 @@ socket.on("receive", (msg) => {
             <li class="chat-left">
                 <div class="chat-avatar">
                     <img src="/images/avatar.png" alt="${nickname}">
-                    <div class="chat-name">${nickname}</div>
+                    <div class="chat-name" style="color: var(--stevensRed)">${nickname}</div>
                 </div>
                 <div class="chat-text">${msg.message.message}</div>
                 <div class="chat-hour">
