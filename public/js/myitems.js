@@ -38,7 +38,7 @@ function myItems(event) {
                             <div class="col-4 row align-self-center">
                                 ${element.status == "selling" ? `   
                                     <div class="col-6"><button onclick="withdrawItem('${element._id}')" class="btn btn-danger">withdraw</button></div>
-                                    <div class="col-6"><button onclick="itemUpdateInfo('${element._id}')" class="btn btn-primary">undateInfo</button></div>
+                                    <div class="col-6"><button onclick="itemUpdateInfo('${element._id}')" class="btn btn-primary">updateInfo</button></div>
                                 `
                             : ""}
                             </div>

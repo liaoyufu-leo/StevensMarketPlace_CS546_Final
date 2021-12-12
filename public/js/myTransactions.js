@@ -101,9 +101,9 @@ function myTransactions(event) {
                             <div class="col-3">
                                 <h5>Your payment details</h5>
                                 <ul>
-                                    <li>${element.payment.cardNumber}</li>
-                                    <li>${element.payment.validDate}</li>
-                                    <li>${element.payment.securityCode}</li>
+                                    <li>Card Number: ${element.payment.cardNumber}</li>
+                                    <li>Valid Date: **/**</li>
+                                    <li>CVV: ***</li>
                                 <ul>
                             </div>
                             `:
