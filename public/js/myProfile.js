@@ -100,7 +100,7 @@ function myProfile(event) {
                                 Looks good!
                                 </div>
                                 <div class="invalid-feedback">
-                                City should not be empty!
+                                State should not be empty!
                                 </div>
                             </div>
                             </div>
@@ -113,7 +113,7 @@ function myProfile(event) {
                                 Looks good!
                                 </div>
                                 <div class="invalid-feedback">
-                                City should not be empty!
+                                Zipcode should be 5 numbers!
                                 </div>
                             </div>
                             </div>
