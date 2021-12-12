@@ -1,5 +1,8 @@
 search();
 
+var socket = io();
+socket.emit('join', $('#currentUser').html());
+
 (function ($) {
 
     $('#searchForm').submit(function (event) {

@@ -44,8 +44,6 @@ async function send(sender, receiver, content) {
         "date": new Date(),
         "message": content
     };
-    console.log("chech status")
-    console.log(checkchat)
     if (checkchat == undefined) {
         const updatedInfo = await chatCol.insertOne({
             "users": [sender, receiver],

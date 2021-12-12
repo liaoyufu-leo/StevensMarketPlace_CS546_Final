@@ -90,6 +90,7 @@ function chatBox(event) {
                         new Date(element.messages[element.messages.length - 1].date).toLocaleString('en-US', { timeZone: 'EST' })}
                         </span>
                     </p>
+                    <span id="${element.users.slice(0, element.users.lastIndexOf('@'))}Unread" class="text-danger border rounded-circle"></span>
                 </li>
                 `);
             });
@@ -166,6 +167,7 @@ function createChat(account) {
 }
 
 function changeChatAim(account) {
+    $(`#${account}Unread`).html("");
     $.ajax({
         method: 'GET',
         url: "/chat/getOne/" + account + "@stevens.edu",
@@ -218,11 +220,64 @@ function reloadChatBox(chat) {
             </li>
         `);
         }
-
     });
+
+    $('.overflow-auto').animate({ scrollTop: $(".chatContainerScroll").height() });
 }
 
 function sendMessage(event) {
     event.preventDefault();
-    alert($('.active-user').attr('id'));
+    let receiver = $('.active-user').attr('id');
+    let content = $('#messageContent').val();
+
+    if (content != "") {
+        $.ajax({
+            method: 'POST',
+            url: '/chat/send',
+            contentType: 'application/json',
+            data: JSON.stringify({ "receiver": receiver + "@stevens.edu", "content": content }),
+            success: function (responseMessage) {
+                reloadChatBox(responseMessage);
+                socket.emit('receive', { "receiver": $('.active-user').attr('id') + "@stevens.edu", "message": responseMessage.messages[responseMessage.messages.length - 1] });
+            },
+            error: function (responseMessage) {
+                if (responseMessage.status == 400) {
+                    errors(responseMessage.responseJSON.errors, "send");
+                } else if (responseMessage.status == 500) {
+                    alert(responseMessage.responseText);
+                } else {
+                    alert(responseMessage.responseText);
+                }
+            }
+        });
+    } else {
+        alert("You can't send null message!");
+    }
+
 }
+
+socket.on("receive", (msg) => {
+    let sender = msg.message.sender;
+    let nickname = sender.slice(0, sender.lastIndexOf('@'));
+    let current = $('.active-user').attr('id');
+    if (nickname == current) {
+        $('.chat-box').html($('.chat-box').html() + `
+            <li class="chat-left">
+                <div class="chat-avatar">
+                    <img src="/images/avatar.png" alt="${nickname}">
+                    <div class="chat-name">${nickname}</div>
+                </div>
+                <div class="chat-text">${msg.message.message}</div>
+                <div class="chat-hour">
+                    ${new Date().getDate() == new Date(msg.message.date).getDate() ?
+                new Date(msg.message.date).toLocaleTimeString('en-US') + " Today" :
+                new Date(msg.message.date).toLocaleString('en-US', { timeZone: 'EST' })}
+                </div>
+            </li>
+        `);
+        $('.overflow-auto').animate({ scrollTop: $(".chatContainerScroll").height() });
+    } else {
+        $(`#${nickname}Unread`).html($(`#${nickname}Unread`).html() != "" ? parseInt($(`#${nickname}Unread`).html()) + 1 : 1);
+    }
+
+});

@@ -19,10 +19,9 @@ router.get('/getAll', async (req, res) => {
     } catch (error) {
         res.status(500).send(error);
     }
-})
+});
 
 router.get('/getOne/:account', async (req, res) => {
-
     let errors = [];
     if (Object.keys(req.params).length != 1) errors.push("arguments");
     if (!(account = check(req.params.account, "account"))) errors.push("account");
@@ -44,8 +43,31 @@ router.get('/getOne/:account', async (req, res) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
+});
 
+router.post('/send', async (req, res) => {
+    let errors = [];
+    if (Object.keys(req.body).length != 2) errors.push("arguments");
+    if (!(receiver = check(req.body.receiver, "account"))) errors.push("account");
+    if (!(content = check(req.body.content, "content"))) errors.push("content");
 
-})
+    if (errors.length > 0) {
+        res.status(400).json({ "hasErrors": true, "errors": errors });
+        return;
+    } 
+
+    try {
+        const data = await chat.send(req.session.user.account, receiver, content);
+        if (data.hasErrors == false) {
+            let chat = data.chat;
+            chat.users = chat.users[1 - chat.users.indexOf(req.session.user.account)];
+            res.status(200).json(chat);
+        } else {
+            res.status(400).json(data);
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
 
 module.exports = router;
