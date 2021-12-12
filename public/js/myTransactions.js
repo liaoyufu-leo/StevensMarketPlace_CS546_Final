@@ -11,7 +11,7 @@ function myTransactions(event) {
             $('main').html(`
                 <div class="container">
                     <div class="row">
-                        <h1>Transactions</h1>
+                        <h1>Transactions</h1><h2></h2><h3></h3>
                     </div>
                     <div class="row">
                         <h4>Sold</h1>

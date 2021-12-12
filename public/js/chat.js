@@ -80,7 +80,6 @@ function chatBox(event) {
                 <li id="${element.users.slice(0, element.users.lastIndexOf('@'))}" class="person" data-chat="${element.users}" onclick="changeChatAim('${element.users.slice(0, element.users.lastIndexOf('@'))}')">
                     <div class="user">
                         <img src="/images/avatar.png" alt="${element.users}">
-                        <span id="${element.users.slice(0, element.users.lastIndexOf('@'))}Status" class="status busy"></span>
                     </div>
                     <p class="name-time">
                         <span class="list-name">${element.users.slice(0, element.users.lastIndexOf('@'))}</span>
@@ -154,7 +153,6 @@ function createChat(account) {
         <li id="${account}" class="person" data-chat="${account}" onclick="changeChatAim('${account}')">
             <div class="user">
                 <img src="/images/avatar.png" alt="${account}">
-                <span id="${account}Status" class="status busy"></span>
             </div>
             <p class="name-time">
                 <span class="list-name">${account}</span>
@@ -186,7 +184,7 @@ function reloadChatBox(chat) {
     }
     $('#' + chat.users.slice(0, chat.users.lastIndexOf('@'))).addClass("active-user");
 
-    $('.name').text(chat.users.slice(0, chat.users.lastIndexOf('@')));
+    $('.name').html(chat.users.slice(0, chat.users.lastIndexOf('@')));
     $('.chat-box').html("")
     chat.messages.forEach(element => {
         if (element.sender == chat.users) {
@@ -194,7 +192,7 @@ function reloadChatBox(chat) {
                 <li class="chat-left">
                     <div class="chat-avatar">
                         <img src="/images/avatar.png" alt="${element.sender.slice(0, element.sender.lastIndexOf('@'))}">
-                        <div class="chat-name">${element.sender.slice(0, element.sender.lastIndexOf('@'))}</div>
+                        <div class="chat-name" style="color: var(--stevensRed);">${element.sender.slice(0, element.sender.lastIndexOf('@'))}</div>
                     </div>
                     <div class="chat-text">${element.message}</div>
                     <div class="chat-hour">
@@ -215,7 +213,7 @@ function reloadChatBox(chat) {
                 <div class="chat-text">${element.message}</div>
                 <div class="chat-avatar">
                     <img src="/images/avatar.png" alt="${element.sender.slice(0, element.sender.lastIndexOf('@'))}">
-                    <div class="chat-name">${element.sender.slice(0, element.sender.lastIndexOf('@'))}</div>
+                    <div class="chat-name" style="color: var(--stevensRed);">${element.sender.slice(0, element.sender.lastIndexOf('@'))}</div>
                 </div>
             </li>
         `);
@@ -253,13 +251,29 @@ function sendMessage(event) {
     } else {
         alert("You can't send null message!");
     }
-
+    $('#messageContent').val("")
 }
 
 socket.on("receive", (msg) => {
     let sender = msg.message.sender;
     let nickname = sender.slice(0, sender.lastIndexOf('@'));
     let current = $('.active-user').attr('id');
+    if ($('#' + nickname).length == 0) {
+        $('.users').html($('.users').html() + `
+        <li id="${nickname}" class="person" data-chat="${nickname}" onclick="changeChatAim('${nickname}')">
+            <div class="user">
+                <img src="/images/avatar.png" alt="${nickname}">
+                <span id="${nickname}Status" class="status busy"></span>
+            </div>
+            <p class="name-time">
+                <span class="list-name">${nickname}</span>
+                <span class="time"> ${new Date().toLocaleTimeString()} Today</span>
+            </p>
+        </li>
+        ` );
+        return;
+    }
+
     if (nickname == current) {
         $('.chat-box').html($('.chat-box').html() + `
             <li class="chat-left">

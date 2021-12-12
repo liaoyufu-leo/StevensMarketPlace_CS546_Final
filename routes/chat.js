@@ -5,6 +5,8 @@ const { check } = require("../public/js/check");
 
 const { chat } = require('../data')
 
+const xss = require('xss');
+
 router.get('/getAll', async (req, res) => {
 
     try {
@@ -48,8 +50,8 @@ router.get('/getOne/:account', async (req, res) => {
 router.post('/send', async (req, res) => {
     let errors = [];
     if (Object.keys(req.body).length != 2) errors.push("arguments");
-    if (!(receiver = check(req.body.receiver, "account"))) errors.push("account");
-    if (!(content = check(req.body.content, "content"))) errors.push("content");
+    if (!(receiver = check(xss(req.body.receiver), "account"))) errors.push("account");
+    if (!(content = check(xss(req.body.content), "content"))) errors.push("content");
 
     if (errors.length > 0) {
         res.status(400).json({ "hasErrors": true, "errors": errors });

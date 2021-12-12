@@ -12,9 +12,7 @@ h1, h2{
 }
 
 .error{
-    color: red;
-    font-size: 0.9em;
-    font-style: italic;
+    color: var(--stevensRed);
 }
 
 .checkbox {
@@ -22,6 +20,6 @@ h1, h2{
 }
   
 .form-floating:focus-within {
-z-index: 2;
-color: #0d6efd;
+    z-index: 2;
+    color: #0d6efd;
 }

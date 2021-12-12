@@ -1,4 +1,3 @@
-
 function cart(event) {
     if (event != '') {
         event.preventDefault();
@@ -17,7 +16,7 @@ function cart(event) {
                                 <div class="col-12 mt-3 ">
                                     <nav aria-label="breadcrumb" class="second ">
                                         <ol class="breadcrumb indigo lighten-6 first ">
-                                            <li class="breadcrumb-item font-weight-bold "><a class="black-text text-uppercase" href="/"><span class="mr-md-3 mr-1">BACK TO SHOP</span></a><i class="fa fa-angle-double-right " aria-hidden="true"></i></li>
+                                            <li class="breadcrumb-item font-weight-bold "><a class="black-text text-uppercase" href="/"><span class="mr-md-3 mr-1" style="color:var(--stevensRed);">BACK TO SHOP</span></a></li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -81,7 +80,7 @@ function cart(event) {
                                 <div class="col-md-5">
                                     <div class="card border-0 ">
                                         <div class="card-header card-2">
-                                            <p class="card-text text-muted mt-md-4 mb-2 space">YOUR ORDER <span class=" small text-muted ml-2 cursor-pointer">EDIT SHOPPING BAG</span> </p>
+                                            <p class="card-text mt-md-4 mb-2 space" style="color:var(--stevensRed);">YOUR ORDER</p>
                                             <hr class="my-2">
                                         </div>
                                         <div class="card-body pt-0">
@@ -119,7 +118,7 @@ function cart(event) {
                         <div class="col-2"><img src="/images/${element.photos[0]}" alt="${element.title}" width="50px"></div>
                         <div class="col-3 d-flex justify-content-center"><span class="align-self-center fw-bold">${element.title}</span></div>
                         <div class="col-3 d-flex justify-content-center">
-                            <a class="align-self-center" onclick="directRemove(event,'${element._id}')">
+                            <a class="align-self-center" onclick="directRemove(event,'${element._id}')" title="remove this item from your cart">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                             </a>
                         </div>

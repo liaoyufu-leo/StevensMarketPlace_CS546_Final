@@ -5,6 +5,8 @@ const { engine } = require('express-handlebars');
 const fileUpload = require('express-fileUpload');
 const configRoutes = require('./routes');
 
+const xss = require('xss');
+
 app.use(express.json());
 app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
@@ -62,7 +64,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/stevensMarketPlace', (req, res, next) => {
-    res.render("main", { "currentUser":req.session.user.account,"layout":false});
+    res.render("main", { "currentUser": xss(req.session.user.account), "layout": false });
 });
 
 configRoutes(app);

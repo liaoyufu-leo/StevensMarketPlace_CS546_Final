@@ -6,13 +6,14 @@ const { item } = require("../data");
 
 const md5 = require("blueimp-md5");
 const fs = require("fs");
+const xss = require('xss');
 
 router.post('/create', async (req, res) => {
     let errors = [];
     if (Object.keys(req.body).length != 3) errors.push("arguments");
-    if (!(title = check(req.body.title, "title"))) errors.push("title");
-    if (!(price = check(req.body.price, "price"))) errors.push("price");
-    if (!(description = check(req.body.description, "description"))) errors.push("description");
+    if (!(title = check(xss(req.body.title), "title"))) errors.push("title");
+    if (!(price = check(xss(req.body.price), "price"))) errors.push("price");
+    if (!(description = check(xss(req.body.description), "description"))) errors.push("description");
     if (!(req.files.photos)) errors.push("photos");
 
     let photos = Array.isArray(req.files.photos) ? req.files.photos : [req.files.photos];
@@ -54,10 +55,10 @@ router.post('/create', async (req, res) => {
 router.post('/update', async (req, res) => {
     let errors = [];
     if (Object.keys(req.body).length != 4) errors.push("arguments");
-    if (!(item_id = check(req.body.item_id, "id"))) errors.push("item_id");
-    if (!(title = check(req.body.title, "title"))) errors.push("title");
-    if (!(price = check(req.body.price, "price"))) errors.push("price");
-    if (!(description = check(req.body.description, "description"))) errors.push("description");
+    if (!(item_id = check(xss(req.body.item_id), "id"))) errors.push("item_id");
+    if (!(title = check(xss(req.body.title), "title"))) errors.push("title");
+    if (!(price = check(xss(req.body.price), "price"))) errors.push("price");
+    if (!(description = check(xss(req.body.description), "description"))) errors.push("description");
     let photos = [];
     if (req.files) {
         photos = Array.isArray(req.files.photos) ? req.files.photos : [req.files.photos];

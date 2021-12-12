@@ -3,6 +3,8 @@ const router = express.Router();
 const { check } = require("../public/js/check");
 const { user } = require('../data');
 
+const xss = require('xss');
+
 router.get('/', async (req, res) => {
     let userData = (await user.findOne(req.session.user.account)).user;
     res.status(200).json(userData);
@@ -17,8 +19,8 @@ router.post('/', async (req, res) => {
 
     let errors = [];
     if (Object.keys(req.body).length != 3) errors.push("arguments");
-    if (!(nickname = check(req.body.nickname, "nickname"))) errors.push("nickname");
-    if (!(gender = check(req.body.gender, "gender"))) errors.push("gender");
+    if (!(nickname = check(xss(req.body.nickname), "nickname"))) errors.push("nickname");
+    if (!(gender = check(xss(req.body.gender), "gender"))) errors.push("gender");
     if (!(address = check(req.body.address, "address"))) errors.push("address");
 
     if (errors.length > 0) {
