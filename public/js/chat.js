@@ -260,6 +260,22 @@ socket.on("receive", (msg) => {
     let sender = msg.message.sender;
     let nickname = sender.slice(0, sender.lastIndexOf('@'));
     let current = $('.active-user').attr('id');
+    if ($('#' + nickname).length == 0) {
+        $('.users').html($('.users').html() + `
+        <li id="${nickname}" class="person" data-chat="${nickname}" onclick="changeChatAim('${nickname}')">
+            <div class="user">
+                <img src="/images/avatar.png" alt="${nickname}">
+                <span id="${nickname}Status" class="status busy"></span>
+            </div>
+            <p class="name-time">
+                <span class="list-name">${nickname}</span>
+                <span class="time"> ${new Date().toLocaleTimeString()} Today</span>
+            </p>
+        </li>
+        ` );
+        return;
+    }
+
     if (nickname == current) {
         $('.chat-box').html($('.chat-box').html() + `
             <li class="chat-left">
