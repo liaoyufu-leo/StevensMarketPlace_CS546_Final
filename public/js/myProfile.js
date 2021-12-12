@@ -33,9 +33,9 @@ function myProfile(event) {
                             <input type="text" class="form-control" placeholder="Password" value="   " hidden>
                             <label>Gender</label>
                             <select class="form-select border-1" name="gender" id="genderInput" placeholder="${user.gender}" value="${user.gender}">
-                                <option value="male" selected>male</option>
-                                <option value="female">female</option>
-                                <option value="other">other</option>
+                                <option value="male" ${user.gender=="male" ? "selected": ""}>male</option>
+                                <option value="female" ${user.gender=="female" ? "selected": ""}>female</option>
+                                <option value="other" ${user.gender=="other" ? "selected": ""}>other</option>
                             </select>
                             <div class="valid-feedback">
                             Looks good!
