@@ -84,6 +84,7 @@ function myTransactions(event) {
                                 <ul>
                                     <li>${element.item.title}</li>
                                     <li>$${element.item.price}</li>
+                                    <li><a href="/user/getOne" onclick="getUser(event,'${element.seller}')">${element.seller}</a></li>
                                     <li>${new Date(element.item.date).toLocaleString('en-US', { timeZone: 'EST' })}</li>
                                 <ul>
                             </div>
