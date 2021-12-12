@@ -15,11 +15,13 @@ function myTransactions(event) {
                     </div>
                     <div class="row">
                         <h4>Sold</h1>
+                        <div>Sold Amount:<span id="soldAmount"></span></div>
                     </div>
                     <div id="sold">
                     </div>
                     <div class="row">
                         <h4>Bought</h1>
+                        <div>Bought Amount:<span id="boughtAmount"></span></div>
                     </div>
                     <div id="bought">
                     </div>
@@ -29,7 +31,9 @@ function myTransactions(event) {
             if (responseMessage.sold.length == 0) {
                 $('#sold').html("<div>You didn't sold anything.</div>");
             } else {
+                let sold = 0;
                 responseMessage.sold.forEach(element => {
+                    sold += parseFloat(element.item.price);
                     $('#sold').html($('#sold').html() + `
                         <div class="row">
                             <div class="col-3">
@@ -67,13 +71,16 @@ function myTransactions(event) {
                         </div>
                     `);
                 });
-
+                console.log(sold)
+                $('#soldAmount').html(sold);
             }
 
             if (responseMessage.bought.length == 0) {
                 $('#bought').html("<div>You didn't bought anything.</div>");
             } else {
+                let bought = 0;
                 responseMessage.bought.forEach(element => {
+                    bought += parseFloat(element.item.price);
                     $('#bought').html($('#bought').html() + `
                         <div class="row">
                             <div class="col-3">
@@ -113,7 +120,7 @@ function myTransactions(event) {
                         </div>
                     `);
                 });
-
+                $('#boughtAmount').html(bought);
             }
         },
         error: function (responseMessage) {
