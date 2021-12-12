@@ -4,7 +4,6 @@ const { check } = require("../public/js/check");
 const { user } = require("../data");
 const { item } = require("../data");
 
-
 router.get('/login', async (req, res) => {
     res.status(200).render("landing/login", { "title": "login", "layout": "landing" });
 });
@@ -121,24 +120,26 @@ router.get('/cart', async (req, res) => {
     res.status(200).json({ "items": items });
 });
 
-router.get('/updatePassword', async (req, res) => {
-    res.status(200).json({ "title": "updatePassword" });
-});
-
-router.post('/updatePassword', async (req, res) => {
-    res.status(200).json({ "title": "updatePassword" });
-});
-
-router.get('/updateInformation', async (req, res) => {
-    res.status(200).json({ "title": "updateInformation" });
-});
-
-router.post('/updateInformation', async (req, res) => {
-    res.status(200).json({ "title": "updateInformation" });
-});
-
 router.get('/getOne/:account', async (req, res) => {
-    res.status(200).json({ "title": "getOne" });
+    let errors = [];
+    if (Object.keys(req.params).length != 1) errors.push("arguments");
+    if (!(account = check(req.params.account, "account"))) errors.push("account");
+
+    if (errors.length > 0) {
+        res.status(400).json({ "hasErrors": true, "errors": errors });
+        return;
+    }
+
+    try {
+        const data = await user.findOne(account);
+        if (data.hasErrors) {
+            res.status(404).json(data);
+        } else {
+            res.status(200).json(data.user);
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
 router.get('/addCart/:item_id', async (req, res) => {
@@ -184,5 +185,46 @@ router.get('/removeCart/:item_id', async (req, res) => {
         res.status(500).send(error.message);
     }
 });
+
+router.get('/removeCart/:item_id', async (req, res) => {
+    let errors = [];
+    if (Object.keys(req.params).length != 1) errors.push("arguments");
+    if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
+
+    if (errors.length > 0) {
+        res.status(400).json({ "hasErrors": true, "errors": errors });
+        return;
+    }
+
+    try {
+        const result = (await item.removeCart(req.session.user.account, item_id));
+        if (result.hasErrors) {
+            res.status(404).json(result);
+        } else {
+            res.status(200).json(result);
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+router.get('/search/:keyword', async (req, res) => {
+    let errors = [];
+    if (Object.keys(req.params).length != 1) errors.push("arguments");
+    if (!(keyword = check(req.params.keyword, "keyword"))) errors.push("keyword");
+
+    if (errors.length > 0) {
+        res.status(400).json({ "hasErrors": true, "errors": errors });
+        return;
+    }
+
+    try {
+        const users = (await user.search(keyword, req.session.user.account)).users;
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 
 module.exports = router;

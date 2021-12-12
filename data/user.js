@@ -6,10 +6,10 @@ const saltRounds = 10;
 module.exports = {
     create,
     login,
-    updatePassword,
     updateInformation,
     forgetPassword,
-    findOne
+    findOne,
+    search
 }
 
 async function create(account, password, nickname, gender, address) {
@@ -20,7 +20,7 @@ async function create(account, password, nickname, gender, address) {
     if (!(nickname = check(nickname, "nickname"))) errors.push("nickname");
     if (!(gender = check(gender, "gender"))) errors.push("gender");
     if (!(address = check(address, "address"))) errors.push("address");
-    
+
 
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
@@ -68,7 +68,7 @@ async function login(account, password) {
     if (errors.length > 0) return { "hasErrors": true, "errors": errors };
 
     const userCol = await collection.getCollection('user');
-    
+
     const checkAccount = await userCol.findOne({ "account": account });
     if (checkAccount == null) {
         await collection.closeCollection();
@@ -89,53 +89,6 @@ async function login(account, password) {
         checkAccount.cart[i] = checkAccount.cart[i].toString();
     }
     return { "hasErrors": false, "user": checkAccount };
-}
-
-async function updatePassword(account, oldPassword, newPassword) {
-    let errors = [];
-    if (arguments.length != 3) errors.push("arguments ");
-    if (!(user_id = check(account, "account"))) errors.push("account");
-    if (!(oldPassword = check(oldPassword, "password"))) errors.push("oldPassword");
-    if (!(newPassword = check(newPassword, "password"))) errors.push("newPassword");
-    if (oldPassword == newPassword) errors.push("same");
-
-    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
-
-    const userCol = await collection.getCollection('user');
-    const checkAccount = await userCol.findOne({ "account": account });
-    if (checkAccount == null) {
-        await collection.closeCollection();
-        errors.push("account not exist");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    if (! await bcrypt.compare(oldPassword, checkAccount.password)) {
-        await collection.closeCollection();
-        errors.push("password not correct");
-        return { "hasErrors": true, "errors": errors };
-    }
-
-    const updatedInfo = await userCol.updateOne(
-        { "account": account },
-        { $set: { "password": await bcrypt.hash(newPassword, saltRounds) } }
-    );
-    if (updatedInfo.modifiedCount === 0) {
-        await collection.closeCollection();
-        throw "Can't update password in mongodb, something went wrong, please try again!";
-    }
-
-    const updatedUser = await userCol.findOne({ "account": account });
-    if (updatedUser === null) {
-        await collection.closeCollection();
-        throw "Can't find updated account in mongodb, something went wrong, Please try again!";
-    }
-    await collection.closeCollection();
-
-    updatedUser._id = updatedUser._id.toString();
-    for (let i = 0; i < updatedUser.cart.length; i++) {
-        updatedUser.cart[i] = updatedUser.cart[i].toString();
-    }
-    return { "hasErrors": false, "user": updatedUser };
 }
 
 async function forgetPassword(account, newPassword) {
@@ -269,4 +222,26 @@ async function findOne(account) {
         checkAccount.cart[i] = checkAccount.cart[i].toString();
     }
     return { "hasErrors": false, "user": checkAccount };
+}
+
+async function search(keyword, account) {
+    let errors = [];
+    if (arguments.length != 2) errors.push("arguments");
+    if ((keyword = check(keyword, "keyword")) === false) errors.push("keyword");
+    if (!(account = check(account, "account"))) errors.push("account");
+
+    if (errors.length > 0) return { "hasErrors": true, "errors": errors };
+
+    const userCol = await collection.getCollection('user');
+
+    const users = await userCol.find(
+        {
+            $and: [{ "account": { $ne: account } },
+            { "account": new RegExp(keyword) }]
+        },
+        { projection: { "account": 1, "_id": 0 } }).toArray();
+
+    await collection.closeCollection();
+
+    return { "hasErrors": false, "users": users };
 }
