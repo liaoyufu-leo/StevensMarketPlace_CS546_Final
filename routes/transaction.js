@@ -3,6 +3,8 @@ const router = express.Router();
 const { check } = require("../public/js/check");
 const { item, transaction } = require("../data");
 
+const xss = require('xss');
+
 router.get('/myTransactions', async (req, res) => {
     // console.log("a")
     // res.status(500).send("something wrong");
@@ -51,7 +53,7 @@ router.post('/create', async (req, res) => {
     if (Object.keys(req.body).length != 2) errors.push("arguments");
     let item_ids = req.body.item_ids;
     for (let i = 0; i < item_ids.length; i++) {
-        if (!(item_ids[i] = check(item_ids[i], "id"))) {
+        if (!(item_ids[i] = check(xss(item_ids[i]), "id"))) {
             errors.push("item_id");
             break;
         }

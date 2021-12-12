@@ -54,6 +54,7 @@
     "express-session": "^1.17.2",
     "mongodb": "^4.1.4",
     "nodemon": "^2.0.15",
-    "socket.io": "^4.4.0"
+    "socket.io": "^4.4.0",
+    "xss": "^1.0.10"
   }
 }

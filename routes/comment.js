@@ -3,6 +3,8 @@ const router = express.Router();
 const { check } = require("../public/js/check");
 const { comment } = require("../data");
 
+const xss = require('xss');
+
 router.post('/create', async (req, res) => {
     // res.status(500).send("something wrong");
     // res.status(400).json({ "hasErrors": true, "errors": [ "account", "password","arguments","account not exist","password not correct"] });
@@ -15,8 +17,8 @@ router.post('/create', async (req, res) => {
 
     let errors = [];
     if (Object.keys(req.body).length != 2) errors.push("arguments");
-    if (!(item_id = check(req.body.item_id, "id"))) errors.push("item_id");
-    if (!(content = check(req.body.content, "content"))) errors.push("content");
+    if (!(item_id = check(xss(req.body.item_id), "id"))) errors.push("item_id");
+    if (!(content = check(xss(req.body.content), "content"))) errors.push("content");
 
     if (errors.length > 0) {
         res.status(400).json({ "hasErrors": true, "errors": errors });

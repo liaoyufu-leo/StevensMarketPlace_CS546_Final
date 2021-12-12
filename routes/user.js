@@ -3,6 +3,7 @@ const router = express.Router();
 const { check } = require("../public/js/check");
 const { user } = require("../data");
 const { item } = require("../data");
+const xss = require('xss');
 
 router.get('/login', async (req, res) => {
     res.status(200).render("landing/login", { "title": "login", "layout": "landing" });
@@ -18,8 +19,8 @@ router.post('/login', async (req, res) => {
 
     let errors = [];
     if (Object.keys(req.body).length != 2) errors.push("arguments");
-    if (!(account = check(req.body.account, "account"))) errors.push("account");
-    if (!(password = check(req.body.password, "password"))) errors.push("password");
+    if (!(account = check(xss(req.body.account), "account"))) errors.push("account");
+    if (!(password = check(xss(req.body.password), "password"))) errors.push("password");
 
     if (errors.length > 0) {
         res.status(400).json({ "hasErrors": true, "errors": errors });
@@ -53,16 +54,19 @@ router.post('/signup', async (req, res) => {
 
     let errors = [];
     if (Object.keys(req.body).length != 5) errors.push("arguments");
-    if (!(account = check(req.body.account, "account"))) errors.push("account");
-    if (!(password = check(req.body.password, "password"))) errors.push("password");
-    if (!(nickname = check(req.body.nickname, "nickname"))) errors.push("nickname");
-    if (!(gender = check(req.body.gender, "gender"))) errors.push("gender");
+    if (!(account = check(xss(req.body.account), "account"))) errors.push("account");
+    if (!(password = check(xss(req.body.password), "password"))) errors.push("password");
+    if (!(nickname = check(xss(req.body.nickname), "nickname"))) errors.push("nickname");
+    if (!(gender = check(xss(req.body.gender), "gender"))) errors.push("gender");
     if (!(address = check(req.body.address, "address"))) errors.push("address");
 
     if (errors.length > 0) {
+        console.log(errors)
         res.status(400).json({ "hasErrors": true, "errors": errors });
         return;
     }
+
+    
 
     try {
         const data = await user.create(account, password, nickname, gender, address);
@@ -89,8 +93,8 @@ router.get('/forgetPassword', async (req, res) => {
 router.post('/forgetPassword', async (req, res) => {
     let errors = [];
     if (Object.keys(req.body).length != 2) errors.push("arguments");
-    if (!(account = check(req.body.account, "account"))) errors.push("account");
-    if (!(password = check(req.body.password, "password"))) errors.push("password");
+    if (!(account = check(xss(req.body.account), "account"))) errors.push("account");
+    if (!(password = check(xss(req.body.password), "password"))) errors.push("password");
 
     if (errors.length > 0) {
         res.status(400).json({ "hasErrors": true, "errors": errors });
@@ -123,7 +127,7 @@ router.get('/cart', async (req, res) => {
 router.get('/getOne/:account', async (req, res) => {
     let errors = [];
     if (Object.keys(req.params).length != 1) errors.push("arguments");
-    if (!(account = check(req.params.account, "account"))) errors.push("account");
+    if (!(account = check(xss(req.params.account), "account"))) errors.push("account");
 
     if (errors.length > 0) {
         res.status(400).json({ "hasErrors": true, "errors": errors });
@@ -145,7 +149,7 @@ router.get('/getOne/:account', async (req, res) => {
 router.get('/addCart/:item_id', async (req, res) => {
     let errors = [];
     if (Object.keys(req.params).length != 1) errors.push("arguments");
-    if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
+    if (!(item_id = check(xss(req.params.item_id), "id"))) errors.push("item_id");
 
     if (errors.length > 0) {
         res.status(400).json({ "hasErrors": true, "errors": errors });
@@ -167,7 +171,7 @@ router.get('/addCart/:item_id', async (req, res) => {
 router.get('/removeCart/:item_id', async (req, res) => {
     let errors = [];
     if (Object.keys(req.params).length != 1) errors.push("arguments");
-    if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
+    if (!(item_id = check(xss(req.params.item_id), "id"))) errors.push("item_id");
 
     if (errors.length > 0) {
         res.status(400).json({ "hasErrors": true, "errors": errors });
@@ -189,7 +193,7 @@ router.get('/removeCart/:item_id', async (req, res) => {
 router.get('/removeCart/:item_id', async (req, res) => {
     let errors = [];
     if (Object.keys(req.params).length != 1) errors.push("arguments");
-    if (!(item_id = check(req.params.item_id, "id"))) errors.push("item_id");
+    if (!(item_id = check(xss(req.params.item_id), "id"))) errors.push("item_id");
 
     if (errors.length > 0) {
         res.status(400).json({ "hasErrors": true, "errors": errors });
@@ -211,7 +215,7 @@ router.get('/removeCart/:item_id', async (req, res) => {
 router.get('/search/:keyword', async (req, res) => {
     let errors = [];
     if (Object.keys(req.params).length != 1) errors.push("arguments");
-    if (!(keyword = check(req.params.keyword, "keyword"))) errors.push("keyword");
+    if (!(keyword = check(xss(req.params.keyword), "keyword"))) errors.push("keyword");
 
     if (errors.length > 0) {
         res.status(400).json({ "hasErrors": true, "errors": errors });
