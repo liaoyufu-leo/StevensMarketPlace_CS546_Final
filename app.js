@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const session = require('express-session');
 const { engine } = require('express-handlebars');
-const fileUpload = require('express-fileUpload');
+const fileUpload = require('express-fileupload');
 const configRoutes = require('./routes');
 
 const xss = require('xss');
