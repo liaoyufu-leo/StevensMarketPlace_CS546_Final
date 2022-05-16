@@ -15,7 +15,7 @@ This application mainly helps students at Stevens Institute of Technology. A con
 
 ## **Installation**
 ```
-git clone https://github.com/liaoyufu-leo/StevensMarketPlace_CS_546_Group16_FinalProject.git
+git clone https://github.com/liaoyufu-leo/StevensMarketPlace_CS546_Final.git
 ```
 
 ## **Initialization**
